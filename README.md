@@ -2,6 +2,8 @@
 
 Suponha uma loja de venda e restauração de consoles vintage (Atari, Mega Drive, Super Nintendo, etc) que deseja evoluir seu sistema interno para um website, o usuário deve ter a opção de comprar/restaurar um console.
 
+Integrantes: [Bruno Crespo](https://github.com/brunof5), [Gabriel Rogério](https://github.com/brunof5), [Vinícius de Oliveira](https://github.com/Vicius1)
+
 ## Tecnologia Utilizadas
 
 * **Ambiente de Desenvolvimento:** XAMPP - v8.2.4 / XAMPP Control Panel - v3.3.0
