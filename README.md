@@ -4,14 +4,11 @@ Suponha uma loja de venda e restauração de consoles vintage (Atari, Mega Drive
 
 ## Tecnologia Utilizadas
 
-* XAMPP - 8.2.4
-* XAMPP Control Panel - 3.3.0
-* MariaDB - 10.4.28
-* Apache - 2.4.56
-* Node.js - 18.16.0
-* HTML 5
-* CSS3
-* JavaScript
+* Ambiente de Desenvolvimento: (XAMPP - v8.2.4) e (XAMPP Control Panel - v3.3.0)
+* Banco de Dados: MariaDB - v10.4.28
+* Servidor: Apache - v2.4.56
+* Linguagem BackEnd: Node.js - v18.16.0
+* Linguagem FrontEnd: HTML5, CSS3, JavaScript
 
 ## Principais Funcionalidades
 
