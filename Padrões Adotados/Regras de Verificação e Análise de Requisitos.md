@@ -2,6 +2,15 @@
 
 Os requisitos devem possuir a convenção universal de escrita: "O software DEVE ..."
 
+`RF` é utilizado para identificar Requisitos Funcionais e `RNF` é utilizado para identificar Requisitos Não Funcionais.
+
+### Prioridade de Requisitos
+
+Para estabelecer a **prioridade** de requisitos foram adotadas as seguintes denominações:
+* Essencial: é o requisito sem o qual o sistema não entra em funcionamento, imprescindíveis;
+* Importante: é o requisito sem o qual o sistema entra em funcionamento, mas de forma não satisfatória.
+* Desejável: é o requisito que não compromete as funcionalidades básicas do sistema, isto é, o sistema pode funcionar de forma satisfatória sem ele.
+
 ## Especificação de Requisitos
 
 ### Evite palavras
