@@ -14,7 +14,24 @@ Integrantes: [Bruno Crespo](https://github.com/brunof5), [Gabriel Rogério](http
 
 ## Principais Funcionalidades
 
-É possível fazer compras, vendas ou restauração de consoles vintage.
+* Login (essencial)
+* Gerenciar console (essencial)
+  * Cadastrar
+  * Visualizar
+  * Deletar
+  * Editar
+* Gerenciar vendas/restaurações (essencial)
+  * Cadastrar
+  * Visualizar
+  * Deletar
+  * Editar
+* Adicionar no carrinho (essencial)
+* Comprar produto (essencial)
+* Pedir restauração de um console não pertencente à empresa (essencial)
+* Fazer busca de um console (essencial)
+* Avaliação do serviço (desejável)
+  * Compra
+  * Restauração
 
 ## Público Alvo
 
