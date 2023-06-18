@@ -1,5 +1,5 @@
 <div align="center">
-<img src="https://github.com/brunof5/Archaic-Nostalgia/assets/85946682/66d37d6e-0cbe-4857-83a4-ef88ad31b042" width="250px" />
+<img src="https://github.com/brunof5/Archaic-Nostalgia/assets/85946682/11fa53f2-805e-48a2-b969-3435483b42b6" width="250px" />
 </div>
 
 # Archaic Nostalgia
