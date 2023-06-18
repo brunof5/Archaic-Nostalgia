@@ -14,22 +14,22 @@ Integrantes: [Bruno Crespo](https://github.com/brunof5), [Gabriel Rogério](http
 
 ## Principais Funcionalidades
 
-* Login (essencial)
-* Gerenciar console (essencial)
+* Login
+* Gerenciar console
   * Cadastrar
   * Visualizar
   * Deletar
   * Editar
-* Gerenciar vendas/restaurações (essencial)
+* Gerenciar vendas/restaurações
   * Cadastrar
   * Visualizar
   * Deletar
   * Editar
-* Adicionar no carrinho (essencial)
-* Comprar produto (essencial)
-* Pedir restauração de um console não pertencente à empresa (essencial)
-* Fazer busca de um console (essencial)
-* Avaliação do serviço (desejável)
+* Adicionar no carrinho
+* Comprar produto
+* Pedir restauração de um console não pertencente à empresa
+* Fazer busca de um console
+* Avaliação do serviço
   * Compra
   * Restauração
 
