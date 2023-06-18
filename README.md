@@ -15,6 +15,7 @@ Integrantes: [Bruno Crespo](https://github.com/brunof5), [Gabriel Rogério](http
 ## Principais Funcionalidades
 
 * Login
+* Fazer busca de um console
 * Gerenciar console
   * Cadastrar
   * Visualizar
@@ -26,11 +27,9 @@ Integrantes: [Bruno Crespo](https://github.com/brunof5), [Gabriel Rogério](http
   * Deletar
   * Editar
 * Adicionar no carrinho
-* Comprar produto
+* Comprar console
 * Pedir restauração de um console não pertencente à empresa
-* Fazer busca de um console
 * Avaliação do serviço
-  * Compra
   * Restauração
 
 ## Público Alvo
