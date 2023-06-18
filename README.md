@@ -1,3 +1,7 @@
+<div align="center">
+<img src="https://github.com/brunof5/Archaic-Nostalgia/assets/85946682/66d37d6e-0cbe-4857-83a4-ef88ad31b042" width="250px" />
+</div>
+
 # Archaic Nostalgia
 
 Suponha uma loja de venda e restauração de consoles vintage (Atari, Mega Drive, Super Nintendo, etc) que deseja evoluir seu sistema interno para um website, o usuário deve ter a opção de comprar/restaurar um console.
