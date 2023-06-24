@@ -10,11 +10,9 @@ Integrantes: [Bruno Crespo](https://github.com/brunof5), [Gabriel Rogério](http
 
 ## Tecnologia Utilizadas
 
-* **Ambiente de Desenvolvimento:** XAMPP - v8.2.4 / XAMPP Control Panel - v3.3.0
 * **Banco de Dados:** PostgreSQL - v15.3-2
-* **Servidor:** Apache - v2.4.56
 * **Linguagem BackEnd:** Node.js - v18.16.0
-* **Linguagem FrontEnd:** HTML5 / CSS3 / JavaScript
+* **Linguagem FrontEnd:** HTML5 / CSS3 / JavaScript / Bootstrap - v5.3
 
 ## Principais Funcionalidades
 
