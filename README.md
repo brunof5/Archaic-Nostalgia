@@ -10,7 +10,7 @@ Integrantes: [Bruno Crespo](https://github.com/brunof5), [Gabriel Rogério](http
 
 ## Tecnologia Utilizadas
 
-* **Banco de Dados:** PostgreSQL - v15.3-2
+* **Banco de Dados:** MySQL Community Server - v8.0.32.0
 * **Linguagem BackEnd:** Node.js - v18.16.0
 * **Linguagem FrontEnd:** HTML5 / CSS3 / JavaScript / Bootstrap - v5.3
 
