@@ -57,3 +57,7 @@ Ao commitar utilize o padrão: git commit -m "closes #\<numero issue\>; \<MENSAG
 Suponha por exemplo que a issue #31 - RF001 - Fazer login (front) foi concluída, o comando de commit seria: git commit -m "closes #31; acabei o login"
 
 O PO ao ver que uma issue foi fechada, irá abri-la novamente para teste, e assim que o teste for finalizado e o código estiver funcionando será dado o commit: git commit -m "closes #\<numero issue\>; FUNCIONAL".
+
+### Regras de branch
+
+O uso de braches é liberado, mas cuidadao ao realizar o merge com o main do projeto.
