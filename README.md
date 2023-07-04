@@ -46,7 +46,7 @@ Pessoas que tem afinidade com consoles mais antigos.
 * A pasta "Padrões Adotados" apresenta as regras de verificação/análise de requisitos.
 * A pasta "src" apresenta os códigos do projeto.
 
-### Regras de commit
+### Regras de Commit
 
 Preferencialmente ao commitar alguma funcionalidade do sistema deve-se fechar a issue correspondente da implementação.
 
@@ -58,6 +58,23 @@ Suponha por exemplo que a issue #31 - RF001 - Fazer login (front) foi concluída
 
 O PO ao ver que uma issue foi fechada, irá abri-la novamente para teste, e assim que o teste for finalizado e o código estiver funcionando será dado o commit: git commit -m "closes #\<numero issue\>; FUNCIONAL".
 
-### Regras de branch
+### Regras de Branch
 
 O uso de braches é liberado, mas cuidadao ao realizar o merge com o main do projeto.
+
+### Boas Práticas de Programação
+
+O grupo deve pelo menos seguir as 6 boas práticas de programação abaixo:
+
+1. **Identar o código**: é um dos itens mais básicos e importantes para um programador, pois facilita a legibilidade e deixa o código mais bonito.
+    1.  A identação deve ser feita por tabs.
+2.  **Nomear variáveis de maneira intuitiva**: escrever nomes que não possuem sentido acaba por dificultar a legibilidade do código, além de prejudicar o trabalho em grupo, pelo fato de que as variáveis não são intuitivas.
+    1.  Ao declarar a tag *name* nos *inputs* no front-end, tais declarações devem ter sentido e serem intuitivas para o back-end compreender mais facilmente como realizar os endpoints.
+3.  **Comentar código**: um comentário detalhando o objetivo de uma função, seus parâmetros de entrada e saída podem ajudar a manutenção futura do código.
+    1.  No front-end crie comentários para os formulários e as funções quando trabalhar com JavaScript.
+    2.  No back-end crie comentários para cada função de endpoint.
+4.  **Escreva um comando por linha**: por se tratar de um trabalho, o desempenho não é extremamente essencial, logo escrever um comando por linha, além de aumentar a legibilidade do código facilita o entendimento do código por estar descrito de uma maneira sequencial.
+5.  **Escreva sempre chaves nos comandos de controle (if/else, while, for etc)**: tal prática é útil quando queremos dividir com precisão os caminhos do programa.
+    1.  O back-end deve respeitar essa boa prática.
+6.  **Declare as variáveis sempre no início das funções**: útil para entendimento do que acontecerá na função logo de imediato.
+    1.  No back-end, declarar uma variável do comando sql e escrever seu código de imediato, já adicionando parâmetros à ela se necessário, ou seja, não se deve montar o comando quando realizar a query/consulta.
