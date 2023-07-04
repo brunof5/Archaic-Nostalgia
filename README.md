@@ -38,3 +38,22 @@ Integrantes: [Bruno Crespo](https://github.com/brunof5), [Gabriel Rogério](http
 
 Pessoas que tem afinidade com consoles mais antigos.
 
+## Regras de Uso
+
+* A pasta "Requisitos" apresenta o documento de requisitos do projeto, ademais o diagrama UML dos casos de uso.
+* A pasta "Diagramas" apresenta os diagramas de Classe, Pacote e Sequência.
+* A pasta "Protótipo de Interface" apresenta todos os PNGs de todas as interfaces do projeto feitas no FIGMA.
+* A pasta "Padrões Adotados" apresenta as regras de verificação/análise de requisitos.
+* A pasta "src" apresenta os códigos do projeto.
+
+### Regras de commit
+
+Preferencialmente ao commitar alguma funcionalidade do sistema deve-se fechar a issue correspondente da implementação.
+
+Ao commitar utilize o padrão: git commit -m "closes #\<numero issue\>; \<MENSAGEM\>"
+* Caso precise fechar mais de uma issue, basta separar as issues por vírgula.
+* A mensagem é opcional, o que importa aqui é saber qual issue foi fechada.
+
+Suponha por exemplo que a issue #31 - RF001 - Fazer login (front) foi concluída, o comando de commit seria: git commit -m "closes #31; acabei o login"
+
+O PO ao ver que uma issue foi fechada, irá abri-la novamente para teste, e assim que o teste for finalizado e o código estiver funcionando será dado o commit: git commit -m "closes #\<numero issue\>; FUNCIONAL".
