@@ -53,10 +53,11 @@ Preferencialmente ao commitar alguma funcionalidade do sistema deve-se fechar a 
 Ao commitar utilize o padrão: git commit -m "closes #\<numero issue\>; \<MENSAGEM\>"
 * Caso precise fechar mais de uma issue, basta separar as issues por vírgula.
 * A mensagem é opcional, o que importa aqui é saber qual issue foi fechada.
+* Ao fechar uma issue, procure ela no menu das issues e marque a opção "Pronto para Teste de Sistema" na aba "Projects" => "Kanban" => "Status"
 
 Suponha por exemplo que a issue #31 - RF001 - Fazer login (front) foi concluída, o comando de commit seria: git commit -m "closes #31; acabei o login"
 
-O PO ao ver que uma issue foi fechada, irá abri-la novamente para teste, e assim que o teste for finalizado e o código estiver funcionando será dado o commit: git commit -m "closes #\<numero issue\>; FUNCIONAL".
+O PO ao ver que uma issue foi fechada e com o status para teste, irá abri-la novamente para teste, e assim que o teste for finalizado e o código estiver funcionando será dado o commit: git commit -m "closes #\<numero issue\>; FUNCIONAL". E ela será marcada como "Finalizado" no Kanban.
 
 ### Regras de Branch
 
