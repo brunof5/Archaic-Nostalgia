@@ -41,15 +41,12 @@ async function verificaCampos(inputUser, inputPassword) {
                                     console.log("Erro QUERY: ", err)
                                     throw err
                                 } else {
-
-                                    var auxCargo = JSON.stringify("Gerente")
-                                    
                                     if (resultEmpregado.length == 0) {
                                         console.log("Usuário e/ou senha inválidos!")
                                         var data = { sucesso: false, mensagem: "Usuário e/ou senha inválidos!" }
                                         var json = [data]
                                         retorno(JSON.stringify(json))
-                                    } else if (resultEmpregado[0] == auxCargo) {
+                                    } else if (resultEmpregado[0].cargo === "Gerente") {
                                         console.log("Usuário autenticado como admin! Nome: ", resultEmpregado)
                                         var data = { sucesso: true, mensagem: "2" }
                                         var json = [data]
