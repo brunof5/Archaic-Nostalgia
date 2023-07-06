@@ -2,17 +2,23 @@ import loginServices from '../services/login.service.js'
 
 async function verificaCampos(req, res){
 
-    const { nomeLogin, senhaLogin } = req.params;
+    const { inputUser, inputPassword } = req.body;
 
-    if (nomeLogin.length > 30) {
+    if (inputUser == undefined || inputUser == null || inputUser == '') {
+        res.send({ mensagem: "O campo Usuário não pode ser vazio!" })
+    }
+    else if (inputUser.length > 30) {
         res.send({ mensagem: "O campo Usuário deve conter no máximo 30 caracteres!" });
     } 
-    if (senhaLogin.length > 30){
+    else if (inputPassword == undefined || inputPassword == null || inputPassword == '') {
+        res.send({ mensagem: "O campo Senha não pode ser vazio!" })
+    }
+    else if (inputPassword.length > 30){
         res.send({ mensagem: "O campo Senha deve conter no máximo 30 caracteres!" });
     }
 
     else {
-        res.send(await loginServices.verificaCampos(req, res));
+        res.send(await loginServices.verificaCampos(inputUser, inputPassword));
     }
 
 }

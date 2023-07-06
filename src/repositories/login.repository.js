@@ -8,15 +8,13 @@ var pool = mysql.createPool({
     database: 'mydb'
 })
 
-async function verificaCampos(req, res) {
+async function verificaCampos(inputUser, inputPassword) {
 
-    var sqlCliente = "SELECT * FROM cliente WHERE nomeLoginCliente = ? AND senhaLoginCliente = ?;"
-    var sqlEmpregado = "SELECT * FROM empregado WHERE nomeLoginEmpregado = ? AND senhaLoginEmpregado = ?;"
+    var sqlCliente = "SELECT nomeCliente FROM cliente WHERE nomeLoginCliente = ? AND senhaLoginCliente = ?;"
+    var sqlEmpregado = "SELECT cargo FROM empregado WHERE nomeLoginEmpregado = ? AND senhaLoginEmpregado = ?;"
     var params = []
 
-    const { nomeLogin, senhaLogin } = req.params;
-
-    params.push(nomeLogin, senhaLogin)
+    params.push(inputUser, inputPassword)
     var sqlClienteFormatted = mysql.format(sqlCliente, params)
     var sqlEmpregadoFormatted = mysql.format(sqlEmpregado, params)
 
@@ -33,7 +31,7 @@ async function verificaCampos(req, res) {
                     } else {
 
                         if (resultCliente.length) {
-                            console.log("Usuário autenticado como cliente!")
+                            console.log("Usuário autenticado como cliente! Nome: ", resultCliente)
                             var data = { sucesso: true, mensagem: "0" }
                             var json = [data]
                             retorno(JSON.stringify(json))
@@ -43,19 +41,28 @@ async function verificaCampos(req, res) {
                                     console.log("Erro QUERY: ", err)
                                     throw err
                                 } else {
+
+                                    var auxCargo = JSON.stringify("Gerente")
                                     
-                                    if (resultEmpregado.length) {
-                                        console.log("Usuário autenticado como empregado!")
-                                        var data = { sucesso: true, mensagem: "1" }
-                                        var json = [data]
-                                        retorno(JSON.stringify(json))
-                                    } else {
+                                    if (resultEmpregado.length == 0) {
                                         console.log("Usuário e/ou senha inválidos!")
                                         var data = { sucesso: false, mensagem: "Usuário e/ou senha inválidos!" }
                                         var json = [data]
                                         retorno(JSON.stringify(json))
+                                    } else if (resultEmpregado[0] == auxCargo) {
+                                        console.log("Usuário autenticado como admin! Nome: ", resultEmpregado)
+                                        var data = { sucesso: true, mensagem: "2" }
+                                        var json = [data]
+                                        retorno(JSON.stringify(json))
+                                    } else {
+                                        console.log("Usuário autenticado como funcionário! Nome: ", resultEmpregado)
+                                        var data = { sucesso: true, mensagem: "1" }
+                                        var json = [data]
+                                        retorno(JSON.stringify(json))
                                     }
                                 }
+
+                                connection.release()
                             })
                         }
                     }

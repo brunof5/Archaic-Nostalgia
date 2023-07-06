@@ -49,12 +49,12 @@ CREATE TABLE IF NOT EXISTS `mydb`.`Empregado` (
   `salario` DECIMAL(10,2) NOT NULL,
   `dataInicio` DATE NOT NULL,
   `dataFim` DATE NULL,
-  `nomeLoginEmpregrado` VARCHAR(30) NOT NULL,
+  `nomeLoginEmpregado` VARCHAR(30) NOT NULL,
   `senhaLoginEmpregado` VARCHAR(30) NOT NULL,
   `FK_idEmpresa` INT UNSIGNED NOT NULL,
   PRIMARY KEY (`idEmpregado`),
   UNIQUE INDEX `cpfEmpregado_UNIQUE` (`cpfEmpregado` ASC) VISIBLE,
-  UNIQUE INDEX `nomeLoginEmpregrado_UNIQUE` (`nomeLoginEmpregrado` ASC) VISIBLE,
+  UNIQUE INDEX `nomeLoginEmpregado_UNIQUE` (`nomeLoginEmpregado` ASC) VISIBLE,
   INDEX `fk_Empregado_Empresa_idx` (`FK_idEmpresa` ASC) VISIBLE,
   CONSTRAINT `fk_Empregado_Empresa`
     FOREIGN KEY (`FK_idEmpresa`)
@@ -84,13 +84,12 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `mydb`.`Console` (
   `idConsole` INT UNSIGNED NOT NULL AUTO_INCREMENT,
-  `modeloConsole` VARCHAR(30) NOT NULL,
+  `nomeConsole` VARCHAR(30) NOT NULL,
   `nomeFabricante` VARCHAR(50) NOT NULL,
   `dataLancamento` DATE NOT NULL,
   `ehOriginal` BIT(1) NOT NULL,
   `preco` DECIMAL(10,2) UNSIGNED NOT NULL,
   `descricaoConsole` VARCHAR(100) NULL,
-  `Consolecol` VARCHAR(45) NULL,
   PRIMARY KEY (`idConsole`))
 ENGINE = InnoDB;
 
@@ -106,7 +105,7 @@ CREATE TABLE IF NOT EXISTS `mydb`.`Venda_Restauracao` (
   `ehVenda` BIT(1) NOT NULL,
   `estaEntregue` BIT(1) NOT NULL,
   `qtdeConsoles` INT UNSIGNED NOT NULL,
-  `descricaoRestaucao` VARCHAR(100) NULL,
+  `descricaoRestauracao` VARCHAR(100) NULL,
   `avaliacao` TINYINT(1) NULL,
   `FK_idEmpresa` INT UNSIGNED NOT NULL,
   `FK_idCliente` INT UNSIGNED NOT NULL,
@@ -159,29 +158,22 @@ SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
 
 INSERT INTO Empresa (idEmpresa, nomeEmpresa, cnpjEmpresa, horarioAbre, horarioFecha, cep, logradouro, numero, bairro, cidade, estado, complemento)
 VALUES
-(1, "InnovateTech Solutions", "123456789", "09:00", "18:00", "01234567", "Rua A", 123, "Bairro A", "Cidade A", "SP", "Complemento A"),
-(2, "Starlight Ventures", "987654321", "08:00", "17:00", "98765432", "Rua B", 456, "Bairro B", "Cidade B", "RJ", "Complemento B"),
-(3, "NovaTech Industries", "567890123", "10:00", "19:00", "54321098", "Rua C", 789, "Bairro C", "Cidade C", "MG", "Complemento C"),
-(4, "Quantum Innovations", "321098765", "07:00", "16:00", "45678901", "Rua D", 987, "Bairro D", "Cidade D", "RS", "Complemento D"),
-(5, "Vertex Solutions", "789012345", "11:00", "20:00", "89012345", "Rua E", 654, "Bairro E", "Cidade E", "SC", "Complemento E"),
-(6, "Stellar Enterprises", "345678901", "08:30", "17:30", "56789012", "Rua F", 321, "Bairro F", "Cidade F", "SP", "Complemento F"),
-(7, "OptimaTech Systems", "901234567", "09:30", "18:30", "67890123", "Rua G", 654, "Bairro G", "Cidade G", "RJ", "Complemento G"),
-(8, "Prodigy Innovations", "456789012", "10:30", "19:30", "78901234", "Rua H", 987, "Bairro H", "Cidade H", "MG", "Complemento H"),
-(9, "GlobalTech Solutions", "890123456", "07:30", "16:30", "89012345", "Rua I", 654, "Bairro I", "Cidade I", "RS", "Complemento I"),
-(10, "Nexus Industries", "798890123", "11:30", "20:30", "45678901", "Rua J", 321, "Bairro J", "Cidade J", "SC", "Complemento J");
+(1, "Starlight Ventures", "987654321", "08:00", "17:00", "98765432", "Rua B", 456, "Bairro B", "Rio de Janeiro", "RJ", null),
+(2, "Vertex Solutions", "789012345", "11:00", "20:00", "89012345", "Rua E", 654, "Bairro E", "Sao Paulo", "SP", "Complemento E"),
+(3, "Nexus Industries", "798890123", "11:30", "20:30", "45678901", "Rua J", 321, "Bairro J", "Belo Horizonte", "MG", null);
 
 INSERT INTO Empregado (idEmpregado, cpfEmpregado, nomeEmpregado, cargo, salario, dataInicio, dataFim, nomeLoginEmpregado, senhaLoginEmpregado, FK_idEmpresa)
 VALUES
 (1, "12345642356", "João Silva", "Gerente", 5000, "2021-01-01", null, "joao.silva", "senha123", 1),
 (2, "98765409863", "Maria Santos", "Vendedor", 2500, "2021-02-01", null, "maria.santos", "senha456", 1),
-(3, "56789024361", "Pedro Souza", "Atendente", 1500, "2021-03-01", "2022-06-16", "pedro.souza", "senha789", 2),
+(3, "56789024361", "Pedro Souza", "Atendente", 1500, "2021-03-01", "2022-06-16", "pedro.souza", "senha789", 1),
 (4, "32109809711", "Ana Oliveira", "Gerente", 6000, "2021-04-01", null, "ana.oliveira", "senha012", 2),
-(5, "78901222356", "Carlos Mendes", "Vendedor", 2500, "2021-05-01", "2023-04-11", "carlos.mendes", "senha345", 3),
+(5, "78901222356", "Carlos Mendes", "Vendedor", 2500, "2021-05-01", "2023-04-11", "carlos.mendes", "senha345", 2),
+(10, "98638024455", "Juliana Lima", "Vendedor", 2900, "2021-10-01", null, "juliana.lima", "senha890", 2),
 (6, "34567809976", "Laura Costa", "Atendente", 1800, "2021-06-01", "2023-01-27", "laura.costa", "senha678", 3),
-(7, "90123412532", "Fernando Almeida", "Gerente", 7000, "2021-07-01", null, "fernando.almeida", "senha901", 4),
-(8, "45678918333", "Camila Ribeiro", "Vendedor", 2500, "2021-08-01", null, "camila.ribeiro", "senha234", 4),
-(9, "89012300192", "Ricardo Santos", "Atendente", 2000, "2021-09-01", "2022-02-22", "ricardo.santos", "senha567", 5),
-(10, "98638024455", "Juliana Lima", "Gerente", 2900, "2021-10-01", null, "juliana.lima", "senha890", 5);
+(7, "90123412532", "Fernando Almeida", "Gerente", 7000, "2021-07-01", null, "fernando.almeida", "senha901", 3),
+(8, "45678918333", "Camila Ribeiro", "Vendedor", 2500, "2021-08-01", null, "camila.ribeiro", "senha234", 3),
+(9, "89012300192", "Ricardo Santos", "Atendente", 2000, "2021-09-01", "2022-02-22", "ricardo.santos", "senha567", 3);
 
 INSERT INTO Cliente (idCliente, cpfCliente, nomeCliente, nomeLoginCliente, senhaLoginCliente)
 VALUES
@@ -211,27 +203,26 @@ VALUES
 
 INSERT INTO Venda_Restauracao (idVenda_Restauracao, dataServico, horaServico, valorTotal, ehVenda, estaEntregue, qtdeConsoles, descricaoRestauracao, avaliacao, FK_idEmpresa, FK_idCliente, FK_idConsole)
 VALUES
-(1, "2023-02-20", "09:00", 100.50, TRUE, TRUE, 2, null, 10, 1, 1, 1),
-(2, "2023-02-12", "10:30", 75.20, TRUE, FALSE, 1, null, 9, 2, 2, 2),
-(3, "2023-03-15", "11:15", 50.00, FALSE, TRUE, 3, "Limpeza do console", 6, 3, 3, 3),
-(4, "2023-04-16", "14:00", 120.80, TRUE, TRUE, 1, null, 7, 4, 4, 4),
-(5, "2023-05-18", "16:45", 90.30, FALSE, TRUE, 2, "Substituição da tela", 9, 5, 5, 5),
-(6, "2023-06-22", "18:30", 65.70, TRUE, FALSE, 3, null, 10, 6, 6, 6),
-(7, "2023-07-01", "20:15", 150.90, TRUE, TRUE, 1, null, 3, 7, 7, 7),
+(1, "2023-02-20", "09:00", 100.50, TRUE, TRUE, 2, null, 1, 1, 1, 1),
+(2, "2023-02-12", "10:30", 75.20, TRUE, FALSE, 1, null, 3, 2, 2, 2),
+(3, "2023-03-15", "11:15", 50.00, FALSE, TRUE, 3, "Limpeza do console", 2, 3, 3, 3),
+(4, "2023-04-16", "14:00", 120.80, TRUE, TRUE, 1, null, 3, 4, 4, 4),
+(5, "2023-05-18", "16:45", 90.30, FALSE, TRUE, 2, "Substituição da tela", 3, 5, 5, 5),
+(6, "2023-06-22", "18:30", 65.70, TRUE, FALSE, 3, null, 2, 6, 6, 6),
+(7, "2023-07-01", "20:15", 150.90, TRUE, TRUE, 1, null, 2, 7, 7, 7),
 (8, "2023-04-28", "09:30", 80.60, FALSE, FALSE, 2, "Configuração de rede", 1, 8, 8, 8),
-(9, "2023-03-11", "12:45", 55.40, FALSE, TRUE, 3, "Reparo no leitor", 10, 9, 9, 9),
-(10, "2023-05-21", "15:00", 130.70, TRUE, FALSE, 1, null, 7, 10, 10, 10);
+(9, "2023-03-11", "12:45", 55.40, FALSE, TRUE, 3, "Reparo no leitor", 1, 9, 9, 9),
+(10, "2023-05-21", "15:00", 130.70, TRUE, FALSE, 1, null, 3, 10, 10, 1);
 
 INSERT INTO Console (idConsole, nomeConsole, nomeFabricante, dataLancamento, ehOriginal, preco, descricaoConsole)
 VALUES
 (1, 'Atari 2600', 'Atari, Inc.', '1977-09-11', FALSE, 199.00, 'O clássico console de videogame que marcou o início da indústria dos jogos eletrônicos.'),
 (2, 'Nintendo 64', 'Nintendo Co., Ltd.', '1996-06-23', FALSE, 299.00, 'Um console revolucionário com jogos 3D e o icônico controle com joystick analógico.'),
 (3, 'Mega Drive', 'Sega Enterprises Ltd.', '1988-10-29', TRUE, 149.00, 'Um console de 16 bits que competiu com o Super Nintendo e trouxe diversos jogos populares.'),
-(4, "Nintendo Switch", "Nintendo Co., Ltd.", "2017-03-03", FALSE, 299.99, "Um console híbrido que pode ser jogado tanto em casa quanto em movimento."),
-(5, "Sega Genesis", "Sega Corporation", "1988-10-29", TRUE, 189.99, "Um dos consoles mais populares dos anos 90, conhecido por seus jogos icônicos."),
-(6, "Neo Geo", "SNK Corporation", "1990-04-26", TRUE, 649.99, "Um console de alta qualidade com gráficos impressionantes e jogos arcade exclusivos."),
-(7, "TurboGrafx-16", "NEC Corporation", "1987-10-30", TRUE, 199.99, "Um console pioneiro que introduziu recursos avançados para a época."),
-(8, "Sega Saturn", "Sega Enterprises Ltd.", "1994-11-22", TRUE, 399.99, "Um console de 32 bits que trouxe jogos 3D e recursos inovadores."),
-(9, "Commodore 64", "Commodore International", "1982-08-01", TRUE, 595.00, "Um computador pessoal que também era usado para jogos."),
-(10, 'PlayStation 2', 'Sony Interactive Entertainment', '2000-03-04', TRUE, 299.00, 'Um console icônico que foi muito popular e teve uma grande biblioteca de jogos.');
+(4, "Sega Genesis", "Sega Corporation", "1988-10-29", TRUE, 189.99, "Um dos consoles mais populares dos anos 90, conhecido por seus jogos icônicos."),
+(5, "Neo Geo", "SNK Corporation", "1990-04-26", TRUE, 649.99, "Um console de alta qualidade com gráficos impressionantes e jogos arcade exclusivos."),
+(6, "TurboGrafx-16", "NEC Corporation", "1987-10-30", TRUE, 199.99, "Um console pioneiro que introduziu recursos avançados para a época."),
+(7, "Sega Saturn", "Sega Enterprises Ltd.", "1994-11-22", TRUE, 399.99, "Um console de 32 bits que trouxe jogos 3D e recursos inovadores."),
+(8, "Commodore 64", "Commodore International", "1982-08-01", TRUE, 595.00, "Um computador pessoal que também era usado para jogos."),
+(9, 'PlayStation 2', 'Sony Interactive Entertainment', '2000-03-04', TRUE, 299.00, 'Um console icônico que foi muito popular e teve uma grande biblioteca de jogos.');
 
