@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Formulário de Console</title>
+</head>
+<body>
+  <h1>Formulário de Console</h1>
+  <form method="POST" action="http://localhost:3000/gerenciarConsole/cadastrarConsole">
+    <label for="inputModel">Modelo:</label>
+    <input type="text" name="inputModel" id="inputModel" required><br>
+
+    <label for="inputProducer">Fabricante:</label>
+    <input type="text" name="inputProducer" id="inputProducer" required><br>
+
+    <label for="inputLaunchDate">Data de Lançamento:</label>
+    <input type="date" name="inputLaunchDate" id="inputLaunchDate" required><br>
+
+    <label for="inputOriginality">É original?</label>
+    <input type="checkbox" name="inputOriginality" id="inputOriginality" value="1">
+
+    <label for="inputPrice">Preço:</label>
+    <input type="number" name="inputPrice" id="inputPrice" required><br>
+
+    <label for="inputConsoleDescription">Descrição:</label><br>
+    <textarea name="inputConsoleDescription" id="inputConsoleDescription" required></textarea><br>
+
+    <input type="submit" value="Enviar">
+  </form>
+</body>
+</html>
