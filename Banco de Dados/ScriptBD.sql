@@ -152,7 +152,7 @@ ENGINE = InnoDB;
 -- Table `mydb`.`Estoque`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `mydb`.`Estoque` (
-  `quant_atual` INT UNSIGNED NOT NULL,
+  `quantAtual` INT UNSIGNED NOT NULL,
   `FK_idConsole` INT UNSIGNED NOT NULL,
   `FK_idEmpresa` INT UNSIGNED NOT NULL,
   PRIMARY KEY (`FK_idConsole`, `FK_idEmpresa`),
@@ -235,7 +235,7 @@ VALUES
 (8, "Commodore 64", "Commodore International", "1982-08-01", TRUE, 595.00, "Um computador pessoal que também era usado para jogos."),
 (9, 'PlayStation 2', 'Sony Interactive Entertainment', '2000-03-04', TRUE, 299.00, 'Um console icônico que foi muito popular e teve uma grande biblioteca de jogos.');
 
-INSERT INTO Estoque (quant_atual, FK_idConsole, FK_idEmpresa)
+INSERT INTO Estoque (quantAtual, FK_idConsole, FK_idEmpresa)
 VALUES
 (5, 1, 1),
 (12, 2, 1),
