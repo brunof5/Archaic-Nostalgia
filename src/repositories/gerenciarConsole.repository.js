@@ -52,7 +52,7 @@ async function verificaCampos(inputModel, inputProducer, inputLaunchDate, inputO
 }
 
 function inserirConsoleNoBancoDeDados(inputModel, inputProducer, inputLaunchDate, inputOriginality, inputPrice, inputConsoleDescription) {
-  const sql = "INSERT INTO console VALUES (?, ?, ?, ?, ?, ?, ?);";
+  const sql = "INSERT INTO console VALUES (?, ?, ?, ?, b?, ?, ?);";
   const params = [null, inputModel, inputProducer, inputLaunchDate, inputOriginality, inputPrice, inputConsoleDescription];
   const sqlFormatted = mysql.format(sql, params);
 

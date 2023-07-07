@@ -1,181 +1,346 @@
 <!doctype html>
 <html lang="pt-br">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Tela de Login</title>
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
-        <style>
-            .image-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-bottom: 20px;
-            }
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="apple-touch-icon" sizes="180x180" href="./img/favicon/apple-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="./img/favicon/android-icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="./img/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="./img/favicon/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="./img/favicon/favicon-16x16.png">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-TileImage" content="/img/favicon/ms-icon-144x144.png">
+    <meta name="theme-color" content="#ffffff">
+    <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../node_modules/bootstrap-icons/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="./css/estilos.css">
     
-            .image-container img {
-                max-width: 100%;
-                max-height: 200px;
-            }
+    <title>Archaic Nostalgia :: Página Principal</title>
 
-            .form-container {
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                height: 100vh;
-            }
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">  
 
-            .form-wrapper {
-                width: 100%;
-                max-width: 500px;
-                padding: 20px;
-                border: 0.5px solid #ccc;
-                border-radius: 20px;
-                background-color: #f8f9fa;
-                height: 600px;
-                position: relative;
-            }
+</head>
 
-            .button-container {
-                display: flex;
-                justify-content: flex-end;
-            }
+<body>
+    <div class="d-flex flex-column wrapper">
 
-            .red-button {
-                background-color: red;
-                color: rgb(255, 255, 255);
-            }
-
-            .transparent-button {
-                background-color: transparent;
-                border: none;
-                color: rgb(0, 0, 0);
-                text-decoration: underline;
-                cursor: pointer;
-            }
-
-            .register-button {
-                position: absolute;
-                left: 5px;
-                bottom: 100px;
-            }
-
-            .login-button{
-                position: absolute;
-                right: 20px;
-                bottom: 100px;
-            }
-
-            .login-heading {
-                text-align: center;
-                margin-bottom: 20px;
-            }
-
-            .forgot-password-button{
-                display: flex;
-                justify-content: center;
-                margin-top: 125px;
-            }
-        </style>
-    </head>
-    
-    <body>
-        <div class="container mt-4">
-            <div class="row align-items-center">
-                <div class="col-md-10 mx-auto col-lg-5">
-                    <div class="form-container">
-                        <div class="form-wrapper">
-                            <form id="formLogin" method="POST">
-                                <div class="image-container">
-                                    <img src="img/LogoSemNome.png" alt="Imagem Centralizada">
-                                </div>
-
-                                <h4 class="login-heading">Login</h4>
-
-                                <div class="form-floating mb-3">
-                                    <input type="user" class="form-control" id="inputUser" name="inputUser" placeholder="Usuário:">
-                                    <label for="inputUser">Usuário</label>
-                                </div>
-
-                                <div class="form-floating mb-3">
-                                    <input type="password" class="form-control" id="inputPassword" name="inputPassword" placeholder="Senha:">
-                                    <label for="inputPassword">Senha</label>
-                                </div>
-                    
-                                <div class="button-container login-button">
-                                    <button class="btn btn-lg red-button" type="submit">Entrar</button>
-                                </div>
-                    
-                                <a href="Registrar.html">
-                                    <div class="register-button">
-                                        <button class="btn btn-lg transparent-button" type="button">Registrar-se</button>
-                                    </div>
-                                </a>
-
-                                <a href="RecuperarConta.html">
-                                    <div class="forgot-password-button">
-                                        <button class="btn btn-lg transparent-button" type="button">Esqueceu sua senha?</button>
-                                    </div>
-                                </a>
-                            </form>
-                        </div>
-                    </div>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-danger border-bottom shadow-sm mb-3">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <b>Archaic Nostalgia</b>
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse">
+                <ul class="navbar-nav flex-grow-1">
+                </ul>
+                <div class="align-self-end">
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a href="cliente.html" class="nav-link text-white">Logado como <b>NOME DO USUARIO</b></a>
+                        </li>
+                        <li class="nav-item">
+                            <span class="badge rounded-pill bg-light text-danger position-absolute ms-4 mt-0"
+                                title="5 produto(s) no carrinho">
+                                <small>5</small>
+                            </span>
+                            <a href="carrinho.html" class="nav-link text-white">
+                                <i class="bi-cart" style="font-size: 24px; line-height: 24px;"></i>
+                            </a>
+                        </li>
+                    </ul>
                 </div>
             </div>
         </div>
+        </nav>
 
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
-    </body>
+        <main>
+        <div class="container">
+            <div class="row">
+                <div class="col-12 col-md-5">
+                    <form class="justify-content-center justify-content-md-start mb-3 mb-md-0" action="">
+                        <div class="input-group mb-3">
+                            <input type="text" class="form-control" placeholder="Digite aqui o que procura">
+                            <div class="input-group-append">
+                              <button class="btn btn-danger" type="button">Buscar</button>
+                            </div>
+                          </div>
+                    </form>
+                </div>
+                <div class="col-12 col-md-5">
+                    <div class="d-flex flex-row-reverse justify-content-center justify-content-md-start">
+                        <form class="d-inline-block" action="">
+                            <select class="form-select form-select-sm">
+                                <option>Ordenar pelo nome</option>
+                                <option>Ordenar pelo menor preço</option>
+                                <option>Ordenar pelo maior preço</option>
 
-    <script>
-        // Pega o formulário pelo id
-        var form = document.getElementById("formLogin");
+                            </select>
+                        </form>
+                        <nav class="d-inline-block mx-3">
+                            <ul class="pagination pagination-sm my-0">
+                              <li class="page-item">
+                                <a class="page-link" href="#">1</a>
+                            </li>
+                              <li class="page-item">
+                                <a class="page-link" href="#">2</a>
+                            </li>
+                            <li class="page-item">
+                                <a class="page-link disabled" href="#">3</a>
+                            </li>
+                            <li class="page-item">
+                                <a class="page-link" href="#">4</a>
+                            </li>
+                            </ul>
+                          </nav>
 
-        // Função para envio e processamento do formulário
-        function submitForm(event) {
-            event.preventDefault(); // Impede o envio padrão do formulário
+                    </div>
+                </div>
+            </div>
 
-            // Obtém os dados do formulário
-            const formData = {
-                inputUser: document.getElementById('inputUser').value,
-                inputPassword: document.getElementById('inputPassword').value
-            };
+            <hr mt-3>
 
-            console.log(inputUser)
-            console.log(inputPassword)
+            <div class="row g-3">
+                <div class="col-12 col-sm-6 col-md-4 col-lg-3 col-xl-2">
+                    <div class="card text-center bg-light">
+                        <a href="/produto.html">
+                            <img class="card-img-top" src="COLOCAR IMAGEM" alt="Card image cap">
+                        </a>
+                        <div class="card-header">
+                            R$500,00
+                        </div>
+                        <div class="card-body">
+                          <h5 class="card-title">Atari 3600</h5>
+                          <p class="card-text truncar-3l">Console Atari 3600 com dois controles</p>
+                        </div>
+                        <div class="card-footer">
+                            <a href="carrinho.html" class="btn btn-danger mt-2 d-block">Adicionar ao Carrinho</a>
+                            <small class="text-sucecess">5 em estoque</small>
+                        </div>
+                      </div>
+                </div>
+                <div class="col-12 col-sm-6 col-md-4 col-lg-3 col-xl-2">
+                    <div class="card text-center bg-light">
+                        <a href="/produto.html">
+                            <img class="card-img-top" src="COLOCAR IMAGEM" alt="Card image cap">
+                        </a>
+                        <div class="card-header">
+                            R$500,00
+                        </div>
+                        <div class="card-body">
+                          <h5 class="card-title">Atari 3600</h5>
+                          <p class="card-text truncar-3l">Console Atari 3600 com dois controles</p>
+                        </div>
+                        <div class="card-footer">
+                            <a href="carrinho.html" class="btn btn-danger mt-2 d-block">Adicionar ao Carrinho</a>
+                            <small class="text-sucecess">5 em estoque</small>
+                        </div>
+                      </div>
+                </div>
+                <div class="col-12 col-sm-6 col-md-4 col-lg-3 col-xl-2">
+                    <div class="card text-center bg-light">
+                        <img class="card-img-top" src="COLOCAR IMAGEM" alt="Card image cap">
+                        <div class="card-header">
+                            R$500,00
+                        </div>
+                        <div class="card-body">
+                          <h5 class="card-title">Atari 3600</h5>
+                          <p class="card-text truncar-3l">Console Atari 3600 com dois controles</p>
+                        </div>
+                        <div class="card-footer">
+                            <a href="carrinho.html" class="btn btn-danger mt-2 d-block">Adicionar ao Carrinho</a>
+                            <small class="text-sucecess">5 em estoque</small>
+                        </div>
+                      </div>
+                </div>
+                <div class="col-12 col-sm-6 col-md-4 col-lg-3 col-xl-2">
+                    <div class="card text-center bg-light">
+                        <img class="card-img-top" src="COLOCAR IMAGEM" alt="Card image cap">
+                        <div class="card-header">
+                            R$500,00
+                        </div>
+                        <div class="card-body">
+                          <h5 class="card-title">Atari 3600</h5>
+                          <p class="card-text truncar-3l">Console Atari 3600 com dois controles</p>
+                        </div>
+                        <div class="card-footer">
+                            <a href="carrinho.html" class="btn btn-danger mt-2 d-block">Adicionar ao Carrinho</a>
+                            <small class="text-sucecess">5 em estoque</small>
+                        </div>
+                      </div>
+                </div>
+                <div class="col-12 col-sm-6 col-md-4 col-lg-3 col-xl-2">
+                    <div class="card text-center bg-light">
+                        <img class="card-img-top" src="COLOCAR IMAGEM" alt="Card image cap">
+                        <div class="card-header">
+                            R$500,00
+                        </div>
+                        <div class="card-body">
+                          <h5 class="card-title">Atari 3600</h5>
+                          <p class="card-text truncar-3l">Console Atari 3600 com dois controles</p>
+                        </div>
+                        <div class="card-footer">
+                            <a href="carrinho.html" class="btn btn-danger mt-2 d-block">Adicionar ao Carrinho</a>
+                            <small class="text-sucecess">5 em estoque</small>
+                        </div>
+                      </div>
+                </div>
+                <div class="col-12 col-sm-6 col-md-4 col-lg-3 col-xl-2">
+                    <div class="card text-center bg-light">
+                        <img class="card-img-top" src="COLOCAR IMAGEM" alt="Card image cap">
+                        <div class="card-header">
+                            R$500,00
+                        </div>
+                        <div class="card-body">
+                          <h5 class="card-title">Atari 3600</h5>
+                          <p class="card-text truncar-3l">Console Atari 3600 com dois controles</p>
+                        </div>
+                        <div class="card-footer">
+                            <a href="carrinho.html" class="btn btn-danger mt-2 d-block">Adicionar ao Carrinho</a>
+                            <small class="text-sucecess">5 em estoque</small>
+                        </div>
+                      </div>
+                </div>
+                <div class="col-12 col-sm-6 col-md-4 col-lg-3 col-xl-2">
+                    <div class="card text-center bg-light">
+                        <img class="card-img-top" src="COLOCAR IMAGEM" alt="Card image cap">
+                        <div class="card-header">
+                            R$500,00
+                        </div>
+                        <div class="card-body">
+                          <h5 class="card-title">Atari 3600</h5>
+                          <p class="card-text truncar-3l">Console Atari 3600 com dois controles</p>
+                        </div>
+                        <div class="card-footer">
+                            <a href="carrinho.html" class="btn btn-danger mt-2 d-block">Adicionar ao Carrinho</a>
+                            <small class="text-sucecess">5 em estoque</small>
+                        </div>
+                      </div>
+                </div>
+                <div class="col-12 col-sm-6 col-md-4 col-lg-3 col-xl-2">
+                    <div class="card text-center bg-light">
+                        <img class="card-img-top" src="COLOCAR IMAGEM" alt="Card image cap">
+                        <div class="card-header">
+                            R$500,00
+                        </div>
+                        <div class="card-body">
+                          <h5 class="card-title">Atari 3600</h5>
+                          <p class="card-text truncar-3l">Console Atari 3600 com dois controles</p>
+                        </div>
+                        <div class="card-footer">
+                            <a href="carrinho.html" class="btn btn-danger mt-2 d-block">Adicionar ao Carrinho</a>
+                            <small class="text-sucecess">5 em estoque</small>
+                        </div>
+                      </div>
+                </div>
+                <div class="col-12 col-sm-6 col-md-4 col-lg-3 col-xl-2">
+                    <div class="card text-center bg-light">
+                        <img class="card-img-top" src="COLOCAR IMAGEM" alt="Card image cap">
+                        <div class="card-header">
+                            R$500,00
+                        </div>
+                        <div class="card-body">
+                          <h5 class="card-title">Atari 3600</h5>
+                          <p class="card-text truncar-3l">Console Atari 3600 com dois controles</p>
+                        </div>
+                        <div class="card-footer">
+                            <a href="carrinho.html" class="btn btn-danger mt-2 d-block">Adicionar ao Carrinho</a>
+                            <small class="text-sucecess">5 em estoque</small>
+                        </div>
+                      </div>
+                </div>
+                <div class="col-12 col-sm-6 col-md-4 col-lg-3 col-xl-2">
+                    <div class="card text-center bg-light">
+                        <img class="card-img-top" src="COLOCAR IMAGEM" alt="Card image cap">
+                        <div class="card-header">
+                            R$500,00
+                        </div>
+                        <div class="card-body">
+                          <h5 class="card-title">Atari 3600</h5>
+                          <p class="card-text truncar-3l">Console Atari 3600 com dois controles</p>
+                        </div>
+                        <div class="card-footer">
+                            <a href="carrinho.html" class="btn btn-danger mt-2 d-block">Adicionar ao Carrinho</a>
+                            <small class="text-sucecess">5 em estoque</small>
+                        </div>
+                      </div>
+                </div>
+                <div class="col-12 col-sm-6 col-md-4 col-lg-3 col-xl-2">
+                    <div class="card text-center bg-light">
+                        <img class="card-img-top" src="COLOCAR IMAGEM" alt="Card image cap">
+                        <div class="card-header">
+                            R$500,00
+                        </div>
+                        <div class="card-body">
+                          <h5 class="card-title">Atari 3600</h5>
+                          <p class="card-text truncar-3l">Console Atari 3600 com dois controles</p>
+                        </div>
+                        <div class="card-footer">
+                            <a href="carrinho.html" class="btn btn-danger mt-2 d-block">Adicionar ao Carrinho</a>
+                            <small class="text-sucecess">5 em estoque</small>
+                        </div>
+                      </div>
+                </div>
+                <div class="col-12 col-sm-6 col-md-4 col-lg-3 col-xl-2">
+                    <div class="card text-center bg-light">
+                        <img class="card-img-top" src="COLOCAR IMAGEM" alt="Card image cap">
+                        <div class="card-header">
+                            R$500,00
+                        </div>
+                        <div class="card-body">
+                          <h5 class="card-title">Atari 3600</h5>
+                          <p class="card-text truncar-3l">Console Atari 3600 com dois controles</p>
+                        </div>
+                        <div class="card-footer">
+                            <a href="carrinho.html" class="btn btn-danger mt-2 d-block">Adicionar ao Carrinho</a>
+                            <small class="text-sucecess">5 em estoque</small>
+                        </div>
+                      </div>
+                </div>
+            </div>
 
-            // Cria a URL de destino para a requisição
-            const url = 'http://localhost:3000/login';
+            <hr mt-3>
 
-            // Envia a requisição usando o comando Fetch
-            fetch(url, {
-                method: 'POST', // (POST, GET, etc.)
-                headers: {
-                    'Content-Type': 'application/json; charset=UTF-8'
-                },
-                body: JSON.stringify(formData), // Envia os dados do formulário no corpo da requisição
-            })
-            .then(response => {
-                if (response.ok) {
-                    return response.json();
-                }
-                throw new Error('Erro na solicitação');
-            })
-            .then(data => {
-                // Processar o arquivo JSON recebido
-                console.log(data);
+            <div class="row pb-3">
 
-                if(data.sucesso) {
-                    // Redireciona para uma página diferente
-                    window.location.href = './a.html';
-                }
-            })
-            .catch(error => {
-                console.error(error);
-            });
-        }
+                <div class="col-12">
+                    <div class="d-flex flex-row-reverse justify-content-center justify-content-md-start">
+                        <form class="d-inline-block" action="">
+                            <select class="form-select form-select-sm">
+                                <option>Ordenar pelo nome</option>
+                                <option>Ordenar pelo menor preço</option>
+                                <option>Ordenar pelo maior preço</option>
 
-        form.addEventListener('submit', submitForm);
-    </script>
+                            </select>
+                        </form>
+                        <nav class="d-inline-block mx-3">
+                            <ul class="pagination pagination-sm my-0">
+                              <li class="page-item">
+                                <a class="page-link" href="#">1</a>
+                            </li>
+                              <li class="page-item">
+                                <a class="page-link" href="#">2</a>
+                            </li>
+                            <li class="page-item">
+                                <a class="page-link disabled" href="#">3</a>
+                            </li>
+                            <li class="page-item">
+                                <a class="page-link" href="#">4</a>
+                            </li>
+                            </ul>
+                          </nav>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        </main>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+</body>
 
 </html>
