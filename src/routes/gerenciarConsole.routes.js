@@ -3,6 +3,8 @@ import gerenciarConsoleController from '../controllers/gerenciarConsole.controll
 
 const router = express.Router()
 
-router.post('/cadastrarConsole', gerenciarConsoleController.verificaCampos)
+router.post('/cadastrarConsole', gerenciarConsoleController.cadastrarConsole)
+router.delete('/deletarConsole', gerenciarConsoleController.deletarConsole)
+router.put('/editarConsole', gerenciarConsoleController.editarConsole)
 
 export default router
