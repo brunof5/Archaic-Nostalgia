@@ -144,7 +144,7 @@
                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
                                         </div>
                                         <div class="modal-body">
-                                        <p>Usuário e/ou senha incorreta!</p>
+                                            <p id="modalErrorMessage"></p>
                                         </div>
                                         <div class="modal-footer">
                                         <button type="button" class="btn btn-lg red-button" data-bs-dismiss="modal">Fechar</button>
@@ -197,12 +197,20 @@
                 console.log(data);
 
                 if(data[0].sucesso) {
-                    // Redireciona para uma página diferente
-                    window.location.href = './index.html';
+                    if(data[0].mensagem == "0"){
+                        // Redireciona para uma página diferente
+                        window.location.href = './index.html';
+                    }else if(data[0].mensagem == "1"){
+                        window.location.href = './telaFunc.html'
+                    }else if(data[0].mensagem == "2"){
+                        window.location.href = './telaAdmin.html'
+                    }
+
                 }else{
                     // Exibe o modal de erro
                     var modalErro = new bootstrap.Modal(document.getElementById('modalErro'));
                     modalErro.show();
+                    document.getElementById('modalErrorMessage').textContent = data[0].mensagem;
                 }
             })
             .catch(error => {

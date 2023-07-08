@@ -5,7 +5,7 @@ async function verificaCampos(req, res){
     const { inputUser, inputPassword } = req.body;
 
     if (inputUser == undefined || inputUser == null || inputUser == '') {
-        res.send({ mensagem: "O campo Usuário não pode ser vazio!" })
+        res.send({sucesso: false, mensagem: "O campo Usuário não pode ser vazio!" })
     }
     else if (inputUser.length > 30) {
         res.send({ mensagem: "O campo Usuário deve conter no máximo 30 caracteres!" });
