@@ -35,6 +35,11 @@ async function verificaCampos(inputUser, inputPassword) {
                             var data = { sucesso: true, mensagem: "0" }
                             var json = [data]
                             retorno(JSON.stringify(json))
+                        } else if(!resultCliente.length){
+                            console.log("Usuário e/ou senha inválidos!", resultCliente)
+                            var data = { sucesso: false, mensagem: "Usuário e/ou senha inválidos!" }
+                            var json = [data]
+                                retorno(JSON.stringify(json))
                         } else {
                             connection.query(sqlEmpregadoFormatted, function (err, resultEmpregado) {
                                 if (err) {
