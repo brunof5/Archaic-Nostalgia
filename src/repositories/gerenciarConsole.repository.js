@@ -10,8 +10,8 @@ const pool = mysql.createPool({
 
 // Insere Console no Banco de Dados
 
-async function cadastrarConsole(inputModel, inputProducer, inputLaunchDate, inputOriginality, inputPrice, inputConsoleDescription) {
-  const sqlEmpregado = "SELECT cargo FROM empregado WHERE nomeLoginEmpregado = ? AND senhaLoginEmpregado = ?;";
+async function cadastrarConsole(inputModel, inputProducer, inputLaunchDate, inputOriginality, inputPrice, inputConsoleDescription, inputQuantity, inputCompany) {
+  const sqlEmpregado = "SELECT cargo, FK_idEmpresa FROM empregado WHERE nomeLoginEmpregado = ? AND senhaLoginEmpregado = ?;";
   const params = ["joao.silva", "senha123"];
   const sqlEmpregadoFormatted = mysql.format(sqlEmpregado, params);
 
@@ -30,30 +30,26 @@ async function cadastrarConsole(inputModel, inputProducer, inputLaunchDate, inpu
               console.log("Cadastro feito por um admin!");
               const data = { sucesso: true, mensagem: "true" };
               const json = [data];
-              
+
               inserirConsoleNoBancoDeDados(inputModel, inputProducer, inputLaunchDate, inputOriginality, inputPrice, inputConsoleDescription)
                 .then(() => resolve(JSON.stringify(json)))
                 .catch((error) => reject(error));
-
-            } else if (resultEmpregado[0].cargo !== "Gerente") {
+                
+            } else if (resultEmpregado[0].cargo !== "Gerente" && resultEmpregado[0].FK_idEmpresa === inputCompany) {
               console.log("Cadastro feito por um funcionário!", resultEmpregado);
               const data = { sucesso: true, mensagem: "true" };
               const json = [data];
-              
+
               inserirConsoleNoBancoDeDados(inputModel, inputProducer, inputLaunchDate, inputOriginality, inputPrice, inputConsoleDescription)
                 .then(() => resolve(JSON.stringify(json)))
-                .catch((error) => reject(error));
-
+                .catch((error) => reject(error)); 
+            
             } else {
-
-                console.log("Cadastro não realizado. Empregado não identificado!", resultEmpregado);
-                const data = { sucesso: true, mensagem: "false" };
-                const json = [data];
-
-                resolve(JSON.stringify(json))
-
+              console.log("Cadastro não realizado. Empregado não identificado ou não presente na região de registro!", resultEmpregado);
+              const data = { sucesso: false, mensagem: "false" };
+              const json = [data];
+              resolve(JSON.stringify(json));
             }
-
           }
           connection.release();
         });
@@ -119,7 +115,7 @@ async function deletarConsole( inputConsoleId ) {
             } else {
 
                 console.log("Remoção não realizada. Empregado não identificado!", resultEmpregado);
-                const data = { sucesso: true, mensagem: "false" };
+                const data = { sucesso: false, mensagem: "false" };
                 const json = [data];
 
                 resolve(JSON.stringify(json))
@@ -154,7 +150,7 @@ function deletarConsoleNoBancoDeDados(inputConsoleId) {
 
 // Altera Console no Banco de Dados
 
-async function editarConsole( inputConsoleId, inputModel, inputProducer, inputLaunchDate, inputOriginality, inputPrice, inputConsoleDescription ) {
+async function editarConsole( inputConsoleId, inputModel, inputProducer, inputLaunchDate, inputOriginality, inputPrice, inputConsoleDescription, inputQuantity, inputCompany ) {
   const sqlEmpregado = "SELECT cargo FROM empregado WHERE nomeLoginEmpregado = ? AND senhaLoginEmpregado = ?;";
   const params = ["joao.silva", "senha123"];
   const sqlEmpregadoFormatted = mysql.format(sqlEmpregado, params);
@@ -179,7 +175,7 @@ async function editarConsole( inputConsoleId, inputModel, inputProducer, inputLa
                 .then(() => resolve(JSON.stringify(json)))
                 .catch((error) => reject(error));
 
-            } else if (resultEmpregado[0].cargo !== "Gerente") {
+            } else if (resultEmpregado[0].cargo !== "Gerente" && resultEmpregado[0].FK_idEmpresa === inputCompany) {
               console.log("Alteração feita por um funcionário!", resultEmpregado);
               const data = { sucesso: true, mensagem: "true" };
               const json = [data];
@@ -190,8 +186,8 @@ async function editarConsole( inputConsoleId, inputModel, inputProducer, inputLa
 
             } else {
 
-                console.log("Alteração não realizada. Empregado não identificado!", resultEmpregado);
-                const data = { sucesso: true, mensagem: "false" };
+                console.log("Alteração não realizada. Empregado não identificado ou não presente na região de registro!", resultEmpregado);
+                const data = { sucesso: false, mensagem: "false" };
                 const json = [data];
 
                 resolve(JSON.stringify(json))
@@ -208,7 +204,7 @@ async function editarConsole( inputConsoleId, inputModel, inputProducer, inputLa
 
 function editarConsoleNoBancoDeDados(inputConsoleId, inputModel, inputProducer, inputLaunchDate, inputOriginality, inputPrice, inputConsoleDescription) {
   const sql = "UPDATE console SET nomeConsole = ?, nomeFabricante = ?, dataLancamento = ?, ehOriginal = b?, preco = ?, descricaoConsole = ? WHERE idConsole = ?;";
-  const params = [ inputModel, inputProducer, inputLaunchDate, inputOriginality, inputPrice, inputConsoleDescription, inputConsoleId ];
+  const params = [ inputModel, inputProducer, inputLaunchDate, inputOriginality, inputPrice, inputConsoleDescription, inputConsoleId];
   const sqlFormatted = mysql.format(sql, params);
 
   return new Promise(function (resolve, reject) {
@@ -263,7 +259,7 @@ async function visualizarConsoles( inputConsoleId ) { // Requer mudanças
             } else {
 
                 console.log("Visualização não realizada. Empregado não identificado!", resultEmpregado);
-                const data = { sucesso: true, mensagem: "false" };
+                const data = { sucesso: false, mensagem: "false" };
                 const json = [data];
 
                 resolve(JSON.stringify(json))

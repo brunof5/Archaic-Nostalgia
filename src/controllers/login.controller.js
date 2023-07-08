@@ -5,16 +5,24 @@ async function verificaCampos(req, res){
     const { inputUser, inputPassword } = req.body;
 
     if (inputUser == undefined || inputUser == null || inputUser == '') {
-        res.send({sucesso: false, mensagem: "O campo Usuário não pode ser vazio!" })
+        var data = { sucesso: false, mensagem: "O campo Usuário não pode ser vazio!"  }
+        var json = [data]
+        res.send(JSON.stringify(json))
     }
     else if (inputUser.length > 30) {
-        res.send({ mensagem: "O campo Usuário deve conter no máximo 30 caracteres!" });
+        var data = { sucesso: false, mensagem: "O campo Usuário deve conter no máximo 30 caracteres!"  }
+        var json = [data]
+        res.send(JSON.stringify(json))
     } 
     else if (inputPassword == undefined || inputPassword == null || inputPassword == '') {
-        res.send({ mensagem: "O campo Senha não pode ser vazio!" })
+        var data = { sucesso: false, mensagem: "O campo Senha não pode ser vazio!"  }
+        var json = [data]
+        res.send(JSON.stringify(json))
     }
     else if (inputPassword.length > 30){
-        res.send({ mensagem: "O campo Senha deve conter no máximo 30 caracteres!" });
+        var data = { sucesso: false, mensagem: "O campo Senha deve conter no máximo 30 caracteres!"  }
+        var json = [data]
+        res.send(JSON.stringify(json))
     }
 
     else {
