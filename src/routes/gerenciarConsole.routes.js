@@ -6,5 +6,6 @@ const router = express.Router()
 router.post('/cadastrarConsole', gerenciarConsoleController.cadastrarConsole)
 router.delete('/deletarConsole', gerenciarConsoleController.deletarConsole)
 router.put('/editarConsole', gerenciarConsoleController.editarConsole)
+router.get('/visualizarConsoles', gerenciarConsoleController.visualizarConsoles)
 
 export default router

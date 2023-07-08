@@ -207,14 +207,14 @@ async function editarConsole( inputConsoleId, inputModel, inputProducer, inputLa
 }
 
 function editarConsoleNoBancoDeDados(inputConsoleId, inputModel, inputProducer, inputLaunchDate, inputOriginality, inputPrice, inputConsoleDescription) {
-  const sql = "UPDATE console SET idConsole = ?, nomeConsole = ?, nomeFabricante = ?, dataLancamento = ?, ehOriginal = ?, preco = ?, descricaoConsole = ? WHERE idConsole = ?;";
-  const params = [ inputConsoleId, inputModel, inputProducer, inputLaunchDate, inputOriginality, inputPrice, inputConsoleDescription ];
+  const sql = "UPDATE console SET nomeConsole = ?, nomeFabricante = ?, dataLancamento = ?, ehOriginal = b?, preco = ?, descricaoConsole = ? WHERE idConsole = ?;";
+  const params = [ inputModel, inputProducer, inputLaunchDate, inputOriginality, inputPrice, inputConsoleDescription, inputConsoleId ];
   const sqlFormatted = mysql.format(sql, params);
 
   return new Promise(function (resolve, reject) {
     pool.query(sqlFormatted, function (err, result) {
       if (err) {
-        console.log("Erro ao alterar no banco de dados. Id não encontrado! ", err);
+        console.log("Erro ao alterar no banco de dados.", err);
         reject(err);
       } else {
         console.log("Console alterado no banco de dados com sucesso!");
@@ -224,4 +224,84 @@ function editarConsoleNoBancoDeDados(inputConsoleId, inputModel, inputProducer, 
   });
 }
 
-export default { cadastrarConsole, deletarConsole, editarConsole };
+// Visualizar Consoles no Banco de Dados
+
+async function visualizarConsoles( inputConsoleId ) { // Requer mudanças
+  const sqlEmpregado = "SELECT cargo FROM empregado WHERE nomeLoginEmpregado = ? AND senhaLoginEmpregado = ?;";
+  const params = ["joao.silva", "senha123"];
+  const sqlEmpregadoFormatted = mysql.format(sqlEmpregado, params);
+
+  return new Promise(function (resolve, reject) {
+    pool.getConnection(function (err, connection) {
+      if (err) {
+        console.log("Erro GET CONNECTION: ", err);
+        reject(err);
+      } else {
+        connection.query(sqlEmpregadoFormatted, function (err, resultEmpregado) {
+          if (err) {
+            console.log("Erro QUERY: ", err);
+            reject(err);
+          } else {
+            if (resultEmpregado[0].cargo === "Gerente") {
+              console.log("Visualização feita por um admin!");
+              const data = { sucesso: true, mensagem: "true" };
+              const json = [data];
+              
+              visualizarConsolesNoBancoDeDados(inputConsoleId)
+                .then(() => resolve(JSON.stringify(json)))
+                .catch((error) => reject(error));
+
+            } else if (resultEmpregado[0].cargo !== "Gerente") {
+              console.log("Visualização feita por um funcionário!", resultEmpregado);
+              const data = { sucesso: true, mensagem: "true" };
+              const json = [data];
+              
+              visualizarConsolesNoBancoDeDados(inputConsoleId)
+                .then(() => resolve(JSON.stringify(json)))
+                .catch((error) => reject(error));
+
+            } else {
+
+                console.log("Visualização não realizada. Empregado não identificado!", resultEmpregado);
+                const data = { sucesso: true, mensagem: "false" };
+                const json = [data];
+
+                resolve(JSON.stringify(json))
+
+            }
+
+          }
+          connection.release();
+        });
+      }
+    });
+  });
+}
+
+function visualizarConsolesNoBancoDeDados(inputConsoleId) { // Requer mudanças
+  let sql;
+  const params = [inputConsoleId];
+
+  if (inputConsoleId !== null) {
+    sql = "SELECT * FROM console WHERE idConsole = ?";
+  } else {
+    sql = "SELECT * FROM console";
+  }
+
+  const sqlFormatted = mysql.format(sql, params);
+
+  return new Promise(function (resolve, reject) {
+    pool.query(sqlFormatted, function (err, result) {
+      if (err) {
+        console.log("Erro ao consultar no banco de dados: ", err);
+        reject(err);
+      } else {
+        console.log("Visualização realizada com sucesso!");
+        
+        resolve(result);
+      }
+    });
+  });
+}
+
+export default { cadastrarConsole, deletarConsole, editarConsole, visualizarConsoles };

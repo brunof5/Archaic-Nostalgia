@@ -107,4 +107,11 @@ async function editarConsole(req, res){
 
 }
 
-export default{cadastrarConsole, deletarConsole, editarConsole}
+async function visualizarConsoles(req, res){
+
+    const { inputConsoleId } = req.body;
+    res.send(await gerenciarConsoleServices.visualizarConsoles( inputConsoleId ));
+
+}
+
+export default{cadastrarConsole, deletarConsole, editarConsole, visualizarConsoles}

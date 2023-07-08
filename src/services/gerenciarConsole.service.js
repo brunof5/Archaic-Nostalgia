@@ -18,4 +18,10 @@ async function editarConsole(inputConsoleId, inputModel, inputProducer, inputLau
 
 }
 
-export default{cadastrarConsole, deletarConsole, editarConsole}
+async function visualizarConsoles(inputConsoleId) {
+
+    return (await gerenciarConsoleRepository.visualizarConsoles(inputConsoleId));
+
+}
+
+export default{cadastrarConsole, deletarConsole, editarConsole, visualizarConsoles}
