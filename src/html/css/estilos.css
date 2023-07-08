@@ -56,3 +56,16 @@ fieldset.row .form-floating>label {
     background-repeat: no-repeat;
     background-size: 1rem 1rem;
   }
+
+.centered-heading {
+    text-align: center;
+}
+
+.custom-icon {
+    color: rgb(0, 0, 0);
+}
+
+.custom-form-wrapper {
+    display: flex;
+    justify-content: center;
+}

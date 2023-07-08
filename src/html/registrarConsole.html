@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="apple-touch-icon" sizes="180x180" href="./img/favicon/apple-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="./img/favicon/android-icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="./img/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="./img/favicon/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="./img/favicon/favicon-16x16.png">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-TileImage" content="./img/favicon/ms-icon-144x144.png">
+    <meta name="theme-color" content="#ffffff">
+    <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../node_modules/bootstrap-icons/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="./css/estilos.css">
+
+    <title>Archaic Nostalgia :: Área do Funcionário</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+</head>
+
+<body>
+    <div class="d-flex flex-column wrapper">
+
+        <nav class="navbar navbar-expand-lg navbar-dark bg-danger border-bottom shadow-sm mb-3">
+            <div class="container">
+                <a class="navbar-brand" href="./telaAdmin.html">
+                    <b>Archaic Nostalgia</b>
+                </a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse">
+                    <ul class="navbar-nav flex-grow-1">
+                    </ul>
+                    <div class="align-self-end">
+                        <ul class="navbar-nav">
+                            <li class="nav-item">
+                                <a href="" class="nav-link text-white">Logado como <b>NOME DO USUARIO</b></a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="./index.html" class="nav-link text-white">Sair</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <main class="flex-fill">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="text-start">
+                            <a href="./telaAdmin.html">
+                                <button class="btn btn-danger btn-lg" type="button">Voltar</button>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-md-1">
+                        <div class="text-center d-flex align-items-center" style="height: 100%">
+                            <h1 style="white-space: nowrap">Cadastrar consoles</h1>
+                        </div>
+                    </div>
+
+                </div>
+                <hr class="mt-3">
+                <form method="POST" action="http://localhost:3000/gerenciarConsole/cadastrarConsole">
+                    <div class="row g-3">
+                        <div class="col">
+                            <label for="inputModel" class="form-label">Modelo do console:</label>
+                            <input type="text" class="form-control" name="inputModel" id="inputModel" required>
+                        </div>
+                        <div class="col">
+                            <label for="inputConsoleDescription" class="form-label">Descrição:</label>
+                            <input type="text" class="form-control" name="inputConsoleDescription" id="inputConsoleDescription" required>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row g-3">
+                        <div class="col">
+                            <label for="inputProducer" class="form-label">Fabricante do Console:</label>
+                            <input type="text" class="form-control" name="inputProducer" id="inputProducer" required>
+                        </div>
+                        <div class="col">
+                            <label for="inputPrice" class="form-label">Valor:</label>
+                            <input type="number" class="form-control" name="inputPrice" id="inputPrice" required>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row g-3">
+                        <div class="col">
+                            <label for="inputLaunchData" class="form-label">Data Lançamento do console:</label>
+                            <input type="date" class="form-control" name="inputLaunchDate" id="inputLaunchDate" required>
+                        </div>
+                        <div class="col">
+                            <label for="inputOriginality" class="form-label">É original?:</label>
+                            <div class="btn-group d-flex">
+                                <input class="btn btn-danger rounded border" type="button" value="Sim">
+                                <input class="btn btn-danger rounded border" type="button" value="Não">
+                            </div>
+                        </div>
+                    </div>
+
+                <br>
+                    <div class="col-md-0">
+                        <div class="text-end">
+                            <a href="./listarConsole.html" class="btn btn-danger btn-lg" type="submit">Cadastrar</a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </main>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+</body>
+
+</html>
