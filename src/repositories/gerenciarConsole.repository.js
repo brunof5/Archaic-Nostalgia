@@ -173,7 +173,8 @@ async function visualizarConsoles() {
 
 	var sqlGetTodosConsoles = "SELECT C.*, Est.quantAtual, Emp.nomeEmpresa\
 	FROM console AS C, estoque AS Est, empresa AS Emp\
-	WHERE C.idConsole=Est.FK_idConsole AND Est.FK_idEmpresa=Emp.idEmpresa;"
+	WHERE C.idConsole=Est.FK_idConsole AND Est.FK_idEmpresa=Emp.idEmpresa\
+	ORDER BY C.idConsole;"
 
 	return new Promise(function (resolve, reject) {
 		pool.getConnection(function (err, connection) {
@@ -184,6 +185,38 @@ async function visualizarConsoles() {
 			connection.query(sqlGetTodosConsoles, function (err, results) {
 				if (err) {
 					console.log("Erro ao pegar todos os consoles no banco de dados: ", err);
+					reject(err);
+				}
+				else {
+					resolve(results)
+				}
+			})
+
+			connection.release();
+		})
+	})
+}
+
+// Visualizar Consoles de Uma Região no Banco de Dados
+async function visualizarConsolesRegiao(inputUser) {
+
+	var sqlGetTodosConsolesRegiao = "SELECT C.*, Est.quantAtual, Emp.nomeEmpresa\
+	FROM console AS C, estoque AS Est, empresa AS Emp, empregado\
+	WHERE C.idConsole=Est.FK_idConsole AND Est.FK_idEmpresa=Emp.idEmpresa AND Emp.idEmpresa=empregado.FK_idEmpresa AND empregado.nomeLoginEmpregado=?\
+	ORDER BY C.idConsole;"
+
+	const paramsGetTodosConsolesRegiao = [inputUser]
+	const sqlGetTodosConsolesRegiaoFormatted = mysql.format(sqlGetTodosConsolesRegiao, paramsGetTodosConsolesRegiao);
+
+	return new Promise(function (resolve, reject) {
+		pool.getConnection(function (err, connection) {
+			if (err) {
+				console.log("Erro GET CONNECTION: ", err);
+        		reject(err);
+			}
+			connection.query(sqlGetTodosConsolesRegiaoFormatted, function (err, results) {
+				if (err) {
+					console.log("Erro ao pegar todos os consoles de uma região no banco de dados: ", err);
 					reject(err);
 				}
 				else {
@@ -228,13 +261,13 @@ async function visualizarConsole(inputId) {
 }
 
 // Verifica o cargo do Empregado
-async function verificarEmpresaEmpregado(sessao) {
+async function verificarEmpresaEmpregado(inputUser) {
 
 	var sqlConsultaEmpresaEmpregado = "SELECT empresa.estado\
 	FROM empresa, empregado\
 	WHERE empresa.idEmpresa=empregado.FK_idEmpresa AND empregado.nomeLoginEmpregado=?;"
 
-	const paramsConsultaEmpresaEmpregado = [sessao.nome]
+	const paramsConsultaEmpresaEmpregado = [inputUser]
 	const sqlConsultaEmpresaEmpregadoFormatted = mysql.format(sqlConsultaEmpresaEmpregado, paramsConsultaEmpresaEmpregado);
 
 	return new Promise(function (resolve, reject) {
@@ -258,4 +291,4 @@ async function verificarEmpresaEmpregado(sessao) {
 	})
 }
 
-export default { cadastrarConsole, deletarConsole, editarConsole, visualizarConsoles, visualizarConsole, verificarEmpresaEmpregado };
+export default { cadastrarConsole, deletarConsole, editarConsole, visualizarConsoles, visualizarConsole, verificarEmpresaEmpregado, visualizarConsolesRegiao };

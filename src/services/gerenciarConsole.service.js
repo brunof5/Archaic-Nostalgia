@@ -3,12 +3,12 @@ import gerenciarConsoleRepository from "../repositories/gerenciarConsole.reposit
 async function cadastrarConsole(inputModel, inputProducer, inputLaunchDate, inputOriginality, inputPrice, inputConsoleDescription, inputQuantity, inputCompany, sessao) {
 
     if (sessao.cargo == "funcionario") {
-        var consultaFuncionario = await gerenciarConsoleRepository.verificarEmpresaEmpregado(sessao)
+        var consultaFuncionario = await gerenciarConsoleRepository.verificarEmpresaEmpregado(sessao.nome)
 
         var data = { estado: inputCompany }
         var json = [data]
         json = JSON.stringify(json)
-        
+
         if(consultaFuncionario === json) {
             return (await gerenciarConsoleRepository.cadastrarConsole(inputModel, inputProducer, inputLaunchDate, inputOriginality, inputPrice, inputConsoleDescription, inputQuantity, inputCompany));
         }
@@ -52,17 +52,38 @@ async function editarConsole(inputId, inputModel, inputProducer, inputLaunchDate
     return (await gerenciarConsoleRepository.editarConsole(inputId, inputModel, inputProducer, inputLaunchDate, inputOriginality, inputPrice, inputConsoleDescription, inputQuantity, inputCompany));
 }
 
-async function visualizarConsoles() {
+async function visualizarConsoles(sessao) {
 
-    var consultaConsoles = await gerenciarConsoleRepository.visualizarConsoles()
-    if (consultaConsoles == 0) {
-        const data = { sucesso: false, mensagem: "Não há nenhum console cadastrado!" };
-        const json = [data];
-        resolve(JSON.stringify(json))
+    if (sessao.cargo == "funcionario") {
+        var consultaConsolesRegiao = await gerenciarConsoleRepository.visualizarConsolesRegiao(sessao.nome)
+        if (consultaConsolesRegiao == 0) {
+            const data = { sucesso: false, mensagem: "Não há nenhum console cadastrado na região!" };
+            const json = [data];
+            return (JSON.stringify(json))
+        }
+        else {
+            console.log("Get de todos os consoles de uma região feito com sucesso!")
+            return consultaConsolesRegiao
+        }
     }
+
+    else if (sessao.cargo == "admin") {
+        var consultaConsoles = await gerenciarConsoleRepository.visualizarConsoles()
+        if (consultaConsoles == 0) {
+            const data = { sucesso: false, mensagem: "Não há nenhum console cadastrado!" };
+            const json = [data];
+            return (JSON.stringify(json))
+        }
+        else {
+            console.log("Get de todos os consoles feito com sucesso!")
+            return consultaConsoles
+        }
+    }
+    
     else {
-        console.log("Get de todos os consoles feito com sucesso!")
-        return consultaConsoles
+        var data = { sucesso: false, mensagem: "Algo deu errado ao visualizar os consoles!" }
+        var json = [data]
+        return JSON.stringify(json)
     }
 }
 

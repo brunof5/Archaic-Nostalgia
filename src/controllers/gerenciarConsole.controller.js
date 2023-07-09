@@ -201,7 +201,7 @@ async function visualizarConsoles(req, res) {
     var sessao = req.session
 
     if(sessao.logado && (sessao.cargo == "admin" || sessao.cargo == "funcionario")) {
-        res.send(await gerenciarConsoleServices.visualizarConsoles());
+        res.send(await gerenciarConsoleServices.visualizarConsoles(sessao));
     }
 
     else {

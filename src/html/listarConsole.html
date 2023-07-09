@@ -33,10 +33,10 @@
                     <div class="align-self-center ms-auto">
                         <ul class="navbar-nav">
                             <li class="nav-item">
-                                <form method="GET" action="http://localhost:3000/gerenciarConsole/cadastrarConsole">
+                                <form method="GET">
                                     <div class="input-group">
-                                        <input type="text" class="form-control" placeholder="Buscar Console" aria-describedby="button-addon2">
-                                        <button class="btn btn-danger rounded border" type="button" id="button-addon2"><i class="bi bi-search"></i></button>
+                                        <input type="text" class="form-control" placeholder="Buscar Id Console" aria-describedby="button-addon2" id="idConsole">
+                                        <button onclick="buscarId()" class="btn btn-danger rounded border" type="button" id="button-addon2"><i class="bi bi-search"></i></button>
                                     </div>
                                 </form>
                             </li>
@@ -149,19 +149,19 @@
 </body>
 <script>
 
-        // Referência ao elemento <tbody>
-        const tbody = document.querySelector("tbody");
+    // Referência ao elemento <tbody>
+    const tbody = document.querySelector("tbody");
 
-        // Função para obter os dados do backend
-        function obterDadosDoBackend() {
-        fetch("http://localhost:3000/gerenciarConsole/visualizarConsoles")
-            .then(response => response.json())
-            .then(data => exibirDadosNaTabela(data))
-            .catch(error => console.error(error));
-        }
-
-        // Função para exibir os dados na tabela
-        function exibirDadosNaTabela(dados) {
+    // Função para obter os dados do backend
+    function obterDadosDoBackend() {
+    fetch("http://localhost:3000/gerenciarConsole/visualizarConsoles")
+        .then(response => response.json())
+        .then(data => exibirDadosNaTabela(data))
+        .catch(error => console.error(error));
+    }
+    
+    // Função para exibir os dados na tabela
+    function exibirDadosNaTabela(dados) {
         // Limpar o conteúdo existente dentro do <tbody>
         tbody.innerHTML = "";
 
@@ -199,43 +199,38 @@
             quantidadeCell.textContent = item.quantAtual
             tr.appendChild(quantidadeCell);
 
-
             const empresaCell = document.createElement("td");
             empresaCell.textContent = item.nomeEmpresa;
             tr.appendChild(empresaCell);
 
             // Adicionar as células restantes com os respectivos valores
             const alterarCell = document.createElement("td");
-                const alterarLink = document.createElement("a");
-                alterarLink.classList.add("custom-icon");
-                alterarLink.href = "./alterarConsole.html";
-                const gearIcon = document.createElement("i");
-                gearIcon.classList.add("bi", "bi-gear");
-                alterarLink.appendChild(gearIcon);
-                alterarCell.appendChild(alterarLink);
-                tr.appendChild(alterarCell);
+            const alterarLink = document.createElement("a");
+            alterarLink.classList.add("custom-icon");
+            alterarLink.href = "./alterarConsole.html";
+            const gearIcon = document.createElement("i");
+            gearIcon.classList.add("bi", "bi-gear");
+            alterarLink.appendChild(gearIcon);
+            alterarCell.appendChild(alterarLink);
+            tr.appendChild(alterarCell);
 
-                const excluirCell = document.createElement("td");
-                const excluirLink = document.createElement("a");
-                excluirLink.setAttribute("data-bs-toggle", "modal");
-                excluirLink.setAttribute("data-bs-target", "#exampleModal");
-                const xCircleIcon = document.createElement("i");
-                xCircleIcon.classList.add("bi", "bi-x-circle");
-                excluirLink.appendChild(xCircleIcon);
-                excluirCell.appendChild(excluirLink);
-                tr.appendChild(excluirCell);
-
-                console.log(typeof item.preco);
-
+            const excluirCell = document.createElement("td");
+            const excluirLink = document.createElement("a");
+            excluirLink.setAttribute("data-bs-toggle", "modal");
+            excluirLink.setAttribute("data-bs-target", "#exampleModal");
+            const xCircleIcon = document.createElement("i");
+            xCircleIcon.classList.add("bi", "bi-x-circle");
+            excluirLink.appendChild(xCircleIcon);
+            excluirCell.appendChild(excluirLink);
+            tr.appendChild(excluirCell);
 
             // Adicionar a nova linha (<tr>) ao <tbody>
             tbody.appendChild(tr);
         });
-        }
+    }
 
-        // Chamar a função para obter os dados do backend
-        obterDadosDoBackend();
-
+    // Chamar a função para obter os dados do backend
+    window.onload = obterDadosDoBackend();
 
     function verificarCargoUsuario() {
 
@@ -264,6 +259,30 @@
     }
 
     window.onload = verificarCargoUsuario();
+
+    function buscarId() {
+
+        var url = "http://localhost:3000/gerenciarConsole/visualizarConsoles/"
+        var idInput = document.getElementById("idConsole").value
+        const urlTrue = url.concat(idInput)
+
+        fetch(urlTrue, {
+            method: 'GET'
+        })
+        .then(response => {
+            if (response.ok) {
+                return response.json();
+            }
+            throw new Error('Erro na solicitação');
+        })
+        .then(data => {
+            console.log(data)
+            exibirDadosNaTabela(data)
+        })
+        .catch(error => {
+            console.error(error);
+        })
+    }
 
     function Sair() {
         
