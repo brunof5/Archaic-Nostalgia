@@ -13,8 +13,6 @@
     <meta name="msapplication-TileColor" content="#ffffff">
     <meta name="msapplication-TileImage" content="./img/favicon/ms-icon-144x144.png">
     <meta name="theme-color" content="#ffffff">
-    <link rel="stylesheet" href=" ../node_modules/bootstrap/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="../node_modules/bootstrap-icons/font/bootstrap-icons.css">
     <link rel="stylesheet" href="./css/estilos.css">
     
     <title>Archaic Nostalgia :: Login</title>
@@ -123,13 +121,13 @@
                                     <button class="btn btn-lg red-button" type="submit">Entrar</button>
                                 </div>
                     
-                                <a href="Registrar.html">
+                                <a href="registrar.html">
                                     <div class="register-button">
                                         <button class="btn btn-lg transparent-button" type="button">Registrar-se</button>
                                     </div>
                                 </a>
 
-                                <a href="RecuperarConta.html">
+                                <a href="recuperarConta.html">
                                     <div class="forgot-password-button">
                                         <button class="btn btn-lg transparent-button" type="button">Esqueceu sua senha?</button>
                                     </div>
@@ -199,11 +197,11 @@
                 if(data[0].sucesso) {
                     if(data[0].mensagem == "0"){
                         // Redireciona para uma página diferente
-                        window.location.href = './index.html';
+                        window.location.href = 'index.html';
                     }else if(data[0].mensagem == "1"){
-                        window.location.href = './telaFunc.html'
+                        window.location.href = 'telaFunc.html'
                     }else if(data[0].mensagem == "2"){
-                        window.location.href = './telaAdmin.html'
+                        window.location.href = 'telaAdmin.html'
                     }
 
                 }else{

@@ -1,8 +1,8 @@
 import loginRepository from "../repositories/login.repository.js"
 
-async function verificaCampos(inputUser, inputPassword) {
+async function verificaCampos(inputUser, inputPassword, sessao) {
 
-    return (await loginRepository.verificaCampos(inputUser, inputPassword));
+    return (await loginRepository.verificaCampos(inputUser, inputPassword, sessao));
 
 }
 

@@ -12,8 +12,6 @@
     <meta name="msapplication-TileColor" content="#ffffff">
     <meta name="msapplication-TileImage" content="/img/favicon/ms-icon-144x144.png">
     <meta name="theme-color" content="#ffffff">
-    <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="../node_modules/bootstrap-icons/font/bootstrap-icons.css">
     <link rel="stylesheet" href="./css/estilos.css">
 
     <title>Archaic Nostalgia :: Detalhes do Produto "Atari 3600"</title>
@@ -27,7 +25,7 @@
 
         <nav class="navbar navbar-expand-lg navbar-dark bg-danger border-bottom shadow-sm mb-3">
         <div class="container">
-            <a class="navbar-brand" href="index.html">
+            <a class="navbar-brand" href="/">
                 <b>Archaic Nostalgia</b>
             </a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent">
@@ -39,10 +37,10 @@
                 <div class="align-self-end">
                     <ul class="navbar-nav">
                         <li class="nav-item">
-                            <a href="cliente_pedidos.html" class="nav-link text-white">Logado como <b>NOME DO USUARIO</b></a>
+                            <a id="cargoUser" onclick="window.location.href='login.html'" class="nav-link text-white"><b>LOGIN</b></a>
                         </li>
                         <li class="nav-item">
-                            <a href="/index.html" class="nav-link text-white">Sair</a>
+                            <button onclick="Sair()" class="nav-link text-white">Sair</a>
                         </li>
                         <li class="nav-item">
                             <span class="badge rounded-pill bg-light text-danger position-absolute ms-4 mt-0"
@@ -85,7 +83,7 @@
                         <p>O MAI BRABO</p>
 
                         <p>
-                            <a href="/carrinho.html">
+                            <a href="carrinho.html">
                                 <button class="btn btn-lg btn-danger mb-3 mb-xl-0 me-2">
                                     <i class="bi-cart"></i>Adicionar ao Carrinho
                                 </button>
@@ -105,5 +103,54 @@
         }
     </script>
 </body>
+<script>
 
+    function verificarCargoUsuario() {
+
+        const url = 'http://localhost:3000/autenticar'
+
+        fetch(url, {
+            method: 'GET'
+        })
+        .then(response => {
+            if (response.ok) {
+                return response.json();
+            }
+            throw new Error('Erro na solicitação');
+        })
+        .then(data => {
+            if (data.cargo == 0) {
+                document.getElementById("cargoUser").innerHTML = "Logado como <b>" + data.nome + "<b>";
+                document.getElementById("cargoUser").onclick = function() {
+                    window.location.href='cliente.html'
+                }
+            }
+            else if (data.cargo == 1) {
+                window.location.href = 'telaFunc.html'
+            } else if (data.cargo == 2) {
+                window.location.href = 'telaAdmin.html'
+            }
+        })
+        .catch(error => {
+            console.error(error);
+        })
+    }
+
+    window.onload = verificarCargoUsuario();
+
+    function Sair() {
+        
+        const url = 'http://localhost:3000/deslogar'
+
+        fetch(url, {
+            method: 'GET'
+        })
+        .then(response => {
+            if (response.ok) {
+                window.location.href = '/';
+            }
+            throw new Error('Erro na solicitação');
+        })
+    }
+</script>
 </html>
