@@ -18,9 +18,9 @@ async function editarConsole(inputConsoleId, inputModel, inputProducer, inputLau
 
 }
 
-async function visualizarConsoles(inputConsoleId) {
+async function visualizarConsoles() {
 
-    return (await gerenciarConsoleRepository.visualizarConsoles(inputConsoleId));
+    return (await gerenciarConsoleRepository.visualizarConsoles());
 
 }
 

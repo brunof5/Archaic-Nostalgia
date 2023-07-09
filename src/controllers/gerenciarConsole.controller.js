@@ -176,11 +176,13 @@ async function editarConsole(req, res){
 
 }
 
-async function visualizarConsoles(req, res){
+async function visualizarConsoles(req, res) {
 
-    const { inputConsoleId } = req.body;
-    res.send(await gerenciarConsoleServices.visualizarConsoles( inputConsoleId ));
+    var sessao = req.session
 
+    if(sessao.logado && (sessao.cargo == "admin" || sessao.cargo == "funcionario")) {
+        res.send(await gerenciarConsoleServices.visualizarConsoles());
+    }
 }
 
 export default{cadastrarConsole, deletarConsole, editarConsole, visualizarConsoles}
