@@ -216,8 +216,6 @@ async function visualizarConsoles() {
 	FROM console AS C, estoque AS Est, empresa AS Emp\
 	WHERE C.idConsole=Est.FK_idConsole AND Est.FK_idEmpresa=Emp.idEmpresa;"
 
-	console.log(sqlGetTodosConsoles)
-
 	return new Promise(function (resolve, reject) {
 		pool.getConnection(function (err, connection) {
 			if (err) {
@@ -239,4 +237,35 @@ async function visualizarConsoles() {
 	})
 }
 
-export default { cadastrarConsole, deletarConsole, editarConsole, visualizarConsoles };
+// Visualizar um Console no Banco de Dados, pelo seu id
+async function visualizarConsole(inputId) {
+
+	var sqlGetUmConsole = "SELECT C.*, Est.quantAtual, Emp.nomeEmpresa\
+	FROM console AS C, estoque AS Est, empresa AS Emp\
+	WHERE C.idConsole=? AND C.idConsole=Est.FK_idConsole AND Est.FK_idEmpresa=Emp.idEmpresa;"
+
+	const paramsGetUmConsole = [inputId]
+	const sqlGetUmConsoleFormatted = mysql.format(sqlGetUmConsole, paramsGetUmConsole);
+
+	return new Promise(function (resolve, reject) {
+		pool.getConnection(function (err, connection) {
+			if (err) {
+				console.log("Erro GET CONNECTION: ", err);
+        		reject(err);
+			}
+			connection.query(sqlGetUmConsoleFormatted, function (err, results) {
+				if (err) {
+					console.log("Erro ao pegar todos os consoles no banco de dados: ", err);
+					reject(err);
+				}
+				console.log("Get de um os console feito com sucesso! id do Console: " + inputId)
+
+				resolve(results)
+			})
+
+			connection.release();
+		})
+	})
+}
+
+export default { cadastrarConsole, deletarConsole, editarConsole, visualizarConsoles, visualizarConsole };

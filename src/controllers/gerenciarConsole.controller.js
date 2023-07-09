@@ -185,4 +185,16 @@ async function visualizarConsoles(req, res) {
     }
 }
 
-export default{cadastrarConsole, deletarConsole, editarConsole, visualizarConsoles}
+async function visualizarConsole(req, res) {
+
+    var sessao = req.session
+
+    if(sessao.logado && (sessao.cargo == "admin" || sessao.cargo == "funcionario")) {
+
+        const { inputId } = req.params
+
+        res.send(await gerenciarConsoleServices.visualizarConsole(inputId));
+    }
+}
+
+export default{cadastrarConsole, deletarConsole, editarConsole, visualizarConsoles, visualizarConsole}
