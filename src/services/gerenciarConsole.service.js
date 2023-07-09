@@ -79,7 +79,7 @@ async function visualizarConsoles(sessao) {
             return consultaConsoles
         }
     }
-    
+
     else {
         var data = { sucesso: false, mensagem: "Algo deu errado ao visualizar os consoles!" }
         var json = [data]
@@ -87,17 +87,38 @@ async function visualizarConsoles(sessao) {
     }
 }
 
-async function visualizarConsole(inputId) {
+async function visualizarConsole(inputId, sessao) {
 
-    var consultaConsole = await gerenciarConsoleRepository.visualizarConsole(inputId)
-    if (consultaConsole == 0) {
-        const data = { sucesso: false, mensagem: "O console não existe!" };
-        const json = [data];
-        resolve(JSON.stringify(json))
+    if (sessao.cargo == "funcionario") {
+        var consultaConsoleRegiao = await gerenciarConsoleRepository.visualizarConsoleRegiao(inputId, sessao.nome)
+        if (consultaConsoleRegiao == 0) {
+            const data = { sucesso: false, mensagem: "O console não existe!" };
+            const json = [data];
+            return (JSON.stringify(json))
+        }
+        else {
+            console.log("Get de um console feito com sucesso! id do Console: " + inputId)
+            return consultaConsoleRegiao
+        }
     }
+
+    else if (sessao.cargo == "admin") {
+        var consultaConsole = await gerenciarConsoleRepository.visualizarConsole(inputId)
+        if (consultaConsole == 0) {
+            const data = { sucesso: false, mensagem: "O console não existe!" };
+            const json = [data];
+            return (JSON.stringify(json))
+        }
+        else {
+            console.log("Get de um console feito com sucesso! id do Console: " + inputId)
+            return consultaConsole
+        }
+    }
+
     else {
-        console.log("Get de um os console feito com sucesso! id do Console: " + inputId)
-        return consultaConsole
+        var data = { sucesso: false, mensagem: "Algo deu errado ao visualizar um console!" }
+        var json = [data]
+        return JSON.stringify(json)
     }
 }
 

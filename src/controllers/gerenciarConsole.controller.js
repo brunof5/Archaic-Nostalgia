@@ -219,7 +219,7 @@ async function visualizarConsole(req, res) {
 
         const { inputId } = req.params
 
-        res.send(await gerenciarConsoleServices.visualizarConsole(inputId));
+        res.send(await gerenciarConsoleServices.visualizarConsole(inputId, sessao));
     }
 
     else {
