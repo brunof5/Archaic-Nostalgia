@@ -4,8 +4,8 @@ import gerenciarConsoleController from '../controllers/gerenciarConsole.controll
 const router = express.Router()
 
 router.post('/cadastrarConsole', gerenciarConsoleController.cadastrarConsole)
-router.delete('/deletarConsole', gerenciarConsoleController.deletarConsole)
-router.put('/editarConsole', gerenciarConsoleController.editarConsole)
+router.delete('/deletarConsole/:inputId', gerenciarConsoleController.deletarConsole)
+router.put('/editarConsole/:inputId', gerenciarConsoleController.editarConsole)
 router.get('/visualizarConsoles', gerenciarConsoleController.visualizarConsoles)
 router.get('/visualizarConsoles/:inputId', gerenciarConsoleController.visualizarConsole)
 

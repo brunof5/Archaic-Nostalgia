@@ -37,7 +37,7 @@ async function cadastrarConsole(inputModel, inputProducer, inputLaunchDate, inpu
 			}
 			connection.query(sqlCadastroTabelaConsoleFormatted, function (err, resultCadastroConsole) {
 				if (err) {
-					console.log("Erro ao inserir no banco de dados 1: ", err);
+					console.log("Erro ao inserir no banco de dados (console): ", err);
 					reject(err);
 				}
 				console.log("Console inserido no banco de dados com sucesso! Id do Console: " + resultCadastroConsole.insertId);
@@ -49,14 +49,17 @@ async function cadastrarConsole(inputModel, inputProducer, inputLaunchDate, inpu
 
 				connection.query(sqlCadastroTabelaEstoqueFormatted, function (err, resultCadastroEstoque) {
 					if (err) {
-						console.log("Erro ao inserir no banco de dados 2: ", err);
+						console.log("Erro ao inserir no banco de dados (estoque): ", err);
 						reject(err);
 					}
-					console.log("Estoque inserido no banco de dados com sucesso!");
+					else {
+						console.log("Estoque inserido no banco de dados com sucesso!");
 
-					var data = { sucesso: true, mensagem: "Cadastro feito com sucesso!" }
-                    var json = [data]
-                    resolve(JSON.stringify(json))
+						var data = { sucesso: true, mensagem: "Cadastro feito com sucesso!" }
+                    	var json = [data]
+                    	resolve(JSON.stringify(json))
+					}
+					
 				})
 			})
 
@@ -66,147 +69,103 @@ async function cadastrarConsole(inputModel, inputProducer, inputLaunchDate, inpu
 }
 
 // Deleta Console no Banco de Dados
+async function deletarConsole(inputId) {
 
-async function deletarConsole( inputConsoleId ) {
-  const sqlEmpregado = "SELECT cargo FROM empregado WHERE nomeLoginEmpregado = ? AND senhaLoginEmpregado = ?;";
-  const params = ["joao.silva", "senha123"];
-  const sqlEmpregadoFormatted = mysql.format(sqlEmpregado, params);
+	const sqlDeletarEstoque = "DELETE FROM estoque WHERE FK_idConsole = ?;"
+	const sqlDeletarConsole = "DELETE FROM console WHERE idConsole = ?;"
 
-  return new Promise(function (resolve, reject) {
-    pool.getConnection(function (err, connection) {
-      if (err) {
-        console.log("Erro GET CONNECTION: ", err);
-        reject(err);
-      } else {
-        connection.query(sqlEmpregadoFormatted, function (err, resultEmpregado) {
-          if (err) {
-            console.log("Erro QUERY: ", err);
-            reject(err);
-          } else {
-            if (resultEmpregado[0].cargo === "Gerente") {
-              console.log("Remoção feita por um admin!");
-              const data = { sucesso: true, mensagem: "true" };
-              const json = [data];
-              
-              deletarConsoleNoBancoDeDados(inputConsoleId)
-                .then(() => resolve(JSON.stringify(json)))
-                .catch((error) => reject(error));
+	const paramsIdConsole = [inputId]
 
-            } else if (resultEmpregado[0].cargo !== "Gerente") {
-              console.log("Remoção feita por um funcionário!", resultEmpregado);
-              const data = { sucesso: true, mensagem: "true" };
-              const json = [data];
-              
-              deletarConsoleNoBancoDeDados(inputConsoleId)
-                .then(() => resolve(JSON.stringify(json)))
-                .catch((error) => reject(error));
+	const sqlDeletarEstoqueFormatted = mysql.format(sqlDeletarEstoque, paramsIdConsole)
+	const sqlDeletarConsoleFormatted = mysql.format(sqlDeletarConsole, paramsIdConsole)
 
-            } else {
+	return new Promise(function (resolve, reject) {
+		pool.getConnection(function (err, connection) {
+			if (err) {
+				console.log("Erro GET CONNECTION: ", err);
+        		reject(err);
+			}
+			connection.query(sqlDeletarEstoqueFormatted, function (err, resultRemocaoEstoque) {
+				if (err) {
+					console.log("Erro ao deletar estoque no banco de dados (estoque): ", err);
+					reject(err);
+				}
+				console.log("Remoção do estoque feita com sucesso! Id do Console: " + inputId)
 
-                console.log("Remoção não realizada. Empregado não identificado!", resultEmpregado);
-                const data = { sucesso: false, mensagem: "false" };
-                const json = [data];
+				connection.query(sqlDeletarConsoleFormatted, function (err, resultRemocaoConsole) {
+					if (err) {
+						console.log("Erro ao deletar console no banco de dados (console): ", err);
+						reject(err);
+					}
+					else {
+						console.log("Remoção do console feita com sucesso! Id do Console: " + inputId)
 
-                resolve(JSON.stringify(json))
+						var data = { sucesso: true, mensagem: "Remoção feita com sucesso!" }
+                    	var json = [data]
+                    	resolve(JSON.stringify(json))
+					}
+				})
+			})
 
-            }
-
-          }
-          connection.release();
-        });
-      }
-    });
-  });
-}
-
-function deletarConsoleNoBancoDeDados(inputConsoleId) {
-  const sql = "DELETE FROM console WHERE idConsole = ?";
-  const params = [ inputConsoleId ];
-  const sqlFormatted = mysql.format(sql, params);
-
-  return new Promise(function (resolve, reject) {
-    pool.query(sqlFormatted, function (err, result) {
-      if (err) {
-        console.log("Erro ao deletar no banco de dados. Id não encontrado! ", err);
-        reject(err);
-      } else {
-        console.log("Console deletado no banco de dados com sucesso!");
-        resolve(result);
-      }
-    });
-  });
+			connection.release();
+		})
+	})
 }
 
 // Altera Console no Banco de Dados
+async function editarConsole(inputId, inputModel, inputProducer, inputLaunchDate, inputOriginality, inputPrice, inputConsoleDescription, inputQuantity, inputCompany) {
 
-async function editarConsole( inputConsoleId, inputModel, inputProducer, inputLaunchDate, inputOriginality, inputPrice, inputConsoleDescription, inputQuantity, inputCompany ) {
-  const sqlEmpregado = "SELECT cargo FROM empregado WHERE nomeLoginEmpregado = ? AND senhaLoginEmpregado = ?;";
-  const params = ["joao.silva", "senha123"];
-  const sqlEmpregadoFormatted = mysql.format(sqlEmpregado, params);
+	var sqlAlterarConsole = "UPDATE console SET nomeConsole = ?, nomeFabricante = ?, dataLancamento = ?, ehOriginal = ?, preco = ?, descricaoConsole = ? WHERE idConsole = ?;"
+	var sqlAlterarEstoque = "UPDATE estoque SET quantAtual = ? WHERE FK_idConsole = ? AND FK_idEmpresa = ?"
+	
+	const paramsAlterarConsole = [ inputModel, inputProducer, inputLaunchDate, inputOriginality, inputPrice, inputConsoleDescription, inputId];
+	const sqlAlterarConsoleFormatted = mysql.format(sqlAlterarConsole, paramsAlterarConsole);
 
-  return new Promise(function (resolve, reject) {
-    pool.getConnection(function (err, connection) {
-      if (err) {
-        console.log("Erro GET CONNECTION: ", err);
-        reject(err);
-      } else {
-        connection.query(sqlEmpregadoFormatted, function (err, resultEmpregado) {
-          if (err) {
-            console.log("Erro QUERY: ", err);
-            reject(err);
-          } else {
-            if (resultEmpregado[0].cargo === "Gerente") {
-              console.log("Alteração feita por um admin!");
-              const data = { sucesso: true, mensagem: "true" };
-              const json = [data];
-              
-              editarConsoleNoBancoDeDados(inputConsoleId, inputModel, inputProducer, inputLaunchDate, inputOriginality, inputPrice, inputConsoleDescription)
-                .then(() => resolve(JSON.stringify(json)))
-                .catch((error) => reject(error));
+	const paramsAlterarEstoque = [inputQuantity, inputId]
+	var empresaSelecionada;
+	if (inputCompany == "MG") {
+		empresaSelecionada = 3
+	}
+	else if (inputCompany == "SP") {
+		empresaSelecionada = 2
+	}
+	else if (inputCompany == "RJ") {
+		empresaSelecionada = 1
+	}
+	paramsAlterarEstoque.push(empresaSelecionada)
+	const sqlAlterarEstoqueFormatted = mysql.format(sqlAlterarEstoque, paramsAlterarEstoque)
 
-            } else if (resultEmpregado[0].cargo !== "Gerente" && resultEmpregado[0].FK_idEmpresa === inputCompany) {
-              console.log("Alteração feita por um funcionário!", resultEmpregado);
-              const data = { sucesso: true, mensagem: "true" };
-              const json = [data];
-              
-              editarConsoleNoBancoDeDados(inputConsoleId, inputModel, inputProducer, inputLaunchDate, inputOriginality, inputPrice, inputConsoleDescription)
-                .then(() => resolve(JSON.stringify(json)))
-                .catch((error) => reject(error));
+	return new Promise(function (resolve, reject) {
+		pool.getConnection(function (err, connection) {
+			if (err) {
+				console.log("Erro GET CONNECTION: ", err);
+        		reject(err);
+			}
+			connection.query(sqlAlterarConsoleFormatted, function (err, resultAlterarConsole) {
+				if (err) {
+					console.log("Erro ao alterar no banco de dados (console): ", err);
+					reject(err);
+				}
+				console.log("Console alterado no banco de dados com sucesso! Id do Console: " + inputId);
 
-            } else {
+				connection.query(sqlAlterarEstoqueFormatted, function (err, resultAlterarEstoque) {
+					if (err) {
+						console.log("Erro ao alterar no banco de dados (estoque): ", err);
+						reject(err);
+					}
+					else {
+						console.log("Estoque alterado no banco de dados com sucesso! Id do Console: " + inputId);
 
-                console.log("Alteração não realizada. Empregado não identificado ou não presente na região de registro!", resultEmpregado);
-                const data = { sucesso: false, mensagem: "false" };
-                const json = [data];
+						var data = { sucesso: true, mensagem: "Alteração feita com sucesso!" }
+                    	var json = [data]
+                    	resolve(JSON.stringify(json))
+					}
+				})
+			})
 
-                resolve(JSON.stringify(json))
-
-            }
-
-          }
-          connection.release();
-        });
-      }
+			connection.release();
+		})
     });
-  });
-}
-
-function editarConsoleNoBancoDeDados(inputConsoleId, inputModel, inputProducer, inputLaunchDate, inputOriginality, inputPrice, inputConsoleDescription) {
-  const sql = "UPDATE console SET nomeConsole = ?, nomeFabricante = ?, dataLancamento = ?, ehOriginal = b?, preco = ?, descricaoConsole = ? WHERE idConsole = ?;";
-  const params = [ inputModel, inputProducer, inputLaunchDate, inputOriginality, inputPrice, inputConsoleDescription, inputConsoleId];
-  const sqlFormatted = mysql.format(sql, params);
-
-  return new Promise(function (resolve, reject) {
-    pool.query(sqlFormatted, function (err, result) {
-      if (err) {
-        console.log("Erro ao alterar no banco de dados.", err);
-        reject(err);
-      } else {
-        console.log("Console alterado no banco de dados com sucesso!");
-        resolve(result);
-      }
-    });
-  });
 }
 
 // Visualizar Consoles no Banco de Dados
@@ -227,9 +186,9 @@ async function visualizarConsoles() {
 					console.log("Erro ao pegar todos os consoles no banco de dados: ", err);
 					reject(err);
 				}
-				console.log("Get de todos os consoles feito com sucesso!")
-
-				resolve(results)
+				else {
+					resolve(results)
+				}
 			})
 
 			connection.release();
@@ -255,12 +214,12 @@ async function visualizarConsole(inputId) {
 			}
 			connection.query(sqlGetUmConsoleFormatted, function (err, results) {
 				if (err) {
-					console.log("Erro ao pegar todos os consoles no banco de dados: ", err);
+					console.log("Erro ao pegar um console no banco de dados: ", err);
 					reject(err);
 				}
-				console.log("Get de um os console feito com sucesso! id do Console: " + inputId)
-
-				resolve(results)
+				else {
+					resolve(results)
+				}
 			})
 
 			connection.release();
