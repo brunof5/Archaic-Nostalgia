@@ -8,72 +8,61 @@ const pool = mysql.createPool({
   database: 'mydb'
 });
 
-// Insere Console no Banco de Dados
-
+// Insere Console e Estoque no Banco de Dados
 async function cadastrarConsole(inputModel, inputProducer, inputLaunchDate, inputOriginality, inputPrice, inputConsoleDescription, inputQuantity, inputCompany) {
-  const sqlEmpregado = "SELECT cargo, FK_idEmpresa FROM empregado WHERE nomeLoginEmpregado = ? AND senhaLoginEmpregado = ?;";
-  const params = ["joao.silva", "senha123"];
-  const sqlEmpregadoFormatted = mysql.format(sqlEmpregado, params);
+    
+    var sqlCadastroTabelaConsole = "INSERT INTO console VALUES (?, ?, ?, ?, ?, ?, ?);"
+    var sqlCadastroTabelaEstoque = "INSERT INTO estoque VALUES (?, ?, ?);"
 
-  return new Promise(function (resolve, reject) {
-    pool.getConnection(function (err, connection) {
-      if (err) {
-        console.log("Erro GET CONNECTION: ", err);
-        reject(err);
-      } else {
-        connection.query(sqlEmpregadoFormatted, function (err, resultEmpregado) {
-          if (err) {
-            console.log("Erro QUERY: ", err);
-            reject(err);
-          } else {
-            if (resultEmpregado[0].cargo === "Gerente") {
-              console.log("Cadastro feito por um admin!");
-              const data = { sucesso: true, mensagem: "true" };
-              const json = [data];
+    const paramsTabelaConsole = [null, inputModel, inputProducer, inputLaunchDate, inputOriginality, inputPrice, inputConsoleDescription];
+    const sqlCadastroTabelaConsoleFormatted = mysql.format(sqlCadastroTabelaConsole, paramsTabelaConsole);
 
-              inserirConsoleNoBancoDeDados(inputModel, inputProducer, inputLaunchDate, inputOriginality, inputPrice, inputConsoleDescription)
-                .then(() => resolve(JSON.stringify(json)))
-                .catch((error) => reject(error));
-                
-            } else if (resultEmpregado[0].cargo !== "Gerente" && resultEmpregado[0].FK_idEmpresa === inputCompany) {
-              console.log("Cadastro feito por um funcionário!", resultEmpregado);
-              const data = { sucesso: true, mensagem: "true" };
-              const json = [data];
+	const paramsTabelaEstoque = [inputQuantity]
+	var empresaSelecionada;
+	if (inputCompany == "MG") {
+		empresaSelecionada = 3
+	}
+	else if (inputCompany == "SP") {
+		empresaSelecionada = 2
+	}
+	else if (inputCompany == "RJ") {
+		empresaSelecionada = 1
+	}
 
-              inserirConsoleNoBancoDeDados(inputModel, inputProducer, inputLaunchDate, inputOriginality, inputPrice, inputConsoleDescription)
-                .then(() => resolve(JSON.stringify(json)))
-                .catch((error) => reject(error)); 
-            
-            } else {
-              console.log("Cadastro não realizado. Empregado não identificado ou não presente na região de registro!", resultEmpregado);
-              const data = { sucesso: false, mensagem: "false" };
-              const json = [data];
-              resolve(JSON.stringify(json));
-            }
-          }
-          connection.release();
-        });
-      }
+	return new Promise(function (resolve, reject) {
+		pool.getConnection(function (err, connection) {
+			if (err) {
+				console.log("Erro GET CONNECTION: ", err);
+        		reject(err);
+			}
+			connection.query(sqlCadastroTabelaConsoleFormatted, function (err, resultCadastroConsole) {
+				if (err) {
+					console.log("Erro ao inserir no banco de dados 1: ", err);
+					reject(err);
+				}
+				console.log("Console inserido no banco de dados com sucesso! Id do Console: " + resultCadastroConsole.insertId);
+
+				paramsTabelaEstoque.push(resultCadastroConsole.insertId)
+				paramsTabelaEstoque.push(empresaSelecionada)
+
+				const sqlCadastroTabelaEstoqueFormatted = mysql.format(sqlCadastroTabelaEstoque, paramsTabelaEstoque)
+
+				connection.query(sqlCadastroTabelaEstoqueFormatted, function (err, resultCadastroEstoque) {
+					if (err) {
+						console.log("Erro ao inserir no banco de dados 2: ", err);
+						reject(err);
+					}
+					console.log("Estoque inserido no banco de dados com sucesso!");
+
+					var data = { sucesso: true, mensagem: "Cadastro feito com sucesso!" }
+                    var json = [data]
+                    resolve(JSON.stringify(json))
+				})
+			})
+
+			connection.release();
+		})
     });
-  });
-}
-
-function inserirConsoleNoBancoDeDados(inputModel, inputProducer, inputLaunchDate, inputOriginality, inputPrice, inputConsoleDescription) {
-  const sql = "INSERT INTO console VALUES (?, ?, ?, ?, b?, ?, ?);";
-  const params = [null, inputModel, inputProducer, inputLaunchDate, inputOriginality, inputPrice, inputConsoleDescription];
-  const sqlFormatted = mysql.format(sql, params);
-
-  return new Promise(function (resolve, reject) {
-    pool.query(sqlFormatted, function (err, result) {
-      if (err) {
-        console.log("Erro ao inserir no banco de dados: ", err);
-        reject(err);
-      } else {
-        console.log("Console inserido no banco de dados com sucesso!");
-        resolve(result);
-      }
-    });
-  });
 }
 
 // Deleta Console no Banco de Dados
