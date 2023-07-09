@@ -99,22 +99,6 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <th scope="row"></th>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td>
-                                <a class="custom-icon" href="alterarConsole.html">
-                                    <i class="bi bi-gear"></i>
-                                </a>
-                            </td>
-                            <td>
-                                <a data-bs-toggle="modal" data-bs-target="#exampleModal">
-                                    <i class="bi bi-x-circle"></i>
-                                </a>
-                            </td>
                         </tr>
                     
         
@@ -138,7 +122,7 @@
                     <form method="DELETE" action="http://localhost:3000/gerenciarConsole/deletarConsole">
                         <div class="modal-footer">
                             <button type="button" class="btn btn-danger rounded border" data-bs-dismiss="modal">Cancelar</button>
-                            <input class="btn btn-danger rounded border" type="button" value="Excluir">
+                            <input class="btn btn-danger rounded border" type="button" value="Excluir" id="btnExcluir">
                         </div>
                     </form>    
                 </div>
@@ -207,9 +191,9 @@
             const alterarCell = document.createElement("td");
             const alterarLink = document.createElement("a");
             alterarLink.classList.add("custom-icon");
-            alterarLink.href = "./alterarConsole.html";
+            alterarLink.onclick = obterIdRow;
             const gearIcon = document.createElement("i");
-            gearIcon.classList.add("bi", "bi-gear");
+            gearIcon.classList.add("bi", "bi-gear", "gear-icon");
             alterarLink.appendChild(gearIcon);
             alterarCell.appendChild(alterarLink);
             tr.appendChild(alterarCell);
@@ -226,6 +210,8 @@
 
             // Adicionar a nova linha (<tr>) ao <tbody>
             tbody.appendChild(tr);
+
+
         });
     }
 
@@ -258,6 +244,17 @@
         })
     }
 
+    function obterIdRow() {
+        // Acessar o elemento <tr> pai do ícone de engrenagem
+        const row = this.parentNode.parentNode;
+
+        // Obter o valor do ID da célula correspondente
+        const id = row.cells[0].textContent;
+
+        window.location.href = "alterarConsole.html?id=" + id;
+    }
+
+
     window.onload = verificarCargoUsuario();
 
     function buscarId() {
@@ -283,6 +280,40 @@
             console.error(error);
         })
     }
+
+    function excluirConsole(){
+
+        var url = "http://localhost:3000/gerenciarConsole/deletarConsole/"
+        var idInput = obterIdRow();
+        const urlTrue = url.concat(idInput)
+
+        document.getElementById("btnExcluir").addEventListener("click", function() {
+            
+        // Realizar a solicitação DELETE usando fetch
+        fetch(urlTrue, {
+            method: "DELETE"
+            })
+            .then(response => {
+                if (response.ok) {
+                    // A exclusão foi bem-sucedida, faça algo (por exemplo, recarregar os dados da tabela)
+                    obterDadosDoBackend();
+                } else {
+                    // A exclusão falhou, mostre uma mensagem de erro
+                    console.error("Falha ao excluir o console.");
+                }
+            })
+            .catch(error => {
+                console.error(error);
+            });
+
+            // Fechar o modal
+            const modal = document.getElementById("exampleModal");
+            const modalInstance = bootstrap.Modal.getInstance(modal);
+            modalInstance.hide();
+        });
+
+    }
+
 
     function Sair() {
         
