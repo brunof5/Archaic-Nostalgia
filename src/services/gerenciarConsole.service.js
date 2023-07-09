@@ -1,8 +1,33 @@
 import gerenciarConsoleRepository from "../repositories/gerenciarConsole.repository.js"
 
-async function cadastrarConsole(inputModel, inputProducer, inputLaunchDate, inputOriginality, inputPrice, inputConsoleDescription, inputQuantity, inputCompany) {
+async function cadastrarConsole(inputModel, inputProducer, inputLaunchDate, inputOriginality, inputPrice, inputConsoleDescription, inputQuantity, inputCompany, sessao) {
 
-    return (await gerenciarConsoleRepository.cadastrarConsole(inputModel, inputProducer, inputLaunchDate, inputOriginality, inputPrice, inputConsoleDescription, inputQuantity, inputCompany));
+    if (sessao.cargo == "funcionario") {
+        var consultaFuncionario = await gerenciarConsoleRepository.verificarEmpresaEmpregado(sessao)
+
+        var data = { estado: inputCompany }
+        var json = [data]
+        json = JSON.stringify(json)
+        
+        if(consultaFuncionario === json) {
+            return (await gerenciarConsoleRepository.cadastrarConsole(inputModel, inputProducer, inputLaunchDate, inputOriginality, inputPrice, inputConsoleDescription, inputQuantity, inputCompany));
+        }
+        else {
+            var data = { sucesso: false, mensagem: "Você não pode cadastrar um console em uma empresa que não seja de sua região!" }
+            var json = [data]
+            return JSON.stringify(json)
+        }
+    }
+
+    else if (sessao.cargo == "admin") {
+        return (await gerenciarConsoleRepository.cadastrarConsole(inputModel, inputProducer, inputLaunchDate, inputOriginality, inputPrice, inputConsoleDescription, inputQuantity, inputCompany));
+    }
+
+    else {
+        var data = { sucesso: false, mensagem: "Algo deu errado no cadastrar console!" }
+        var json = [data]
+        return JSON.stringify(json)
+    }
 }
 
 async function deletarConsole(inputId) {

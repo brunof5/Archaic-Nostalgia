@@ -32,7 +32,7 @@ async function verificaCampos(inputUser, inputPassword, sessao) {
                         if (resultCliente.length > 0) {
                             sessao.logado = true
                             sessao.cargo = "cliente"
-                            sessao.nome = resultCliente[0].nomeCliente
+                            sessao.nome = inputUser
                             console.log("Usuário autenticado como cliente! Nome: " + resultCliente[0].nomeCliente)
 
                             var data = { sucesso: true, mensagem: "0" }
@@ -53,7 +53,7 @@ async function verificaCampos(inputUser, inputPassword, sessao) {
                                     } else if (resultEmpregado[0].cargo == "Gerente") {
                                         sessao.logado = true
                                         sessao.cargo = "admin"
-                                        sessao.nome = resultEmpregado[0].nomeEmpregado
+                                        sessao.nome = inputUser
                                         console.log("Usuário autenticado como admin! Nome: " + resultEmpregado[0].nomeEmpregado)
                                         
                                         var data = { sucesso: true, mensagem: "2" }
@@ -62,7 +62,7 @@ async function verificaCampos(inputUser, inputPassword, sessao) {
                                     } else {
                                         sessao.logado = true
                                         sessao.cargo = "funcionario"
-                                        sessao.nome = resultEmpregado[0].nomeEmpregado
+                                        sessao.nome = inputUser
                                         console.log("Usuário autenticado como funcionário! Nome: " + resultEmpregado[0].nomeEmpregado)
                                         
                                         var data = { sucesso: true, mensagem: "1" }

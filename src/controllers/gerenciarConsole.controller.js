@@ -77,7 +77,7 @@ async function cadastrarConsole(req, res) {
         }
     
         else {
-            res.send(await gerenciarConsoleServices.cadastrarConsole(inputModel, inputProducer, inputLaunchDate, inputOriginality, inputPrice, inputConsoleDescription, inputQuantity, inputCompany));
+            res.send(await gerenciarConsoleServices.cadastrarConsole(inputModel, inputProducer, inputLaunchDate, inputOriginality, inputPrice, inputConsoleDescription, inputQuantity, inputCompany, sessao));
         }
     }
 

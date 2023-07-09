@@ -227,4 +227,35 @@ async function visualizarConsole(inputId) {
 	})
 }
 
-export default { cadastrarConsole, deletarConsole, editarConsole, visualizarConsoles, visualizarConsole };
+// Verifica o cargo do Empregado
+async function verificarEmpresaEmpregado(sessao) {
+
+	var sqlConsultaEmpresaEmpregado = "SELECT empresa.estado\
+	FROM empresa, empregado\
+	WHERE empresa.idEmpresa=empregado.FK_idEmpresa AND empregado.nomeLoginEmpregado=?;"
+
+	const paramsConsultaEmpresaEmpregado = [sessao.nome]
+	const sqlConsultaEmpresaEmpregadoFormatted = mysql.format(sqlConsultaEmpresaEmpregado, paramsConsultaEmpresaEmpregado);
+
+	return new Promise(function (resolve, reject) {
+		pool.getConnection(function (err, connection) {
+			if (err) {
+				console.log("Erro GET CONNECTION: ", err);
+        		reject(err);
+			}
+			connection.query(sqlConsultaEmpresaEmpregadoFormatted, function (err, results) {
+				if (err) {
+					console.log("Erro ao pegar a região de um empregado no banco de dados: ", err);
+					reject(err);
+				}
+				else {
+					resolve(JSON.stringify(results))
+				}
+			})
+
+			connection.release();
+		})
+	})
+}
+
+export default { cadastrarConsole, deletarConsole, editarConsole, visualizarConsoles, visualizarConsole, verificarEmpresaEmpregado };
