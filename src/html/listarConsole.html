@@ -97,15 +97,29 @@
 
                         </tr>
                     </thead>
-                    <tbody>
-                        <tr>
-                        </tr>
-                    
-        
-                    </tbody>
+                    <tbody></tbody>
                 </table>
             </div>
         </main>
+
+        <!-- Modal de Sucesso -->
+        <div class="modal fade" id="modalSucesso" tabindex="-1" aria-labelledby="modalSucessoLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modalSucessoLabel">Console deletado com sucesso</h5>
+                        <a href="listarConsole.html">
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+                        </a>
+                    </div>
+                    <div class="modal-footer">
+                        <a href="listarConsole.html">
+                            <button type="button" class="btn btn-lg btn-danger" data-bs-dismiss="modal">Concluído</button>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <!-- Modal de Erro -->
         <div class="modal fade" id="modalErro" tabindex="-1" aria-labelledby="modalErroLabel" aria-hidden="true">
@@ -121,28 +135,6 @@
                     <div class="modal-footer">
                         <button type="button" class="btn btn-lg red-button" data-bs-dismiss="modal">Fechar</button>
                     </div>
-                </div>
-            </div>
-        </div>
-            
-
-        <!-- Modal -->
-        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h1 class="modal-title fs-5" id="exampleModalLabel">Excluir console</h1>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        Realmente deseja excluir o console?
-                    </div>
-                    <form method="DELETE" action="http://localhost:3000/gerenciarConsole/deletarConsole">
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-danger rounded border" data-bs-dismiss="modal">Cancelar</button>
-                            <input class="btn btn-danger rounded border" type="button" value="Excluir" id="btnExcluir">
-                        </div>
-                    </form>    
                 </div>
             </div>
         </div>
@@ -186,7 +178,8 @@
             tr.appendChild(fabricanteCell);
 
             const dataLancamentoCell = document.createElement("td");
-            dataLancamentoCell.textContent = item.dataLancamento;
+            var dataHora = item.dataLancamento.split("T")
+            dataLancamentoCell.textContent = dataHora[0];
             tr.appendChild(dataLancamentoCell);
 
             const originalidadeCell = document.createElement("td");
@@ -206,6 +199,7 @@
             tr.appendChild(empresaCell);
 
             // Adicionar as células restantes com os respectivos valores
+            // Botão de alterar
             const alterarCell = document.createElement("td");
             const alterarLink = document.createElement("a");
             alterarLink.classList.add("custom-icon");
@@ -216,10 +210,10 @@
             alterarCell.appendChild(alterarLink);
             tr.appendChild(alterarCell);
 
+            // Botão de excluir
             const excluirCell = document.createElement("td");
             const excluirLink = document.createElement("a");
-            excluirLink.setAttribute("data-bs-toggle", "modal");
-            excluirLink.setAttribute("data-bs-target", "#exampleModal");
+            excluirLink.onclick = obterIdRowDelete
             const xCircleIcon = document.createElement("i");
             xCircleIcon.classList.add("bi", "bi-x-circle");
             excluirLink.appendChild(xCircleIcon);
@@ -228,8 +222,6 @@
 
             // Adicionar a nova linha (<tr>) ao <tbody>
             tbody.appendChild(tr);
-
-
         });
     }
 
@@ -272,6 +264,43 @@
         window.location.href = "alterarConsole.html?id=" + id;
     }
 
+    function obterIdRowDelete() {
+        // Acessar o elemento <tr> pai do ícone de engrenagem
+        const row = this.parentNode.parentNode;
+
+        // Obter o valor do ID da célula correspondente
+        const id = row.cells[0].textContent;
+
+        var url = "http://localhost:3000/gerenciarConsole/deletarConsole/"
+        const urlTrue = url.concat(id)
+            
+        // Realizar a solicitação DELETE usando fetch
+        fetch(urlTrue, {
+            method: "DELETE"
+            })
+            .then(response => {
+                if (response.ok) {
+                    return response.json();
+                }
+                throw new Error('Erro na solicitação');
+            })
+            .then(data => {
+                console.log(data);
+
+                if(data[0].sucesso) {
+                    var modalSucesso = new bootstrap.Modal(document.getElementById('modalSucesso'));
+                    modalSucesso.show();
+                } else {
+                    // Exibe o modal de erro
+                    var modalErro = new bootstrap.Modal(document.getElementById('modalErro'));
+                    modalErro.show();
+                    document.getElementById('modalErrorMessage').textContent = data[0].mensagem;
+                }
+            })
+            .catch(error => {
+                console.error(error);
+            });
+    }
 
     window.onload = verificarCargoUsuario();
 
@@ -305,40 +334,6 @@
             console.error(error);
         })
     }
-
-    function excluirConsole(){
-
-        var url = "http://localhost:3000/gerenciarConsole/deletarConsole/"
-        var idInput = obterIdRow();
-        const urlTrue = url.concat(idInput)
-
-        document.getElementById("btnExcluir").addEventListener("click", function() {
-            
-        // Realizar a solicitação DELETE usando fetch
-        fetch(urlTrue, {
-            method: "DELETE"
-            })
-            .then(response => {
-                if (response.ok) {
-                    // A exclusão foi bem-sucedida, faça algo (por exemplo, recarregar os dados da tabela)
-                    obterDadosDoBackend();
-                } else {
-                    // A exclusão falhou, mostre uma mensagem de erro
-                    console.error("Falha ao excluir o console.");
-                }
-            })
-            .catch(error => {
-                console.error(error);
-            });
-
-            // Fechar o modal
-            const modal = document.getElementById("exampleModal");
-            const modalInstance = bootstrap.Modal.getInstance(modal);
-            modalInstance.hide();
-        });
-
-    }
-
 
     function Sair() {
         

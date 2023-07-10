@@ -65,7 +65,7 @@
                     
                     <hr class="mt-3">
 
-                    <form id="form" method="POST">
+                    <form id="form" method="PUT">
                         <div class="row g-3">
                             <div class="col">
                                 <label for="inputModel" class="form-label">Modelo do Console:</label>
@@ -208,11 +208,19 @@
         document.getElementById("inputConsoleDescription").value = data[0].descricaoConsole;
         document.getElementById("inputProducer").value = data[0].nomeFabricante;
         document.getElementById("inputPrice").value = data[0].preco;
-        document.getElementById("inputLaunchDate").value = data[0].dataLancamento;
+        var dataHora = data[0].dataLancamento.split("T")
+        document.getElementById("inputLaunchDate").value = dataHora[0];
         document.getElementById("inputOriginality").checked = data[0].ehOriginal;
         document.getElementById("inputQuantity").value = data[0].quantAtual;
-        // Atualize o campo de região com base no valor recebido
-        document.getElementById("inputCompany" + data[0].regiao).checked = true;
+        if (data[0].nomeEmpresa == "Starlight Ventures") {
+            document.getElementById("inputCompanyRJ").checked = true;
+        }
+        else if (data[0].nomeEmpresa == "Vertex Solutions") {
+            document.getElementById("inputCompanySP").checked = true;
+        }
+        else if (data[0].nomeEmpresa == "Nexus Industries") {
+            document.getElementById("inputCompanyMG").checked = true;
+        }
     }
 
     const radioButtons = document.querySelectorAll('input[name="inputCompany"]')
@@ -256,7 +264,7 @@
             inputCompany: inputCompany
         };
 
-        var urlAlterar = "http://localhost:3000/editarConsole/"
+        var urlAlterar = "http://localhost:3000/gerenciarConsole/editarConsole/"
         const urlAlterada = urlAlterar.concat(id)
 
         fetch(urlAlterada, {

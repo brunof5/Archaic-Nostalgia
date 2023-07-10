@@ -30,26 +30,89 @@ async function cadastrarConsole(inputModel, inputProducer, inputLaunchDate, inpu
     }
 }
 
-async function deletarConsole(inputId) {
+async function deletarConsole(inputId, sessao) {
 
-    var consultaConsole = await gerenciarConsoleRepository.visualizarConsole(inputId)
-    if (consultaConsole == 0) {
-        var data = { sucesso: false, mensagem: "O console não existe!" }
+    if (sessao.cargo == "funcionario") {
+        var consultaConsoleRegiao = await gerenciarConsoleRepository.visualizarConsoleRegiao(inputId, sessao.nome)
+        if (consultaConsoleRegiao == 0) {
+            const data = { sucesso: false, mensagem: "O console não existe!" };
+            const json = [data];
+            return (JSON.stringify(json))
+        }
+        else {
+
+            var consultaRemocaoConsole = await gerenciarConsoleRepository.consultaDeletarConsoleRegiao(inputId, sessao.nome)
+            if (consultaRemocaoConsole == 0) {
+                var data = { sucesso: false, mensagem: "Você não pode deletar um console em uma empresa que não seja de sua região!" }
+            	var json = [data]
+            	return JSON.stringify(json)
+            }
+            else {
+                return (await gerenciarConsoleRepository.deletarConsole(consultaRemocaoConsole[0].idConsole))
+            }
+        }
+    }
+
+    else if (sessao.cargo == "admin") {
+        var consultaConsole = await gerenciarConsoleRepository.visualizarConsole(inputId)
+        if (consultaConsole == 0) {
+            const data = { sucesso: false, mensagem: "O console não existe!" };
+            const json = [data];
+            return (JSON.stringify(json))
+        }
+        else {
+            return (await gerenciarConsoleRepository.deletarConsole(inputId));
+        }
+    }
+
+    else {
+        var data = { sucesso: false, mensagem: "Algo deu errado ao deletar um console!" }
         var json = [data]
         return JSON.stringify(json)
     }
-    return (await gerenciarConsoleRepository.deletarConsole(inputId));
 }
 
-async function editarConsole(inputId, inputModel, inputProducer, inputLaunchDate, inputOriginality, inputPrice, inputConsoleDescription, inputQuantity, inputCompany) {
+async function editarConsole(inputId, inputModel, inputProducer, inputLaunchDate, inputOriginality, inputPrice, inputConsoleDescription, inputQuantity, inputCompany, sessao) {
 
-    var consultaConsole = await gerenciarConsoleRepository.visualizarConsole(inputId)
-    if (consultaConsole == 0) {
-        var data = { sucesso: false, mensagem: "O console não existe!" }
+    if (sessao.cargo == "funcionario") {
+        var consultaFuncionario = await gerenciarConsoleRepository.verificarEmpresaEmpregado(sessao.nome)
+
+        var data = { estado: inputCompany }
+        var json = [data]
+        json = JSON.stringify(json)
+
+        if(consultaFuncionario === json) {
+
+            var consultaConsole = await gerenciarConsoleRepository.visualizarConsole(inputId)
+            if (consultaConsole == 0) {
+                var data = { sucesso: false, mensagem: "O console não existe!" }
+                var json = [data]
+                return JSON.stringify(json)
+            }
+            return (await gerenciarConsoleRepository.editarConsole(inputId, inputModel, inputProducer, inputLaunchDate, inputOriginality, inputPrice, inputConsoleDescription, inputQuantity, inputCompany));
+        }
+        else {
+            var data = { sucesso: false, mensagem: "Você não pode editar um console em uma empresa que não seja de sua região!" }
+            var json = [data]
+            return JSON.stringify(json)
+        }
+    }
+
+    else if (sessao.cargo == "admin") {
+        var consultaConsole = await gerenciarConsoleRepository.visualizarConsole(inputId)
+        if (consultaConsole == 0) {
+            var data = { sucesso: false, mensagem: "O console não existe!" }
+            var json = [data]
+            return JSON.stringify(json)
+        }
+        return (await gerenciarConsoleRepository.editarConsole(inputId, inputModel, inputProducer, inputLaunchDate, inputOriginality, inputPrice, inputConsoleDescription, inputQuantity, inputCompany));
+    }
+
+    else {
+        var data = { sucesso: false, mensagem: "Algo deu errado ao editar um console!" }
         var json = [data]
         return JSON.stringify(json)
     }
-    return (await gerenciarConsoleRepository.editarConsole(inputId, inputModel, inputProducer, inputLaunchDate, inputOriginality, inputPrice, inputConsoleDescription, inputQuantity, inputCompany));
 }
 
 async function visualizarConsoles(sessao) {

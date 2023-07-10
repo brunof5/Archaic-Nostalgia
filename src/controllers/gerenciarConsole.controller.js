@@ -96,7 +96,7 @@ async function deletarConsole(req, res) {
 
         const { inputId } = req.params;
 
-        res.send(await gerenciarConsoleServices.deletarConsole(inputId));
+        res.send(await gerenciarConsoleServices.deletarConsole(inputId, sessao));
     }
 
     else {
@@ -185,7 +185,7 @@ async function editarConsole(req, res) {
         }
     
         else {
-            res.send(await gerenciarConsoleServices.editarConsole(inputId, inputModel, inputProducer, inputLaunchDate, inputOriginality, inputPrice, inputConsoleDescription, inputQuantity, inputCompany));
+            res.send(await gerenciarConsoleServices.editarConsole(inputId, inputModel, inputProducer, inputLaunchDate, inputOriginality, inputPrice, inputConsoleDescription, inputQuantity, inputCompany, sessao));
         }
     }
 

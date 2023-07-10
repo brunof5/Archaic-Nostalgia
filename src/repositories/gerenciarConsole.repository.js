@@ -68,7 +68,7 @@ async function cadastrarConsole(inputModel, inputProducer, inputLaunchDate, inpu
     });
 }
 
-// Deleta Console no Banco de Dados
+// Deleta Console no Banco de Dados, pelo id
 async function deletarConsole(inputId) {
 
 	const sqlDeletarEstoque = "DELETE FROM estoque WHERE FK_idConsole = ?;"
@@ -112,16 +112,48 @@ async function deletarConsole(inputId) {
 	})
 }
 
+// Consulta para ver se o funcionario pode deletar um console, pelo id
+async function consultaDeletarConsoleRegiao(inputId, inputUser) {
+
+	const sqlConsultarIds = "SELECT idConsole\
+	FROM console, estoque, empresa, empregado\
+	WHERE empregado.nomeLoginEmpregado=? AND empregado.FK_idEmpresa=empresa.idEmpresa AND empresa.idEmpresa=estoque.FK_idEmpresa AND estoque.FK_idConsole=? AND estoque.FK_idConsole=console.idConsole;"
+
+	const paramsConsultarIds = [inputUser, inputId]
+
+	const sqlConsultarIdsFormatted = mysql.format(sqlConsultarIds, paramsConsultarIds)
+
+	return new Promise(function (resolve, reject) {
+		pool.getConnection(function (err, connection) {
+			if (err) {
+				console.log("Erro GET CONNECTION: ", err);
+        		reject(err);
+			}
+			connection.query(sqlConsultarIdsFormatted, function (err, resultIds) {
+				if (err) {
+					console.log("Erro ao deletar no banco de dados (pegar ids) ", err)
+					reject(err)
+				}
+				console.log("Ids: ", resultIds)
+
+				resolve(resultIds)
+			})
+
+			connection.release();
+		})
+	})
+}
+
 // Altera Console no Banco de Dados
 async function editarConsole(inputId, inputModel, inputProducer, inputLaunchDate, inputOriginality, inputPrice, inputConsoleDescription, inputQuantity, inputCompany) {
 
-	var sqlAlterarConsole = "UPDATE console SET nomeConsole = ?, nomeFabricante = ?, dataLancamento = ?, ehOriginal = ?, preco = ?, descricaoConsole = ? WHERE idConsole = ?;"
-	var sqlAlterarEstoque = "UPDATE estoque SET quantAtual = ? WHERE FK_idConsole = ? AND FK_idEmpresa = ?"
+	var sqlAlterarConsole = "UPDATE console SET nomeConsole = ?, nomeFabricante = ?, dataLancamento = ?, ehOriginal = ?, preco = ?, descricaoConsole = ? WHERE idConsole = ?"
+	var sqlAlterarEstoque = "UPDATE estoque SET quantAtual = ?, FK_idEmpresa = ? WHERE FK_idConsole = ?"
 	
 	const paramsAlterarConsole = [ inputModel, inputProducer, inputLaunchDate, inputOriginality, inputPrice, inputConsoleDescription, inputId];
 	const sqlAlterarConsoleFormatted = mysql.format(sqlAlterarConsole, paramsAlterarConsole);
 
-	const paramsAlterarEstoque = [inputQuantity, inputId]
+	const paramsAlterarEstoque = [inputQuantity]
 	var empresaSelecionada;
 	if (inputCompany == "MG") {
 		empresaSelecionada = 3
@@ -133,6 +165,7 @@ async function editarConsole(inputId, inputModel, inputProducer, inputLaunchDate
 		empresaSelecionada = 1
 	}
 	paramsAlterarEstoque.push(empresaSelecionada)
+	paramsAlterarEstoque.push(inputId)
 	const sqlAlterarEstoqueFormatted = mysql.format(sqlAlterarEstoque, paramsAlterarEstoque)
 
 	return new Promise(function (resolve, reject) {
@@ -292,7 +325,7 @@ async function visualizarConsoleRegiao(inputId, inputUser) {
 	})
 }
 
-// Verifica o cargo do Empregado
+// Verifica a região do Empregado
 async function verificarEmpresaEmpregado(inputUser) {
 
 	var sqlConsultaEmpresaEmpregado = "SELECT empresa.estado\
@@ -323,4 +356,4 @@ async function verificarEmpresaEmpregado(inputUser) {
 	})
 }
 
-export default { cadastrarConsole, deletarConsole, editarConsole, visualizarConsoles, visualizarConsole, verificarEmpresaEmpregado, visualizarConsolesRegiao, visualizarConsoleRegiao };
+export default { cadastrarConsole, deletarConsole, consultaDeletarConsoleRegiao, editarConsole, visualizarConsoles, visualizarConsolesRegiao, visualizarConsole, visualizarConsoleRegiao, verificarEmpresaEmpregado };
