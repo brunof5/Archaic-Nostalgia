@@ -52,14 +52,14 @@
                 <div class="row">
                     <div class="col-md-4">
                         <div class="text-start">
-                            <a href="listarConsole.html">
+                            <a href="listarServico.html">
                                 <button class="btn btn-danger btn-lg" type="button">Voltar</button>
                             </a>
                         </div>
                     </div>
                     <div class="col-md-1">
                         <div class="text-center d-flex align-items-center" style="height: 100%">
-                            <h1 style="white-space: nowrap">Cadastrar consoles</h1>
+                            <h1 style="white-space: nowrap">Cadastrar Venda</h1>
                         </div>
                     </div>
                     
@@ -68,42 +68,33 @@
                     <form id="form" method="POST">
                         <div class="row g-3">
                             <div class="col">
-                                <label for="inputModel" class="form-label">Modelo do Console:</label>
+                                <label for="inputModel" class="form-label">CPF do cliente:</label>
                                 <input type="text" class="form-control" name="inputModel" id="inputModel" required>
                             </div>
                             <div class="col">
-                                <label for="inputProducer" class="form-label">Fabricante do Console:</label>
-                                <input type="text" class="form-control" name="inputProducer" id="inputProducer" required>
+                                <label for="inputOriginality">Está entregue?</label><br>
+                                <input type="checkbox" name="inputOriginality" id="inputOriginality">
                             </div>
-
-                            <br>
-
-                        
+                        <div class="row g-3">
+                            <div class="col"> 
+                                <label for="inputQuantity" class="form-label">Id do Console:</label>
+                                <input type="number" class="form-control" name="inputQuantity" id="inputQuantity" required>
+                            </div>
+                            <div class="col"> 
+                                <label for="inputQuantity" class="form-label">Quantidade:</label>
+                                <input type="number" class="form-control" name="inputQuantity" id="inputQuantity" required>
+                            </div>  
+                        </div>
                         <div class="row g-3">
                             <div class="col">
                                 <label for="inputLaunchDate" class="form-label">Data de Lançamento do Console:</label>
                                 <input type="date" class="form-control" name="inputLaunchDate" id="inputLaunchDate" required>
                             </div>
                             <div class="col">
-                                <label for="inputOriginality">É original?</label><br>
-                                <input type="checkbox" name="inputOriginality" id="inputOriginality">
+                                <label for="inputModel" class="form-label">Valor total:</label>
+                                <input type="number" class="form-control" name="inputModel" id="inputModel" required>
                             </div>
                         </div>
-
-                        <br>
-                        <div class="row g-3">
-                            <div class="col"> 
-                                <label for="inputQuantity" class="form-label">Quantidade:</label>
-                                    <input type="number" class="form-control" name="inputQuantity" id="inputQuantity" required>
-                                </div>
-                            <div class="col">
-                                <label for="inputPrice" class="form-label">Valor:</label>
-                                <input type="number" class="form-control" name="inputPrice" id="inputPrice" step="0.01" required>
-                            </div>
-                        </div>
-
-                        <br>
-
                         <div class="row g-3">
                             <div class="col">
                                 <label for="inputCompany">Região do Cadastro:</label><br>
@@ -114,14 +105,11 @@
                                     <input class="mb-3" type="radio" name="inputCompany" id="inputCompanyRJ" value="RJ">
                                 <label for="inputCompanyRJ">RJ</label>
                             </div>
-                            <div class="col">
-                                <label for="inputConsoleDescription" class="form-label">Descrição:</label>
-                                <textarea type="text" class="form-control" name="inputConsoleDescription" id="inputConsoleDescription" rows="4" cols="20"></textarea>
-                            </div>
+                            <div class="col"></div>
                         </div>
                         <hr class="mt-3">
                         <div class="text-end">
-                            <button href="listarConsole.html" class="btn btn-danger btn-lg" type="submit">Cadastrar</button>
+                            <button href="listarServico.html" class="btn btn-danger btn-lg" type="submit">Cadastrar</button>
                         </div>
                     </form>
 
@@ -131,12 +119,12 @@
                             <div class="modal-content">
                                 <div class="modal-header">
                                     <h5 class="modal-title" id="modalSucessoLabel">Console cadastrado com sucesso</h5>
-                                    <a href="listarConsole.html">
+                                    <a href="listarServico.html">
                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
                                     </a>
                                 </div>
                                 <div class="modal-footer">
-                                    <a href="listarConsole.html">
+                                    <a href="listarServico.html">
                                         <button type="button" class="btn btn-lg btn-danger" data-bs-dismiss="modal">Concluído</button>
                                     </a>
                                 </div>

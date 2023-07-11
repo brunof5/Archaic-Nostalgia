@@ -72,25 +72,12 @@
                                 <input type="text" class="form-control" name="inputModel" id="inputModel" required>
                             </div>
                             <div class="col">
-                                <label for="inputConsoleDescription" class="form-label">Descrição:</label>
-                                <textarea type="text" class="form-control" name="inputConsoleDescription" id="inputConsoleDescription" rows="4" cols="20"></textarea>
-                            </div>
-                        </div>
-
-                        <br>
-
-                        <div class="row g-3">
-                            <div class="col">
                                 <label for="inputProducer" class="form-label">Fabricante do Console:</label>
                                 <input type="text" class="form-control" name="inputProducer" id="inputProducer" required>
                             </div>
-                            <div class="col">
-                                <label for="inputPrice" class="form-label">Valor:</label>
-                                <input type="number" class="form-control" name="inputPrice" id="inputPrice" step="0.01" required>
-                            </div>
-                        </div>
 
-                        <br>
+                            <br>
+
                         
                         <div class="row g-3">
                             <div class="col">
@@ -104,23 +91,35 @@
                         </div>
 
                         <br>
+                        <div class="row g-3">
+                            <div class="col"> 
+                                <label for="inputQuantity" class="form-label">Quantidade:</label>
+                                    <input type="number" class="form-control" name="inputQuantity" id="inputQuantity" required>
+                                </div>
+                            <div class="col">
+                                <label for="inputPrice" class="form-label">Valor:</label>
+                                <input type="number" class="form-control" name="inputPrice" id="inputPrice" step="0.01" required>
+                            </div>
+                        </div>
+
+                        <br>
 
                         <div class="row g-3">
                             <div class="col">
                                 <label for="inputCompany">Região do Cadastro:</label><br>
-                                    <input type="radio" name="inputCompany" id="inputCompanyMG" value="MG">
+                                    <input class="mb-3 mt-3" type="radio" name="inputCompany" id="inputCompanyMG" value="MG">
                                 <label for="inputCompanyMG">MG</label><br>
-                                    <input type="radio" name="inputCompany" id="inputCompanySP" value="SP">
+                                    <input class="mb-3" type="radio" name="inputCompany" id="inputCompanySP" value="SP">
                                 <label for="inputCompanySP">SP</label><br>
-                                    <input type="radio" name="inputCompany" id="inputCompanyRJ" value="RJ">
+                                    <input class="mb-3" type="radio" name="inputCompany" id="inputCompanyRJ" value="RJ">
                                 <label for="inputCompanyRJ">RJ</label>
                             </div>
-                            <div class="col"> 
-                                    <label for="inputQuantity" class="form-label">Quantidade:</label>
-                                    <input type="number" class="form-control" name="inputQuantity" id="inputQuantity" required>
-                                </div>
+                            <div class="col">
+                                <label for="inputConsoleDescription" class="form-label">Descrição:</label>
+                                <textarea type="text" class="form-control" name="inputConsoleDescription" id="inputConsoleDescription" rows="4" cols="20"></textarea>
                             </div>
                         </div>
+                        <hr class="mt-3">
 
                         <div class="text-end">
                             <button href="listarConsole.html" class="btn btn-danger btn-lg" type="submit">Alterar</button>
