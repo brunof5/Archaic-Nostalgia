@@ -124,7 +124,7 @@
                         <div class="modal-dialog">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title" id="modalSucessoLabel">Console cadastrado com sucesso</h5>
+                                    <h5 class="modal-title" id="modalSucessoLabel">Venda cadastrada com sucesso</h5>
                                     <a href="listarServico.html">
                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
                                     </a>
@@ -143,7 +143,7 @@
                         <div class="modal-dialog">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title" id="modalErroLabel">Erro ao cadastrar console</h5>
+                                    <h5 class="modal-title" id="modalErroLabel">Erro ao cadastrar venda</h5>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
                                 </div>
                                 <div class="modal-body">
@@ -179,18 +179,18 @@
 
         // Obtém os dados do formulário
         const formData = {
-            inputModel: document.getElementById('inputModel').value,
-            inputProducer: document.getElementById('inputProducer').value,
-            inputLaunchDate: document.getElementById('inputLaunchDate').value, 
-            inputOriginality: document.getElementById('inputOriginality').checked, 
-            inputPrice: document.getElementById('inputPrice').value,
-            inputConsoleDescription: document.getElementById('inputConsoleDescription').value,
+            inputCPF: document.getElementById('inputCPF').value,
+            inputDelivery: document.getElementById('inputDelivery').checked, 
+            inputID: document.getElementById('inputID').value,
             inputQuantity: document.getElementById('inputQuantity').value,
-            inputCompany: inputCompany
+            inputLaunchDate: document.getElementById('inputLaunchDate').value, 
+            inputHour: document.getElementById('inputHour').value, 
+            inputCompany: inputCompany,
+            inputPrice: document.getElementById('inputPrice').value
         };
 
         // Cria a URL de destino para a requisição
-        const url = 'http://localhost:3000/gerenciarConsole/cadastrarConsole';
+        const url = 'http://localhost:3000/gerenciarConsole/cadastrarConsole'; //ALTERAR
 
         // Envia a requisição usando o comando Fetch
         fetch(url, {

@@ -219,16 +219,22 @@
         const formData = {
             inputModel: document.getElementById('inputModel').value,
             inputProducer: document.getElementById('inputProducer').value,
-            inputLaunchDate: document.getElementById('inputLaunchDate').value, 
+            inputLaunchDate: document.getElementById('inputLaunchDate').value,
+            inputIDConsole: document.getElementById('inputIDConsole').value,
             inputOriginality: document.getElementById('inputOriginality').checked, 
-            inputPrice: document.getElementById('inputPrice').value,
-            inputConsoleDescription: document.getElementById('inputConsoleDescription').value,
+            inputDelivery: document.getElementById('inputDelivery').checked,
+            inputSellDate: document.getElementById('inputSellDate').value,
+            inputHour: document.getElementById('inputHour').value,
+            inputCPF: document.getElementById('inputCPF').value,
             inputQuantity: document.getElementById('inputQuantity').value,
-            inputCompany: inputCompany
+            inputPrice: document.getElementById('inputPrice').value,
+            inputTotalPrice: document.getElementById('inputTotalPrice').value,
+            inputCompany: inputCompany,
+            inputRestaurationDescription: document.getElementById('inputRestaurationDescription').value
         };
 
         // Cria a URL de destino para a requisição
-        const url = 'http://localhost:3000/gerenciarConsole/cadastrarConsole';
+        const url = 'http://localhost:3000/gerenciarConsole/cadastrarConsole'; //ALTERAR
 
         // Envia a requisição usando o comando Fetch
         fetch(url, {
