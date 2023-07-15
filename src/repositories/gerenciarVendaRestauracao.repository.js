@@ -10,66 +10,76 @@ const pool = mysql.createPool({
 
 // Insere Venda/Restauração no Banco de Dados
 async function cadastrarVendaRestauracao(inputId, inputCPF, inputCompanyState, inputServiceDate, inputServiceHour, inputTotalValue, inputModel, inputProducer, inputLaunchDate, inputOriginality, inputPrice, inputConsoleDescription, inputRestorationDescription, inputDelivery, inputQuantity) {
-    
-    var sqlCadastroTabelaConsole = "INSERT INTO console VALUES (?, ?, ?, ?, ?, ?, ?);"
-    var sqlCadastroTabelaEstoque = "INSERT INTO estoque VALUES (?, ?, ?);"
-
-    const paramsTabelaConsole = [null, inputModel, inputProducer, inputLaunchDate, inputOriginality, inputPrice, inputConsoleDescription];
-    const sqlCadastroTabelaConsoleFormatted = mysql.format(sqlCadastroTabelaConsole, paramsTabelaConsole);
-
-	const paramsTabelaEstoque = [inputQuantity]
-	var empresaSelecionada;
-	if (inputCompany == "MG") {
-		empresaSelecionada = 3
+	
+	const sqlSelecionarIdCliente = "SELECT idCliente FROM cliente WHERE cpfCliente = ?;";
+	const sqlSelecionarIdEmpresa = "SELECT idEmpresa FROM empresa WHERE estado = ?;";
+	const sqlSelecionarQuantAtual = "SELECT quantAtual FROM estoque WHERE FK_idConsole = ? AND FK_idEmpresa = ?;";
+	const sqlAtualizarEstoque = "UPDATE estoque SET quantAtual = quantAtual - ? WHERE FK_idConsole = ? AND FK_idEmpresa = ?;";
+	const sqlDeletarEstoque = "DELETE FROM estoque WHERE FK_idConsole = ? AND FK_idEmpresa = ?;";
+	const sqlCadastroTabelaConsole = "INSERT INTO console VALUES (NULL, ?, ?, ?, ?, ?, ?);"
+	const sqlInserirVendaRestauracao = "INSERT INTO venda_restauracao VALUES (NULL, ?, ?, ?, ?, ?, ?, ?, NULL, ?, ?, ?);";
+  
+	let idCliente, idEmpresa
+  
+	// Selecionar idCliente pelo cpfCliente
+	const resultCliente = await pool.query(sqlSelecionarIdCliente, [inputCPF]);
+	if (resultCliente.length === 0) {
+	  return { sucesso: false, mensagem: "Cliente não encontrado." };
 	}
-	else if (inputCompany == "SP") {
-		empresaSelecionada = 2
+	idCliente = resultCliente[0].idCliente;
+  
+	// Selecionar idEmpresa pelo estadoEmpresa
+	const resultEmpresa = await pool.query(sqlSelecionarIdEmpresa, [inputCompanyState]);
+	if (resultEmpresa.length === 0) {
+	  return { sucesso: false, mensagem: "Empresa não encontrada." };
 	}
-	else if (inputCompany == "RJ") {
-		empresaSelecionada = 1
+	idEmpresa = resultEmpresa[0].idEmpresa;
+  
+	if (ehVenda) {
+	  // Verificar a quantidade atual no estoque
+	  const resultQuantAtual = await pool.query(sqlSelecionarQuantAtual, [inputId, idEmpresa]);
+	  const quantAtual = resultQuantAtual.length > 0 ? resultQuantAtual[0].quantAtual : 0;
+  
+	  if (quantAtual < inputQuantity) {
+		return { sucesso: false, mensagem: "A empresa não possui quantidade de consoles suficiente para a venda!" };
+	  }
+  
+	  // Atualizar o estoque
+	  await pool.query(sqlAtualizarEstoque, [inputQuantity, inputId, idEmpresa]);
+  
+	  if (quantAtual - inputQuantity === 0) {
+		// Deletar estoque se quantidade atual for zero
+		await pool.query(sqlDeletarEstoque, [inputId, idEmpresa]);
+	  }
+
+	} else {
+		try {
+			// Cadastra um Console sem Estoque
+			await pool.query(sqlCadastroTabelaConsole, [inputModel, inputProducer, inputLaunchDate, inputOriginality, inputPrice, inputConsoleDescription]);
+
+			// Insira os dados na tabela venda_restauracao para uma restauração
+			await pool.query(sqlInserirVendaRestauracao, [inputServiceDate, inputServiceHour, inputTotalValue, false, inputDelivery, inputQuantity, inputRestorationDescription, idEmpresa, idCliente, inputId]);
+
+			return { sucesso: true, mensagem: "Restauração cadastrada com sucesso!" };
+		} catch (error) {
+			return { sucesso: false, mensagem: "Erro ao cadastrar uma Restauração." };
+		}
 	}
 
-	return new Promise(function (resolve, reject) {
-		pool.getConnection(function (err, connection) {
-			if (err) {
-				console.log("Erro GET CONNECTION: ", err);
-        		reject(err);
-			}
-			connection.query(sqlCadastroTabelaConsoleFormatted, function (err, resultCadastroConsole) {
-				if (err) {
-					console.log("Erro ao inserir no banco de dados (console): ", err);
-					reject(err);
-				}
-				console.log("Console inserido no banco de dados com sucesso! Id do Console: " + resultCadastroConsole.insertId);
-
-				paramsTabelaEstoque.push(resultCadastroConsole.insertId)
-				paramsTabelaEstoque.push(empresaSelecionada)
-
-				const sqlCadastroTabelaEstoqueFormatted = mysql.format(sqlCadastroTabelaEstoque, paramsTabelaEstoque)
-
-				connection.query(sqlCadastroTabelaEstoqueFormatted, function (err, resultCadastroEstoque) {
-					if (err) {
-						console.log("Erro ao inserir no banco de dados (estoque): ", err);
-						reject(err);
-					}
-					else {
-						console.log("Estoque inserido no banco de dados com sucesso!");
-
-						var data = { sucesso: true, mensagem: "Cadastro feito com sucesso!" }
-                    	var json = [data]
-                    	resolve(JSON.stringify(json))
-					}
-					
-				})
-			})
-
-			connection.release();
-		})
-    });
-}
+	try {
+		// Insira os dados na tabela venda_restauracao para uma venda
+		await pool.query(sqlInserirVendaRestauracao, [inputServiceDate, inputServiceHour, inputTotalValue, true, inputDelivery, inputQuantity, inputRestorationDescription, idEmpresa, idCliente, inputId]);
+  
+		return { sucesso: true, mensagem: "Venda cadastrada com sucesso!" };
+	} catch (error) {
+		return { sucesso: false, mensagem: "Erro ao cadastrar uma Venda." };
+	}
+  
+} 
 
 // Deleta Venda/Restauração no Banco de Dados, pelo id
 async function deletarVendaRestauracao(inputId) {
+
 	const sqlVerificarEntrega = "SELECT estaEntregue FROM venda_restauracao WHERE idVenda_Restauracao = ?;";
 	const sqlVerificarVenda = "SELECT ehVenda, FK_idConsole, FK_idEmpresa FROM venda_restauracao WHERE idVenda_Restauracao = ?;";
 	const sqlAtualizarEstoque = "UPDATE estoque SET quantAtual = quantAtual - 1 WHERE FK_idConsole = ? AND FK_idEmpresa = ?;";
@@ -182,60 +192,72 @@ async function consultaDeletarVendaRestauracaoRegiao(inputId, inputUser) {
 }
 
 // Altera uma Venda/Restauração no Banco de Dados
-async function editarVendaRestauracao(inputId, inputCPF, inputCompanyState, inputServiceDate, inputServiceHour, inputTotalValue, inputModel, inputProducer, inputLaunchDate, inputOriginality, inputPrice, inputConsoleDescription, inputRestorationDescription, inputDelivery, inputQuantity) {
+async function editarVendaRestauracao(inputId, inputCPF, inputCompanyState, inputServiceDate, inputServiceHour, inputTotalValue, inputModel, inputProducer, inputLaunchDate, inputOriginality, inputPrice, inputConsoleDescription, inputRestorationDescription, inputDelivery, inputQuantity, inputIdVendaRestauracao) {
 
-	var sqlAlterarConsole = "UPDATE console SET nomeConsole = ?, nomeFabricante = ?, dataLancamento = ?, ehOriginal = ?, preco = ?, descricaoConsole = ? WHERE idConsole = ?"
-	var sqlAlterarEstoque = "UPDATE estoque SET quantAtual = ?, FK_idEmpresa = ? WHERE FK_idConsole = ?"
-	
-	const paramsAlterarConsole = [ inputModel, inputProducer, inputLaunchDate, inputOriginality, inputPrice, inputConsoleDescription, inputId];
-	const sqlAlterarConsoleFormatted = mysql.format(sqlAlterarConsole, paramsAlterarConsole);
-
-	const paramsAlterarEstoque = [inputQuantity]
-	var empresaSelecionada;
-	if (inputCompany == "MG") {
-		empresaSelecionada = 3
+	const sqlSelecionarIdCliente = "SELECT idCliente FROM cliente WHERE cpfCliente = ?;";
+	const sqlSelecionarIdEmpresa = "SELECT idEmpresa FROM empresa WHERE estado = ?;";
+	const sqlSelecionarQuantAtual = "SELECT quantAtual FROM estoque WHERE FK_idConsole = ? AND FK_idEmpresa = ?;";
+	const sqlAtualizarEstoque = "UPDATE estoque SET quantAtual = quantAtual - ? WHERE FK_idConsole = ? AND FK_idEmpresa = ?;";
+	const sqlDeletarEstoque = "DELETE FROM estoque WHERE FK_idConsole = ? AND FK_idEmpresa = ?;";
+	const sqlEditarTabelaConsole = "UPDATE console SET nomeConsole = ?, nomeFabricante = ?, dataLancamento = ?, ehOriginal = ?, preco = ?, descricaoConsole = ? WHERE idConsole = ?;"
+	const sqlEditarVendaRestauracao = "UPDATE venda_restauracao SET dataServico = ?, horaServico = ?, valorTotal = ?, ehVenda = ?, estaEntregue = ?, qtdeConsoles = ?, descricaoRestauracao = ?, avaliacao = NULL, FK_idEmpresa = ?, FK_idCliente = ?, FK_idConsole = ? WHERE idVenda_Restauracao = ?;"; 
+  
+	let idCliente, idEmpresa
+  
+	// Selecionar idCliente pelo cpfCliente
+	const resultCliente = await pool.query(sqlSelecionarIdCliente, [inputCPF]);
+	if (resultCliente.length === 0) {
+	  return { sucesso: false, mensagem: "Cliente não encontrado." };
 	}
-	else if (inputCompany == "SP") {
-		empresaSelecionada = 2
+	idCliente = resultCliente[0].idCliente;
+  
+	// Selecionar idEmpresa pelo estadoEmpresa
+	const resultEmpresa = await pool.query(sqlSelecionarIdEmpresa, [inputCompanyState]);
+	if (resultEmpresa.length === 0) {
+	  return { sucesso: false, mensagem: "Empresa não encontrada." };
 	}
-	else if (inputCompany == "RJ") {
-		empresaSelecionada = 1
+	idEmpresa = resultEmpresa[0].idEmpresa;
+  
+	if (ehVenda) {
+	  // Verificar a quantidade atual no estoque
+	  const resultQuantAtual = await pool.query(sqlSelecionarQuantAtual, [inputId, idEmpresa]);
+	  const quantAtual = resultQuantAtual.length > 0 ? resultQuantAtual[0].quantAtual : 0;
+  
+	  if (quantAtual < inputQuantity) {
+		return { sucesso: false, mensagem: "A empresa não possui quantidade de consoles suficiente para a venda!" };
+	  }
+  
+	  // Atualizar o estoque
+	  await pool.query(sqlAtualizarEstoque, [inputQuantity, inputId, idEmpresa]);
+  
+	  if (quantAtual - inputQuantity === 0) {
+		// Deletar estoque se quantidade atual for zero
+		await pool.query(sqlDeletarEstoque, [inputId, idEmpresa]);
+	  }
+
+	} else {
+		try {
+			// Cadastra um Console sem Estoque
+			await pool.query(sqlEditarTabelaConsole, [inputModel, inputProducer, inputLaunchDate, inputOriginality, inputPrice, inputConsoleDescription, inputId]);
+
+			// Insira os dados na tabela venda_restauracao para uma restauração
+			await pool.query(sqlEditarVendaRestauracao, [inputServiceDate, inputServiceHour, inputTotalValue, false, inputDelivery, inputQuantity, inputRestorationDescription, idEmpresa, idCliente, inputId, inputIdVendaRestauracao]);
+
+			return { sucesso: true, mensagem: "Restauração atualizada com sucesso!" };
+		} catch (error) {
+			return { sucesso: false, mensagem: "Erro ao atualizar uma Restauração." };
+		}
 	}
-	paramsAlterarEstoque.push(empresaSelecionada)
-	paramsAlterarEstoque.push(inputId)
-	const sqlAlterarEstoqueFormatted = mysql.format(sqlAlterarEstoque, paramsAlterarEstoque)
 
-	return new Promise(function (resolve, reject) {
-		pool.getConnection(function (err, connection) {
-			if (err) {
-				console.log("Erro GET CONNECTION: ", err);
-        		reject(err);
-			}
-			connection.query(sqlAlterarConsoleFormatted, function (err, resultAlterarConsole) {
-				if (err) {
-					console.log("Erro ao alterar no banco de dados (console): ", err);
-					reject(err);
-				}
-				console.log("Console alterado no banco de dados com sucesso! Id do Console: " + inputId);
+	try {
+		// Insira os dados na tabela venda_restauracao para uma venda
+		await pool.query(sqlEditarVendaRestauracao, [inputServiceDate, inputServiceHour, inputTotalValue, true, inputDelivery, inputQuantity, inputRestorationDescription, idEmpresa, idCliente, inputId, inputIdVendaRestauracao]);
+  
+		return { sucesso: true, mensagem: "Venda atualizada com sucesso!" };
+	} catch (error) {
+		return { sucesso: false, mensagem: "Erro ao atualizar uma Venda." };
+	}
 
-				connection.query(sqlAlterarEstoqueFormatted, function (err, resultAlterarEstoque) {
-					if (err) {
-						console.log("Erro ao alterar no banco de dados (estoque): ", err);
-						reject(err);
-					}
-					else {
-						console.log("Estoque alterado no banco de dados com sucesso! Id do Console: " + inputId);
-
-						var data = { sucesso: true, mensagem: "Alteração feita com sucesso!" }
-                    	var json = [data]
-                    	resolve(JSON.stringify(json))
-					}
-				})
-			})
-
-			connection.release();
-		})
-    });
 }
 
 // Visualizar Vendas/Restaurações no Banco de Dados

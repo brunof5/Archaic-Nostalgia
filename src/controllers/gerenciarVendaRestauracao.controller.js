@@ -188,7 +188,7 @@ async function editarVendaRestauracao(req, res) {
     if(sessao.logado && (sessao.cargo == "admin" || sessao.cargo == "funcionario")) {
         const { inputCPF, inputCompanyState, inputServiceDate, inputServiceHour, inputTotalValue, inputModel, inputProducer, inputLaunchDate, inputOriginality, inputPrice, inputConsoleDescription, inputRestorationDescription, inputDelivery, inputQuantity } = req.body;
 
-        const { inputId } = req.params
+        const { inputId, inputIdVendaRestauracao } = req.params
 
         // Verifica CPF do Cliente
         if (inputCPF == undefined || inputCPF == null || inputCPF == '') {
@@ -331,9 +331,21 @@ async function editarVendaRestauracao(req, res) {
             var json = [data]
             res.send(JSON.stringify(json))
         }
+
+        // Verifica o ID da Venda/Restauração
+        else if (inputIdVendaRestauracao == undefined || inputIdVendaRestauracao == null || inputIdVendaRestauracao == '') {
+            var data = { sucesso: false, mensagem: "O campo ID Venda/Restauração não pode ser vazio!" }
+            var json = [data]
+            res.send(JSON.stringify(json))
+        }
+        else if (!Number.isInteger(inputIdVendaRestauracao)) {
+            var data = { sucesso: false, mensagem: "O campo ID Venda/Restauração não é um valor inteiro!" }
+            var json = [data]
+            res.send(JSON.stringify(json))
+        }
         
         else {
-            res.send(await gerenciarVendaRestauracaoServices.editarVendaRestauracao(inputId, inputCPF, inputCompanyState, inputServiceDate, inputServiceHour, inputTotalValue, inputModel, inputProducer, inputLaunchDate, inputOriginality, inputPrice, inputConsoleDescription, inputRestorationDescription, inputDelivery, inputQuantity, sessao));
+            res.send(await gerenciarVendaRestauracaoServices.editarVendaRestauracao(inputId, inputCPF, inputCompanyState, inputServiceDate, inputServiceHour, inputTotalValue, inputModel, inputProducer, inputLaunchDate, inputOriginality, inputPrice, inputConsoleDescription, inputRestorationDescription, inputDelivery, inputQuantity, inputIdVendaRestauracao, sessao));
         }
     }
 
