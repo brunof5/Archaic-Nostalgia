@@ -19,7 +19,10 @@ async function cadastrarVendaRestauracao(dados) {
 	const sqlCadastroTabelaConsole = "INSERT INTO console VALUES (NULL, ?, ?, ?, ?, ?, ?);"
 	const sqlInserirVendaRestauracao = "INSERT INTO venda_restauracao VALUES (NULL, ?, ?, ?, ?, ?, ?, ?, NULL, ?, ?, ?);";
   
-	let idCliente, idEmpresa
+
+	throw "REFAZER cadastrarVendaRestauracao"
+
+	/*let idCliente, idEmpresa
   
 	// Selecionar idCliente pelo cpfCliente
 	const resultCliente = await pool.query(sqlSelecionarIdCliente, [dados.inputCPF]);
@@ -74,15 +77,17 @@ async function cadastrarVendaRestauracao(dados) {
 		return { sucesso: true, mensagem: "Venda cadastrada com sucesso!" };
 	} catch (error) {
 		return { sucesso: false, mensagem: "Erro ao cadastrar uma Venda." };
-	}
+	}*/
   
 } 
 
 // Deleta Venda/Restauração no Banco de Dados, pelo id
 async function deletarVendaRestauracao(inputId) {
 
+	// você pode juntar as 2 SQL abaixo em uma só (ou simplesmente pegar tudo da linha onde idVenda_Restauracao = ?)
 	const sqlVerificarEntrega = "SELECT estaEntregue FROM venda_restauracao WHERE idVenda_Restauracao = ?;";
 	const sqlVerificarVenda = "SELECT ehVenda, FK_idConsole, FK_idEmpresa FROM venda_restauracao WHERE idVenda_Restauracao = ?;";
+	// quantAtual - 1 ????????? -> quantAtual + qtdeConsoles (se for serviço de venda)
 	const sqlAtualizarEstoque = "UPDATE estoque SET quantAtual = quantAtual - 1 WHERE FK_idConsole = ? AND FK_idEmpresa = ?;";
 	const sqlDeletarVendaRestauracao = "DELETE FROM venda_restauracao WHERE idVenda_Restauracao = ?;";
   
@@ -163,33 +168,7 @@ async function deletarVendaRestauracao(inputId) {
 // Consulta para ver se o funcionario pode deletar uma Venda/Restauração, pelo id
 async function consultaDeletarVendaRestauracaoRegiao(inputId, inputUser) {
 
-	const sqlConsultarIds = "SELECT idConsole\
-	FROM console, estoque, empresa, empregado\
-	WHERE empregado.nomeLoginEmpregado=? AND empregado.FK_idEmpresa=empresa.idEmpresa AND empresa.idEmpresa=estoque.FK_idEmpresa AND estoque.FK_idConsole=? AND estoque.FK_idConsole=console.idConsole;"
-
-	const paramsConsultarIds = [inputUser, inputId]
-
-	const sqlConsultarIdsFormatted = mysql.format(sqlConsultarIds, paramsConsultarIds)
-
-	return new Promise(function (resolve, reject) {
-		pool.getConnection(function (err, connection) {
-			if (err) {
-				console.log("Erro GET CONNECTION: ", err);
-        		reject(err);
-			}
-			connection.query(sqlConsultarIdsFormatted, function (err, resultIds) {
-				if (err) {
-					console.log("Erro ao deletar no banco de dados (pegar ids) ", err)
-					reject(err)
-				}
-				console.log("Ids: ", resultIds)
-
-				resolve(resultIds)
-			})
-
-			connection.release();
-		})
-	})
+	throw "REFAZER consultaDeletarVendaRestauracaoRegiao"
 }
 
 // Altera uma Venda/Restauração no Banco de Dados
@@ -203,7 +182,9 @@ async function editarVendaRestauracao(inputId, inputCPF, inputCompanyState, inpu
 	const sqlEditarTabelaConsole = "UPDATE console SET nomeConsole = ?, nomeFabricante = ?, dataLancamento = ?, ehOriginal = ?, preco = ?, descricaoConsole = ? WHERE idConsole = ?;"
 	const sqlEditarVendaRestauracao = "UPDATE venda_restauracao SET dataServico = ?, horaServico = ?, valorTotal = ?, ehVenda = ?, estaEntregue = ?, qtdeConsoles = ?, descricaoRestauracao = ?, avaliacao = NULL, FK_idEmpresa = ?, FK_idCliente = ?, FK_idConsole = ? WHERE idVenda_Restauracao = ?;"; 
   
-	let idCliente, idEmpresa
+	throw "REFAZER editarVendaRestauracao"
+
+	/*let idCliente, idEmpresa
   
 	// Selecionar idCliente pelo cpfCliente
 	const resultCliente = await pool.query(sqlSelecionarIdCliente, [inputCPF]);
@@ -257,7 +238,7 @@ async function editarVendaRestauracao(inputId, inputCPF, inputCompanyState, inpu
 		return { sucesso: true, mensagem: "Venda atualizada com sucesso!" };
 	} catch (error) {
 		return { sucesso: false, mensagem: "Erro ao atualizar uma Venda." };
-	}
+	}*/
 
 }
 

@@ -176,6 +176,8 @@ async function deletarVendaRestauracao(req, res) {
 
 async function editarVendaRestauracao(req, res) {
 
+    throw "corrigir editarVendaRestauracao() - FAÇA O TRATAMENTO DO REQ.BODY COMO EM cadastrarVendaRestauracao()"
+
     var sessao = req.session
 
     if(sessao.logado && (sessao.cargo == "admin" || sessao.cargo == "funcionario")) {

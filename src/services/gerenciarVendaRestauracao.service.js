@@ -33,29 +33,29 @@ async function cadastrarVendaRestauracao(dados, sessao) {
 async function deletarVendaRestauracao(inputId, sessao) {
 
     if (sessao.cargo == "funcionario") {
-        var consultaConsoleRegiao = await gerenciarVendaRestauracaoRepository.visualizarVendaRestauracaoRegiao(inputId, sessao.nome)
-        if (consultaConsoleRegiao == 0) {
+        var consultaServicoRegiao = await gerenciarVendaRestauracaoRepository.visualizarVendaRestauracaoRegiao(inputId, sessao.nome)
+        if (consultaServicoRegiao == 0) {
             const data = { sucesso: false, mensagem: "A Venda/Restauração não existe!" };
             const json = [data];
             return (JSON.stringify(json))
         }
         else {
 
-            var consultaRemocaoConsole = await gerenciarVendaRestauracaoRepository.consultaDeletarVendaRestauracaoRegiao(inputId, sessao.nome)
-            if (consultaRemocaoConsole == 0) {
+            var consultaRemocaoServico = await gerenciarVendaRestauracaoRepository.consultaDeletarVendaRestauracaoRegiao(inputId, sessao.nome)
+            if (consultaRemocaoServico == 0) {
                 var data = { sucesso: false, mensagem: "Você não pode deletar uma Venda/Restauração em uma empresa que não seja de sua região!" }
             	var json = [data]
             	return JSON.stringify(json)
             }
             else {
-                return (await gerenciarVendaRestauracaoRepository.deletarVendaRestauracao(consultaRemocaoConsole[0].idConsole))
+                return (await gerenciarVendaRestauracaoRepository.deletarVendaRestauracao(consultaRemocaoServico[0].idVenda_Restauracao))
             }
         }
     }
 
     else if (sessao.cargo == "admin") {
-        var consultaConsole = await gerenciarVendaRestauracaoRepository.visualizarVendaRestauracao(inputId)
-        if (consultaConsole == 0) {
+        var consultaServico = await gerenciarVendaRestauracaoRepository.visualizarVendaRestauracao(inputId)
+        if (consultaServico == 0) {
             const data = { sucesso: false, mensagem: "A Venda/Restauração não existe!" };
             const json = [data];
             return (JSON.stringify(json))
@@ -83,8 +83,8 @@ async function editarVendaRestauracao(inputId, inputCPF, inputCompanyState, inpu
 
         if(consultaFuncionario === json) {
 
-            var consultaConsole = await gerenciarVendaRestauracaoRepository.visualizarVendaRestauracao(inputId)
-            if (consultaConsole == 0) {
+            var consultaServico = await gerenciarVendaRestauracaoRepository.visualizarVendaRestauracao(inputId)
+            if (consultaServico == 0) {
                 var data = { sucesso: false, mensagem: "A Venda/Restauração não existe!" }
                 var json = [data]
                 return JSON.stringify(json)
@@ -99,8 +99,8 @@ async function editarVendaRestauracao(inputId, inputCPF, inputCompanyState, inpu
     }
 
     else if (sessao.cargo == "admin") {
-        var consultaConsole = await gerenciarVendaRestauracaoRepository.visualizarVendaRestauracao(inputId)
-        if (consultaConsole == 0) {
+        var consultaServico = await gerenciarVendaRestauracaoRepository.visualizarVendaRestauracao(inputId)
+        if (consultaServico == 0) {
             var data = { sucesso: false, mensagem: "A Venda/Restauração não existe!" }
             var json = [data]
             return JSON.stringify(json)
