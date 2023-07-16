@@ -4,6 +4,7 @@ import bodyParser from 'body-parser'
 import cors from 'cors'
 import loginRouter from './routes/login.routes.js'
 import gerenciarConsoleRouter from './routes/gerenciarConsole.routes.js'
+import gerenciarVendaRestauracaoRouter from './routes/gerenciarVendaRestauracao.routes.js'
 
 import path from 'path'
 import { fileURLToPath } from 'url';
@@ -28,6 +29,7 @@ app.use(cors())
 
 app.use('/login', loginRouter )
 app.use('/gerenciarConsole', gerenciarConsoleRouter )
+app.use('/gerenciarVendaRestauracao', gerenciarVendaRestauracaoRouter )
 
 app.get('/', function (req, res) {
 

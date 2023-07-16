@@ -1,6 +1,6 @@
 import gerenciarVendaRestauracaoRepository from "../repositories/gerenciarVendaRestauracao.repository.js"
 
-async function cadastrarVendaRestauracao(inputId, inputCPF, inputCompanyState, inputServiceDate, inputServiceHour, inputTotalValue, inputModel, inputProducer, inputLaunchDate, inputOriginality, inputPrice, inputConsoleDescription, inputRestorationDescription, inputDelivery, inputQuantity, sessao) {
+async function cadastrarVendaRestauracao(dados, sessao) {
 
     if (sessao.cargo == "funcionario") {
         var consultaFuncionario = await gerenciarVendaRestauracaoRepository.verificarEmpresaEmpregado(sessao.nome)
@@ -10,7 +10,7 @@ async function cadastrarVendaRestauracao(inputId, inputCPF, inputCompanyState, i
         json = JSON.stringify(json)
 
         if(consultaFuncionario === json) {
-            return (await gerenciarVendaRestauracaoRepository.cadastrarVendaRestauracao(inputId, inputCPF, inputCompanyState, inputServiceDate, inputServiceHour, inputTotalValue, inputModel, inputProducer, inputLaunchDate, inputOriginality, inputPrice, inputConsoleDescription, inputRestorationDescription, inputDelivery, inputQuantity));
+            return (await gerenciarVendaRestauracaoRepository.cadastrarVendaRestauracao(dados));
         }
         else {
             var data = { sucesso: false, mensagem: "Você não pode cadastrar uma Venda/Restauração em uma empresa que não seja de sua região!" }
@@ -20,7 +20,7 @@ async function cadastrarVendaRestauracao(inputId, inputCPF, inputCompanyState, i
     }
 
     else if (sessao.cargo == "admin") {
-        return (await gerenciarVendaRestauracaoRepository.cadastrarVendaRestauracao(inputId, inputCPF, inputCompanyState, inputServiceDate, inputServiceHour, inputTotalValue, inputModel, inputProducer, inputLaunchDate, inputOriginality, inputPrice, inputConsoleDescription, inputRestorationDescription, inputDelivery, inputQuantity));
+        return (await gerenciarVendaRestauracaoRepository.cadastrarVendaRestauracao(dados));
     }
 
     else {

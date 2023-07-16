@@ -9,7 +9,7 @@ const pool = mysql.createPool({
 });
 
 // Insere Venda/Restauração no Banco de Dados
-async function cadastrarVendaRestauracao(inputId, inputCPF, inputCompanyState, inputServiceDate, inputServiceHour, inputTotalValue, inputModel, inputProducer, inputLaunchDate, inputOriginality, inputPrice, inputConsoleDescription, inputRestorationDescription, inputDelivery, inputQuantity) {
+async function cadastrarVendaRestauracao(dados) {
 	
 	const sqlSelecionarIdCliente = "SELECT idCliente FROM cliente WHERE cpfCliente = ?;";
 	const sqlSelecionarIdEmpresa = "SELECT idEmpresa FROM empresa WHERE estado = ?;";
@@ -22,43 +22,44 @@ async function cadastrarVendaRestauracao(inputId, inputCPF, inputCompanyState, i
 	let idCliente, idEmpresa
   
 	// Selecionar idCliente pelo cpfCliente
-	const resultCliente = await pool.query(sqlSelecionarIdCliente, [inputCPF]);
+	const resultCliente = await pool.query(sqlSelecionarIdCliente, [dados.inputCPF]);
+	console.log(resultCliente)
 	if (resultCliente.length === 0) {
 	  return { sucesso: false, mensagem: "Cliente não encontrado." };
 	}
 	idCliente = resultCliente[0].idCliente;
   
 	// Selecionar idEmpresa pelo estadoEmpresa
-	const resultEmpresa = await pool.query(sqlSelecionarIdEmpresa, [inputCompanyState]);
+	const resultEmpresa = await pool.query(sqlSelecionarIdEmpresa, [dados.inputCompanyState]);
 	if (resultEmpresa.length === 0) {
 	  return { sucesso: false, mensagem: "Empresa não encontrada." };
 	}
 	idEmpresa = resultEmpresa[0].idEmpresa;
   
-	if (ehVenda) {
+	if (dados.ehVenda) {
 	  // Verificar a quantidade atual no estoque
-	  const resultQuantAtual = await pool.query(sqlSelecionarQuantAtual, [inputId, idEmpresa]);
+	  const resultQuantAtual = await pool.query(sqlSelecionarQuantAtual, [dados.inputId, idEmpresa]);
 	  const quantAtual = resultQuantAtual.length > 0 ? resultQuantAtual[0].quantAtual : 0;
   
-	  if (quantAtual < inputQuantity) {
+	  if (quantAtual < dados.inputQuantity) {
 		return { sucesso: false, mensagem: "A empresa não possui quantidade de consoles suficiente para a venda!" };
 	  }
   
 	  // Atualizar o estoque
-	  await pool.query(sqlAtualizarEstoque, [inputQuantity, inputId, idEmpresa]);
+	  await pool.query(sqlAtualizarEstoque, [dados.inputQuantity, dados.inputId, idEmpresa]);
   
-	  if (quantAtual - inputQuantity === 0) {
+	  if (quantAtual - dados.inputQuantity === 0) {
 		// Deletar estoque se quantidade atual for zero
-		await pool.query(sqlDeletarEstoque, [inputId, idEmpresa]);
+		await pool.query(sqlDeletarEstoque, [dados.inputId, idEmpresa]);
 	  }
 
 	} else {
 		try {
 			// Cadastra um Console sem Estoque
-			await pool.query(sqlCadastroTabelaConsole, [inputModel, inputProducer, inputLaunchDate, inputOriginality, inputPrice, inputConsoleDescription]);
+			await pool.query(sqlCadastroTabelaConsole, [dados.inputModel, dados.inputProducer, dados.inputLaunchDate, dados.inputOriginality, dados.inputPrice, dados.inputConsoleDescription]);
 
 			// Insira os dados na tabela venda_restauracao para uma restauração
-			await pool.query(sqlInserirVendaRestauracao, [inputServiceDate, inputServiceHour, inputTotalValue, false, inputDelivery, inputQuantity, inputRestorationDescription, idEmpresa, idCliente, inputId]);
+			await pool.query(sqlInserirVendaRestauracao, [dados.inputServiceDate, dados.inputServiceHour, dados.inputTotalValue, false, dados.inputDelivery, dados.inputQuantity, dados.inputRestorationDescription, idEmpresa, idCliente, dados.inputId]);
 
 			return { sucesso: true, mensagem: "Restauração cadastrada com sucesso!" };
 		} catch (error) {
@@ -68,7 +69,7 @@ async function cadastrarVendaRestauracao(inputId, inputCPF, inputCompanyState, i
 
 	try {
 		// Insira os dados na tabela venda_restauracao para uma venda
-		await pool.query(sqlInserirVendaRestauracao, [inputServiceDate, inputServiceHour, inputTotalValue, true, inputDelivery, inputQuantity, inputRestorationDescription, idEmpresa, idCliente, inputId]);
+		await pool.query(sqlInserirVendaRestauracao, [dados.inputServiceDate, dados.inputServiceHour, dados.inputTotalValue, true, dados.inputDelivery, dados.inputQuantity, dados.inputRestorationDescription, idEmpresa, idCliente, dados.inputId]);
   
 		return { sucesso: true, mensagem: "Venda cadastrada com sucesso!" };
 	} catch (error) {
@@ -218,7 +219,7 @@ async function editarVendaRestauracao(inputId, inputCPF, inputCompanyState, inpu
 	}
 	idEmpresa = resultEmpresa[0].idEmpresa;
   
-	if (ehVenda) {
+	if (dados.ehVenda) {
 	  // Verificar a quantidade atual no estoque
 	  const resultQuantAtual = await pool.query(sqlSelecionarQuantAtual, [inputId, idEmpresa]);
 	  const quantAtual = resultQuantAtual.length > 0 ? resultQuantAtual[0].quantAtual : 0;
