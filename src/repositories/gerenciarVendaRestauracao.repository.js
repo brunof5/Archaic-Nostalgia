@@ -264,7 +264,7 @@ async function editarVendaRestauracao(inputId, inputCPF, inputCompanyState, inpu
 // Visualizar Vendas/Restaurações no Banco de Dados
 async function visualizarVendasRestauracoes() {
 
-	var sqlGetTodosConsoles = "SELECT V.*, C.nomeCliente, E.nomeEmpresa\
+	var sqlGetTodosServicos = "SELECT V.*, C.nomeCliente, E.nomeEmpresa\
 	FROM venda_restauracao AS V\
 	JOIN cliente AS C ON V.FK_idCliente = C.idCliente\
 	JOIN empresa AS E ON V.FK_idEmpresa = E.idEmpresa\
@@ -276,7 +276,7 @@ async function visualizarVendasRestauracoes() {
 				console.log("Erro GET CONNECTION: ", err);
         		reject(err);
 			}
-			connection.query(sqlGetTodosConsoles, function (err, results) {
+			connection.query(sqlGetTodosServicos, function (err, results) {
 				if (err) {
 					console.log("Erro ao pegar todas as Vendas/Restaurações no banco de dados: ", err);
 					reject(err);
@@ -294,7 +294,7 @@ async function visualizarVendasRestauracoes() {
 // Visualizar Vendas/Restaurações de Uma Região no Banco de Dados
 async function visualizarVendasRestauracoesRegiao(inputUser) {
 
-	var sqlGetTodosConsolesRegiao = "SELECT V.*, C.nomeCliente, E.nomeEmpresa\
+	var sqlGetTodosServicosRegiao = "SELECT V.*, C.nomeCliente, E.nomeEmpresa\
 	FROM venda_restauracao AS V\
 	JOIN cliente AS C ON V.FK_idCliente = C.idCliente\
 	JOIN empresa AS E ON V.FK_idEmpresa = E.idEmpresa\
@@ -302,8 +302,8 @@ async function visualizarVendasRestauracoesRegiao(inputUser) {
 	WHERE Em.nomeLoginEmpregado = ?\
 	ORDER BY V.idVenda_Restauracao;"
 
-	const paramsGetTodosConsolesRegiao = [inputUser]
-	const sqlGetTodosConsolesRegiaoFormatted = mysql.format(sqlGetTodosConsolesRegiao, paramsGetTodosConsolesRegiao);
+	const paramsGetTodosServicosRegiao = [inputUser]
+	const sqlGetTodosServicosRegiaoFormatted = mysql.format(sqlGetTodosServicosRegiao, paramsGetTodosServicosRegiao);
 
 	return new Promise(function (resolve, reject) {
 		pool.getConnection(function (err, connection) {
@@ -311,7 +311,7 @@ async function visualizarVendasRestauracoesRegiao(inputUser) {
 				console.log("Erro GET CONNECTION: ", err);
         		reject(err);
 			}
-			connection.query(sqlGetTodosConsolesRegiaoFormatted, function (err, results) {
+			connection.query(sqlGetTodosServicosRegiaoFormatted, function (err, results) {
 				if (err) {
 					console.log("Erro ao pegar todas as Vendas/Restaurações de uma região no banco de dados: ", err);
 					reject(err);
@@ -329,15 +329,15 @@ async function visualizarVendasRestauracoesRegiao(inputUser) {
 // Visualizar uma Venda/Restauração no Banco de Dados, pelo seu id
 async function visualizarVendaRestauracao(inputId) {
 
-	var sqlGetUmConsole = "SELECT V.*, C.nomeCliente, E.nomeEmpresa\
+	var sqlGetUmServico = "SELECT V.*, C.nomeCliente, E.nomeEmpresa\
 	FROM venda_restauracao AS V\
 	JOIN cliente AS C ON V.FK_idCliente = C.idCliente\
 	JOIN empresa AS E ON V.FK_idEmpresa = E.idEmpresa\
 	WHERE V.idVenda_Restauracao = ?\
 	ORDER BY V.idVenda_Restauracao;"
 
-	const paramsGetUmConsole = [inputId]
-	const sqlGetUmConsoleFormatted = mysql.format(sqlGetUmConsole, paramsGetUmConsole);
+	const paramsGetUmServico = [inputId]
+	const sqlGetUmServicoFormatted = mysql.format(sqlGetUmServico, paramsGetUmServico);
 
 	return new Promise(function (resolve, reject) {
 		pool.getConnection(function (err, connection) {
@@ -345,7 +345,7 @@ async function visualizarVendaRestauracao(inputId) {
 				console.log("Erro GET CONNECTION: ", err);
         		reject(err);
 			}
-			connection.query(sqlGetUmConsoleFormatted, function (err, results) {
+			connection.query(sqlGetUmServicoFormatted, function (err, results) {
 				if (err) {
 					console.log("Erro ao pegar uma Venda/Restauração no banco de dados: ", err);
 					reject(err);
@@ -363,7 +363,7 @@ async function visualizarVendaRestauracao(inputId) {
 // Visualizar uma Venda/Restauração de Uma Região no Banco de Dados, pelo seu id
 async function visualizarVendaRestauracaoRegiao(inputId, inputUser) {
 
-	var sqlGetTodosConsolesRegiao = "SELECT V.*, C.nomeCliente, E.nomeEmpresa\
+	var sqlGetUmServicoRegiao = "SELECT V.*, C.nomeCliente, E.nomeEmpresa\
 	FROM venda_restauracao AS V\
 	JOIN cliente AS C ON V.FK_idCliente = C.idCliente\
 	JOIN empresa AS E ON V.FK_idEmpresa = E.idEmpresa\
@@ -371,8 +371,8 @@ async function visualizarVendaRestauracaoRegiao(inputId, inputUser) {
 	WHERE V.idVenda_Restauracao = ? AND Em.nomeLoginEmpregado = ?\
 	ORDER BY V.idVenda_Restauracao;"
 
-	const paramsGetTodosConsolesRegiao = [inputId, inputUser]
-	const sqlGetTodosConsolesRegiaoFormatted = mysql.format(sqlGetTodosConsolesRegiao, paramsGetTodosConsolesRegiao);
+	const paramsGetUmServicoRegiao = [inputId, inputUser]
+	const sqlGetUmServicoRegiaoFormatted = mysql.format(sqlGetUmServicoRegiao, paramsGetUmServicoRegiao);
 
 	return new Promise(function (resolve, reject) {
 		pool.getConnection(function (err, connection) {
@@ -380,7 +380,7 @@ async function visualizarVendaRestauracaoRegiao(inputId, inputUser) {
 				console.log("Erro GET CONNECTION: ", err);
         		reject(err);
 			}
-			connection.query(sqlGetTodosConsolesRegiaoFormatted, function (err, results) {
+			connection.query(sqlGetUmServicoRegiaoFormatted, function (err, results) {
 				if (err) {
 					console.log("Erro ao pegar uma Venda/Restauração de uma região no banco de dados: ", err);
 					reject(err);

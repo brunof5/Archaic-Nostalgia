@@ -118,28 +118,28 @@ async function editarVendaRestauracao(inputId, inputCPF, inputCompanyState, inpu
 async function visualizarVendasRestauracoes(sessao) {
 
     if (sessao.cargo == "funcionario") {
-        var consultaConsolesRegiao = await gerenciarVendaRestauracaoRepository.visualizarVendasRestauracoesRegiao(sessao.nome)
-        if (consultaConsolesRegiao == 0) {
+        var consultaServicosRegiao = await gerenciarVendaRestauracaoRepository.visualizarVendasRestauracoesRegiao(sessao.nome)
+        if (consultaServicosRegiao == 0) {
             const data = { sucesso: false, mensagem: "Não há nenhuma Venda/Restauração cadastrada na região!" };
             const json = [data];
             return (JSON.stringify(json))
         }
         else {
             console.log("Get de todas as Vendas/Restaurações de uma região feito com sucesso!")
-            return consultaConsolesRegiao
+            return consultaServicosRegiao
         }
     }
 
     else if (sessao.cargo == "admin") {
-        var consultaConsoles = await gerenciarVendaRestauracaoRepository.visualizarVendasRestauracoes()
-        if (consultaConsoles == 0) {
+        var consultaServicos = await gerenciarVendaRestauracaoRepository.visualizarVendasRestauracoes()
+        if (consultaServicos == 0) {
             const data = { sucesso: false, mensagem: "Não há nenhuma Venda/Restauração cadastrada!" };
             const json = [data];
             return (JSON.stringify(json))
         }
         else {
             console.log("Get de todas as Vendas/Restaurações feito com sucesso!")
-            return consultaConsoles
+            return consultaServicos
         }
     }
 
@@ -153,28 +153,28 @@ async function visualizarVendasRestauracoes(sessao) {
 async function visualizarVendaRestauracao(inputId, sessao) {
 
     if (sessao.cargo == "funcionario") {
-        var consultaConsoleRegiao = await gerenciarVendaRestauracaoRepository.visualizarVendaRestauracaoRegiao(inputId, sessao.nome)
-        if (consultaConsoleRegiao == 0) {
+        var consultaServicoRegiao = await gerenciarVendaRestauracaoRepository.visualizarVendaRestauracaoRegiao(inputId, sessao.nome)
+        if (consultaServicoRegiao == 0) {
             const data = { sucesso: false, mensagem: "A Venda/Restauração não existe!" };
             const json = [data];
             return (JSON.stringify(json))
         }
         else {
             console.log("Get de uma Venda/Restauração feita com sucesso! id da Venda/Restauração: " + inputId)
-            return consultaConsoleRegiao
+            return consultaServicoRegiao
         }
     }
 
     else if (sessao.cargo == "admin") {
-        var consultaConsole = await gerenciarVendaRestauracaoRepository.visualizarVendaRestauracao(inputId)
-        if (consultaConsole == 0) {
+        var consultaServico = await gerenciarVendaRestauracaoRepository.visualizarVendaRestauracao(inputId)
+        if (consultaServico == 0) {
             const data = { sucesso: false, mensagem: "A Venda/Restauração não existe!!" };
             const json = [data];
             return (JSON.stringify(json))
         }
         else {
             console.log("Get de uma Venda/Restauração feita com sucesso! id da Venda/Restauração: " + inputId)
-            return consultaConsole
+            return consultaServico
         }
     }
 

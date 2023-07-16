@@ -296,13 +296,13 @@ async function visualizarConsole(inputId) {
 // Visualizar um Consoles de Uma Região no Banco de Dados, pelo seu id
 async function visualizarConsoleRegiao(inputId, inputUser) {
 
-	var sqlGetTodosConsolesRegiao = "SELECT C.*, Est.quantAtual, Emp.nomeEmpresa\
+	var sqlGetUmConsoleRegiao = "SELECT C.*, Est.quantAtual, Emp.nomeEmpresa\
 	FROM console AS C, estoque AS Est, empresa AS Emp, empregado\
 	WHERE C.idConsole=? AND C.idConsole=Est.FK_idConsole AND Est.FK_idEmpresa=Emp.idEmpresa AND Emp.idEmpresa=empregado.FK_idEmpresa AND empregado.nomeLoginEmpregado=?\
 	ORDER BY C.idConsole;"
 
 	const paramsGetTodosConsolesRegiao = [inputId, inputUser]
-	const sqlGetTodosConsolesRegiaoFormatted = mysql.format(sqlGetTodosConsolesRegiao, paramsGetTodosConsolesRegiao);
+	const sqlGetUmConsoleRegiaoFormatted = mysql.format(sqlGetUmConsoleRegiao, paramsGetTodosConsolesRegiao);
 
 	return new Promise(function (resolve, reject) {
 		pool.getConnection(function (err, connection) {
@@ -310,7 +310,7 @@ async function visualizarConsoleRegiao(inputId, inputUser) {
 				console.log("Erro GET CONNECTION: ", err);
         		reject(err);
 			}
-			connection.query(sqlGetTodosConsolesRegiaoFormatted, function (err, results) {
+			connection.query(sqlGetUmConsoleRegiaoFormatted, function (err, results) {
 				if (err) {
 					console.log("Erro ao pegar um console de uma região no banco de dados: ", err);
 					reject(err);

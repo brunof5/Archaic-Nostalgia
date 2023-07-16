@@ -35,7 +35,7 @@
                             <li class="nav-item">
                                 <form method="GET">
                                     <div class="input-group">
-                                        <input type="text" class="form-control" placeholder="Buscar ID Serviço" aria-describedby="button-addon2" id="idConsole">
+                                        <input type="text" class="form-control" placeholder="Buscar ID Serviço" aria-describedby="button-addon2" id="idServico">
                                         <button onclick="buscarId()" class="btn btn-danger rounded border" type="button" id="button-addon2"><i class="bi bi-search"></i></button>
                                     </div>
                                 </form>
@@ -390,7 +390,7 @@
         })
         .then(data => {
             console.log(data)
-            if(data[0].sucesso || data[0].idConsole > 0) {
+            if(data[0].sucesso || data[0].idVenda_Restauracao > 0) {
                 exibirDadosNaTabela(data) 
             }
             else {
