@@ -86,14 +86,17 @@
                 <table class="table table-bordered text-center">
                     <thead>
                         <tr>
-                            <th scope="col">ID</th>
-                            <th scope="col">Modelo</th>
-                            <th scope="col">Fabricante</th>
-                            <th scope="col">Data de Lançamento</th>
-                            <th scope="col">Originalidade</th>
-                            <th scope="col">Valor</th>
-                            <th scope="col">Quantidade</th>
+                            <th scope="col">ID Servico</th>
+                            <th scope="col">ID Console</th>
+                            <th scope="col">Cliente</th>
                             <th scope="col">Empresa</th>
+                            <th scope="col">Data</th>
+                            <th scope="col">Hora</th>
+                            <th scope="col">Valor</th>
+                            <th scope="col">Venda/Restauração</th>
+                            <th scope="col">Entrega</th>
+                            <th scope="col">Quantidade</th>
+                            <th scope="col">Avaliação</th>
                             <th scope="col">Alterar</th>
                             <th scope="col">Excluir</th>
 
@@ -174,10 +177,22 @@
 
     // Função para obter os dados do backend
     function obterDadosDoBackend() {
-    fetch("http://localhost:3000/gerenciarConsole/visualizarConsoles")
-        .then(response => response.json())
-        .then(data => exibirDadosNaTabela(data))
-        .catch(error => console.error(error));
+        fetch('http://localhost:3000/gerenciarVendaRestauracao/visualizarVendasRestauracoes', {
+            method: 'GET'
+        })
+        .then(response => {
+            if (response.ok) {
+                return response.json();
+            }
+            throw new Error('Erro na solicitação');
+        })
+        .then(data => {
+            console.log(data)
+            exibirDadosNaTabela(data)
+        })
+        .catch(error => {
+            console.error(error);
+        })
     }
     
     // Função para exibir os dados na tabela
@@ -191,38 +206,51 @@
             const tr = document.createElement("tr");
 
             // Adicionar as células da tabela (<td>) com os valores correspondentes
+            const idServicoCell = document.createElement("td");
+            idServicoCell.textContent = item.idVenda_Restauracao;
+            tr.appendChild(idServicoCell);
+            
             const idCell = document.createElement("td");
             idCell.textContent = item.idConsole;
             tr.appendChild(idCell);
 
-            const modeloCell = document.createElement("td");
-            modeloCell.textContent = item.nomeConsole;
-            tr.appendChild(modeloCell);
-
-            const fabricanteCell = document.createElement("td");
-            fabricanteCell.textContent = item.nomeFabricante;
-            tr.appendChild(fabricanteCell);
-
-            const dataLancamentoCell = document.createElement("td");
-            var dataHora = item.dataLancamento.split("T")
-            dataLancamentoCell.textContent = dataHora[0];
-            tr.appendChild(dataLancamentoCell);
-
-            const originalidadeCell = document.createElement("td");
-            originalidadeCell.textContent = item.ehOriginal.data[0] === 0 ? "Não Original" : "Original";
-            tr.appendChild(originalidadeCell);
-
-            const valorCell = document.createElement("td");
-            valorCell.textContent = typeof item.preco === "string" ? parseFloat(item.preco).toFixed(2) : "";
-            tr.appendChild(valorCell);
-
-            const quantidadeCell = document.createElement("td");
-            quantidadeCell.textContent = item.quantAtual
-            tr.appendChild(quantidadeCell);
+            const clienteCell = document.createElement("td");
+            clienteCell.textContent = item.nomeCliente;
+            tr.appendChild(clienteCell);
 
             const empresaCell = document.createElement("td");
             empresaCell.textContent = item.nomeEmpresa;
             tr.appendChild(empresaCell);
+
+            const dataServicoCell = document.createElement("td");
+            var data = item.dataServico.split("T")
+            dataServicoCell.textContent = data[0];
+            tr.appendChild(dataServicoCell);
+
+            const horaServicoCell = document.createElement("td");
+            var hora = item.horaServico.split("T")
+            horaServicoCell.textContent = hora[0];
+            tr.appendChild(horaServicoCell);
+
+            const valorCell = document.createElement("td");
+            valorCell.textContent = typeof item.valorTotal === "string" ? parseFloat(item.valorTotal).toFixed(2) : "";
+            tr.appendChild(valorCell);
+
+            const tipoServicoCell = document.createElement("td");
+            tipoServicoCell.textContent = item.ehVenda.data[0] === 0 ? "Restauração" : "Venda";
+            tr.appendChild(tipoServicoCell);
+            
+            const entregaCell = document.createElement("td");
+            entregaCell.textContent = item.estaEntregue.data[0] === 0 ? "Entregue" : "Não entregue";
+            tr.appendChild(entregaCell);
+
+            const quantidadeCell = document.createElement("td");
+            quantidadeCell.textContent = item.qtdeConsoles
+            tr.appendChild(quantidadeCell);            
+
+            const avaliacaoCell = document.createElement("td");
+            avaliacaoCell.textContent = item.avaliacao
+            tr.appendChild(avaliacaoCell); 
 
             // Adicionar as células restantes com os respectivos valores
             // Botão de alterar
@@ -287,7 +315,22 @@
         // Obter o valor do ID da célula correspondente
         const id = row.cells[0].textContent;
 
-        window.location.href = "alterarConsole.html?id=" + id;
+        var url = "http://localhost:3000/gerenciarVendaRestauracao/editarVendaRestauracao/"
+        const urlTrue = url.concat(id)
+
+        fetch(urlTrue)
+        .then(response => response.json())
+        .then(data => irTelaServico(data))
+        .catch(error => console.error(error));
+    
+        function irTelaServico(dados){
+
+            if(dados.ehVenda.data[0] === 0){
+                window.location.href = "alterarRestauracao.html?id=" + id;
+            }else{
+                window.location.href = "alterarVenda.html?id=" + id;
+            }
+        }
     }
 
     function obterIdRowDelete() {
@@ -297,7 +340,7 @@
         // Obter o valor do ID da célula correspondente
         const id = row.cells[0].textContent;
 
-        var url = "http://localhost:3000/gerenciarConsole/deletarConsole/"
+        var url = "http://localhost:3000/gerenciarVendaRestauracao/deletarVendaRestauracao/"
         const urlTrue = url.concat(id)
             
         // Realizar a solicitação DELETE usando fetch
@@ -332,8 +375,8 @@
 
     function buscarId() {
 
-        var url = "http://localhost:3000/gerenciarConsole/visualizarConsoles/"
-        var idInput = document.getElementById("idConsole").value
+        var url = "http://localhost:3000/gerenciarVendaRestauracao/visualizarVendaRestauracao/"
+        var idInput = document.getElementById("idServico").value
         const urlTrue = url.concat(idInput)
 
         fetch(urlTrue, {

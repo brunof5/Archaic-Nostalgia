@@ -166,7 +166,7 @@
    const urlParams = new URLSearchParams(window.location.search);
     const id = urlParams.get('id');
 
-    var url = "http://localhost:3000/gerenciarConsole/visualizarConsoles/" //ALTERAR
+    var url = "http://localhost:3000/gerenciarVendaRestauracao/visualizarVendaRestauracao/"
     const urlTrue = url.concat(id)
 
     // Usar o valor do ID como desejado
@@ -246,7 +246,7 @@
             inputPrice: document.getElementById('inputPrice').value
         };
 
-        var urlAlterar = "http://localhost:3000/gerenciarConsole/editarConsole/" //ALTERAR
+        var urlAlterar = "http://localhost:3000/gerenciarVendaRestauracao/editarVendaRestauracao/"
         const urlAlterada = urlAlterar.concat(id)
 
         fetch(urlAlterada, {
