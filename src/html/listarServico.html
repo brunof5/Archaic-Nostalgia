@@ -329,20 +329,20 @@
         })
         .then(data => {
             console.log(data)
-            irTelaServico(data)
+            irTelaServico(data, id)
         })
         .catch(error => {
             console.error(error);
         })
     
-        function irTelaServico(dados){
-
-            if(dados.ehVenda.data[0] === 0){
-                window.location.href = "alterarRestauracao.html?id=" + id;
-            }else{
+        function irTelaServico(data, id) {
+            if (data[0].ehVenda == 0) {
                 window.location.href = "alterarVenda.html?id=" + id;
+            } else {
+                window.location.href = "alterarRestauracao.html?id=" + id;
             }
         }
+
     }
 
     function obterIdRowDelete() {

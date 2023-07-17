@@ -59,7 +59,7 @@
                     </div>
                     <div class="col-md-1">
                         <div class="text-center d-flex align-items-center" style="height: 100%">
-                            <h1 style="white-space: nowrap">Cadastrar Venda</h1>
+                            <h1 style="white-space: nowrap">Alterar Venda</h1>
                         </div>
                     </div>
                     
@@ -196,14 +196,14 @@
     function exibirDadosNaTabela(data) {
 
         document.getElementById('inputCPF').value = data[0].CPFCliente;
-        document.getElementById('inputDelivery').checked = data[0].situEntrega;
+        document.getElementById('inputDelivery').checked = data[0].estaEntregue;
         document.getElementById('inputID').value = data[0].idConsole;
-        document.getElementById("inputQuantity").value = data[0].quantAtual;
-        var dataVenda = data[0].dataVenda.split("T")
+        document.getElementById("inputQuantity").value = data[0].qtdeConsoles;
+        var dataVenda = data[0].dataServico.split("T")
         document.getElementById('inputSellDate').value = dataVenda[0]; 
-        var horaVenda = data[0].horaVenda.split("T")
+        var horaVenda = data[0].horaServico.split("T")
         document.getElementById('inputHour').value = horaVenda[0];
-        document.getElementById('inputPrice').value = data[0].preco;
+        document.getElementById('inputPrice').value = data[0].valorTotal;
         if (data[0].nomeEmpresa == "Starlight Ventures") {
             document.getElementById("inputCompanyRJ").checked = true;
         }
