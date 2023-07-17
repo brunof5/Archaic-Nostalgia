@@ -315,13 +315,25 @@
         // Obter o valor do ID da célula correspondente
         const id = row.cells[0].textContent;
 
-        var url = "http://localhost:3000/gerenciarVendaRestauracao/editarVendaRestauracao/"
+        var url = "http://localhost:3000/gerenciarVendaRestauracao/visualizarVendaRestauracao/"
         const urlTrue = url.concat(id)
 
-        fetch(urlTrue)
-        .then(response => response.json())
-        .then(data => irTelaServico(data))
-        .catch(error => console.error(error));
+        fetch(urlTrue, {
+            method: 'GET'
+        })
+        .then(response => {
+            if (response.ok) {
+                return response.json();
+            }
+            throw new Error('Erro na solicitação');
+        })
+        .then(data => {
+            console.log(data)
+            irTelaServico(data)
+        })
+        .catch(error => {
+            console.error(error);
+        })
     
         function irTelaServico(dados){
 

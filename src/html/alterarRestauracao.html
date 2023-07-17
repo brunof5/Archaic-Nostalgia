@@ -317,7 +317,6 @@
             console.log(data)
             
             if(data[0].sucesso) {
-
                 var modalSucesso = new bootstrap.Modal(document.getElementById('modalSucesso'));
                 modalSucesso.show();
             }else{
@@ -325,7 +324,7 @@
                 var modalErro = new bootstrap.Modal(document.getElementById('modalErro'));
                 modalErro.show();
                 document.getElementById('modalErrorMessage').textContent = data[0].mensagem;
-                }
+            }
 
         })
         .catch(error => {
