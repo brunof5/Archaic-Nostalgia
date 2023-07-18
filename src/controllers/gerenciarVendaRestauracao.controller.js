@@ -181,6 +181,7 @@ async function editarVendaRestauracao(req, res) {
     if(sessao.logado && (sessao.cargo == "admin" || sessao.cargo == "funcionario")) {
 
         const dados = req.body
+        const { inputId } = req.params;
 
         console.log(dados)
 
@@ -324,14 +325,14 @@ async function editarVendaRestauracao(req, res) {
         
             else {
                 console.log("testeRestauracao")
-                res.send(await gerenciarVendaRestauracaoServices.editarVendaRestauracao(dados, sessao));
+                res.send(await gerenciarVendaRestauracaoServices.editarVendaRestauracao(dados, inputId, sessao));
             }
     
         }
 
         else {
             console.log("testeVenda")
-            res.send(await gerenciarVendaRestauracaoServices.editarVendaRestauracao(dados, sessao));
+            res.send(await gerenciarVendaRestauracaoServices.editarVendaRestauracao(dados, inputId, sessao));
         }
     }
 

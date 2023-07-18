@@ -72,7 +72,7 @@ async function deletarVendaRestauracao(inputId, sessao) {
     }
 }
 
-async function editarVendaRestauracao(dados, sessao) {
+async function editarVendaRestauracao(dados, inputId, sessao) {
 
     if (sessao.cargo == "funcionario") {
         var consultaFuncionario = await gerenciarVendaRestauracaoRepository.verificarEmpresaEmpregado(sessao.nome)
@@ -89,7 +89,13 @@ async function editarVendaRestauracao(dados, sessao) {
                 var json = [data]
                 return JSON.stringify(json)
             }
-            return (await gerenciarVendaRestauracaoRepository.editarVendaRestauracao(dados));
+            var consultaEntrega = await gerenciarVendaRestauracaoRepository.verificarEntregaVendaRestauracao(inputId)
+            if (consultaEntrega) {
+                var data = { sucesso: false, mensagem: "Não é possível atualizar a Venda/Restauração pois já está entregue." };
+			    var json = [data];
+                return JSON.stringify(json)
+            }
+            return (await gerenciarVendaRestauracaoRepository.editarVendaRestauracao(dados, inputId));
         }
         else {
             var data = { sucesso: false, mensagem: "Você não pode editar uma Venda/Restauração em uma empresa que não seja de sua região!" }
@@ -105,7 +111,13 @@ async function editarVendaRestauracao(dados, sessao) {
             var json = [data]
             return JSON.stringify(json)
         }
-        return (await gerenciarVendaRestauracaoRepository.editarVendaRestauracao(dados));
+        var consultaEntrega = await gerenciarVendaRestauracaoRepository.verificarEntregaVendaRestauracao(inputId)
+        if (consultaEntrega) {
+            var data = { sucesso: false, mensagem: "Não é possível atualizar a Venda/Restauração pois já está entregue." };
+			var json = [data];
+            return JSON.stringify(json)
+        }
+        return (await gerenciarVendaRestauracaoRepository.editarVendaRestauracao(dados, inputId));
     }
 
     else {

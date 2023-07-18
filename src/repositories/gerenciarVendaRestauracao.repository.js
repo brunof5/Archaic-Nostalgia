@@ -220,8 +220,6 @@ async function deletarVendaRestauracao(inputId) {
 
 				const estaEntregue = resultVenda[0].estaEntregue;
 
-				console.log(resultVenda)
-
 				if (estaEntregue == 1) {
 					var data = { sucesso: false, mensagem: "Não é possível deletar a Venda/Restauração pois já está entregue." };
 					var json = [data];
@@ -304,7 +302,7 @@ async function consultaDeletarVendaRestauracaoRegiao(inputId, inputUser) {
 }
 
 // Altera uma Venda/Restauração no Banco de Dados
-async function editarVendaRestauracao(dados) {
+async function editarVendaRestauracao(dados, inputId) {
 
 	const sqlSelecionarIdCliente = "SELECT idCliente FROM cliente WHERE cpfCliente = ?;";
 	const sqlSelecionarIdEmpresa = "SELECT idEmpresa FROM empresa WHERE estado = ?;";
@@ -394,14 +392,36 @@ async function editarVendaRestauracao(dados) {
 					} else {
 						try {
 							// Cadastra um Console sem Estoque
-							connection.query(sqlEditarTabelaConsole, [dados.inputModel, dados.inputProducer, dados.inputLaunchDate, dados.inputOriginality, dados.inputPrice, dados.inputConsoleDescription, dados.inputId], function (err, resultEditarTabelaConsole) {
+							connection.query(sqlEditarTabelaConsole, 
+								[
+									dados.inputModel, 
+									dados.inputProducer, 
+									dados.inputLaunchDate, 
+									dados.inputOriginality, 
+									dados.inputPrice, 
+									dados.inputConsoleDescription, 
+									dados.inputIdConsole
+								], function (err, resultEditarTabelaConsole) {
 								if (err) {
 									console.log("Erro ao editar na tabela Console no banco de dados: ", err);
 									reject(err);
 								}
 
 								// Insira os dados na tabela venda_restauracao para uma restauração
-								connection.query(sqlEditarVendaRestauracao, [dados.inputServiceDate, dados.inputServiceHour, dados.inputTotalValue, false, dados.inputDelivery, dados.inputQuantity, dados.inputRestorationDescription, idEmpresa, idCliente, dados.inputId, dados.inputIdVendaRestauracao], function (err, resultEditarVendaRestauracao) {
+								connection.query(sqlEditarVendaRestauracao, 
+									[
+										dados.inputServiceDate, 
+										dados.inputServiceHour, 
+										dados.inputTotalValue, 
+										false, 
+										dados.inputDelivery, 
+										dados.inputQuantity, 
+										dados.inputRestorationDescription, 
+										idEmpresa, 
+										idCliente, 
+										dados.inputIdConsole, 
+										inputId
+									], function (err, resultEditarVendaRestauracao) {
 									if (err) {
 										console.log("Erro ao editar a Venda/Restauração no banco de dados: ", err);
 										reject(err);
@@ -423,7 +443,19 @@ async function editarVendaRestauracao(dados) {
 
 					try {
 						// Insira os dados na tabela venda_restauracao para uma venda
-						connection.query(sqlEditarVendaRestauracao, [dados.inputServiceDate, dados.inputServiceHour, dados.inputTotalValue, true, dados.inputDelivery, dados.inputQuantity, dados.inputRestorationDescription, idEmpresa, idCliente, dados.inputId, dados.inputIdVendaRestauracao], function (err, resultEditarVendaRestauracao) {
+						connection.query(sqlEditarVendaRestauracao, 
+							[
+								dados.inputServiceDate, 
+								dados.inputServiceHour, 
+								dados.inputTotalValue, 
+								true, dados.inputDelivery, 
+								dados.inputQuantity, 
+								dados.inputRestorationDescription, 
+								idEmpresa, 
+								idCliente, 
+								dados.inputId, 
+								dados.inputIdVendaRestauracao
+							], function (err, resultEditarVendaRestauracao) {
 							if (err) {
 								console.log("Erro ao editar a Venda/Restauração no banco de dados: ", err);
 								reject(err);
@@ -444,6 +476,35 @@ async function editarVendaRestauracao(dados) {
 			});
 		});
 	});
+}
+
+async function verificarEntregaVendaRestauracao(inputId) {
+	
+	const sqlVerificarVenda = "SELECT CAST(estaEntregue AS DECIMAL) AS estaEntregue FROM venda_restauracao WHERE idVenda_Restauracao = ?;";
+
+	return new Promise(function (resolve, reject) {
+		pool.getConnection(function (err, connection) {
+			if (err) {
+				console.log("Erro GET CONNECTION: ", err);
+				reject(err);
+			}
+
+			// Verifica se a venda/restauração já foi entregue
+			connection.query(sqlVerificarVenda, inputId, function (err, resultVenda) {
+				if (err) {
+					console.log("Erro ao verificar a venda no banco de dados: ", err);
+					reject(err);
+				}
+
+				if(resultVenda[0].estaEntregue == 1) {
+					resolve(true)
+				}
+				else {
+					resolve(false)
+				}
+			})
+		})
+	})
 }
 
 // Visualizar Vendas/Restaurações no Banco de Dados
@@ -613,4 +674,4 @@ async function verificarEmpresaEmpregado(inputUser) {
 	})
 }
 
-export default { cadastrarVendaRestauracao, deletarVendaRestauracao, consultaDeletarVendaRestauracaoRegiao, editarVendaRestauracao, visualizarVendasRestauracoes, visualizarVendasRestauracoesRegiao, visualizarVendaRestauracao, visualizarVendaRestauracaoRegiao, verificarEmpresaEmpregado };
+export default { cadastrarVendaRestauracao, deletarVendaRestauracao, consultaDeletarVendaRestauracaoRegiao, editarVendaRestauracao, visualizarVendasRestauracoes, visualizarVendasRestauracoesRegiao, visualizarVendaRestauracao, visualizarVendaRestauracaoRegiao, verificarEmpresaEmpregado, verificarEntregaVendaRestauracao };
