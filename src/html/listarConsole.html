@@ -61,20 +61,18 @@
 
         <main class="flex-fill">
             <div class="container">
-                <div class="row">
-                    <div class="col-md-5">
+                <div class="row align-items-center">
+                    <div class="col-md-4">
                         <div class="text-start">
                             <a href="/">
                                 <button class="btn btn-danger btn-lg" type="button">Voltar</button>
                             </a>
                         </div>
                     </div>
-                    <div class="col-md-1">
-                        <div class="text-center">
-                            <h1>Consoles</h1>
-                        </div>
+                    <div class="col-md-4 text-center">
+                        <h1>Consoles de Venda</h1>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <div class="text-end">
                             <a href="registrarConsole.html" class="btn btn-danger btn-lg">+Novo Registro</a>
                         </div>
@@ -98,6 +96,15 @@
                         </tr>
                     </thead>
                     <tbody id="tbodyVendas"></tbody>
+                </table>
+                <hr class="mt-3">
+                <div class="row align-items-center">
+                    <div class="text-center">
+                            <h1>Consoles de Restauração</h1>
+                    </div>
+                </div>
+                <hr class="mt-3">
+                <table class="table table-bordered text-center">
                     <thead>
                         <tr>
                             <th scope="col">ID</th>
@@ -110,6 +117,7 @@
                     </thead>
                     <tbody id="tbodyRestauracoes"></tbody>
                 </table>
+
             </div>
         </main>
 
