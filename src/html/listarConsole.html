@@ -61,20 +61,18 @@
 
         <main class="flex-fill">
             <div class="container">
-                <div class="row">
-                    <div class="col-md-5">
+                <div class="row align-items-center">
+                    <div class="col-md-4">
                         <div class="text-start">
                             <a href="/">
                                 <button class="btn btn-danger btn-lg" type="button">Voltar</button>
                             </a>
                         </div>
                     </div>
-                    <div class="col-md-1">
-                        <div class="text-center">
-                            <h1>Consoles</h1>
-                        </div>
+                    <div class="col-md-4 text-center">
+                        <h1>Consoles de Venda</h1>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <div class="text-end">
                             <a href="registrarConsole.html" class="btn btn-danger btn-lg">+Novo Registro</a>
                         </div>
@@ -97,8 +95,29 @@
 
                         </tr>
                     </thead>
-                    <tbody></tbody>
+                    <tbody id="tbodyVendas"></tbody>
                 </table>
+                <hr class="mt-3">
+                <div class="row align-items-center">
+                    <div class="text-center">
+                            <h1>Consoles de Restauração</h1>
+                    </div>
+                </div>
+                <hr class="mt-3">
+                <table class="table table-bordered text-center">
+                    <thead>
+                        <tr>
+                            <th scope="col">ID</th>
+                            <th scope="col">Modelo</th>
+                            <th scope="col">Fabricante</th>
+                            <th scope="col">Data de Lançamento</th>
+                            <th scope="col">Originalidade</th>
+                            <th scope="col">Empresa</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbodyRestauracoes"></tbody>
+                </table>
+
             </div>
         </main>
 
@@ -156,9 +175,16 @@
     
     // Função para exibir os dados na tabela
     function exibirDadosNaTabela(dados) {
-        // Limpar o conteúdo existente dentro do <tbody>
-        tbody.innerHTML = "";
 
+        // Limpar o conteúdo existente dentro do <tbody>
+        document.getElementById("tbodyVendas").innerHTML = "";
+        document.getElementById("tbodyRestauracoes").innerHTML = "";
+
+        iterarTabelaVenda(dados[0])
+        iterarTabelaRestauracao(dados[1])
+    }
+
+    function iterarTabelaVenda(dados) {
         // Loop "forEach" para iterar sobre os dados e gerar as linhas da tabela
         dados.forEach(function (item) {
             // Criar uma nova linha da tabela (<tr>)
@@ -221,7 +247,46 @@
             tr.appendChild(excluirCell);
 
             // Adicionar a nova linha (<tr>) ao <tbody>
-            tbody.appendChild(tr);
+            document.getElementById("tbodyVendas").appendChild(tr);
+        });
+    }
+
+    function iterarTabelaRestauracao(dados) {
+
+        // Loop "forEach" para iterar sobre os dados e gerar as linhas da tabela
+        dados.forEach(function (item) {
+
+            // Criar uma nova linha da tabela (<tr>)
+            const tr = document.createElement("tr");
+
+            // Adicionar as células da tabela (<td>) com os valores correspondentes
+            const idCell = document.createElement("td");
+            idCell.textContent = item.idConsole;
+            tr.appendChild(idCell);
+
+            const modeloCell = document.createElement("td");
+            modeloCell.textContent = item.nomeConsole;
+            tr.appendChild(modeloCell);
+
+            const fabricanteCell = document.createElement("td");
+            fabricanteCell.textContent = item.nomeFabricante;
+            tr.appendChild(fabricanteCell);
+
+            const dataLancamentoCell = document.createElement("td");
+            var dataHora = item.dataLancamento.split("T")
+            dataLancamentoCell.textContent = dataHora[0];
+            tr.appendChild(dataLancamentoCell);
+
+            const originalidadeCell = document.createElement("td");
+            originalidadeCell.textContent = item.ehOriginal.data[0] === 0 ? "Não Original" : "Original";
+            tr.appendChild(originalidadeCell);
+
+            const empresaCell = document.createElement("td");
+            empresaCell.textContent = item.nomeEmpresa;
+            tr.appendChild(empresaCell);
+
+            // Adicionar a nova linha (<tr>) ao <tbody>
+            document.getElementById("tbodyRestauracoes").appendChild(tr);
         });
     }
 
@@ -285,8 +350,6 @@
                 throw new Error('Erro na solicitação');
             })
             .then(data => {
-                console.log(data);
-
                 if(data[0].sucesso) {
                     var modalSucesso = new bootstrap.Modal(document.getElementById('modalSucesso'));
                     modalSucesso.show();
@@ -320,9 +383,16 @@
             throw new Error('Erro na solicitação');
         })
         .then(data => {
-            console.log(data)
-            if(data[0].sucesso || data[0].idConsole > 0) {
-                exibirDadosNaTabela(data) 
+            if(data[0].sucesso && data[0].dados[0].idConsole > 0) {
+                // Limpar o conteúdo existente dentro do <tbody>
+                document.getElementById("tbodyVendas").innerHTML = "";
+                document.getElementById("tbodyRestauracoes").innerHTML = "";
+                if(data[0].tipo == "restauracao") {
+                    iterarTabelaRestauracao(data[0].dados)
+                }
+                else if(data[0].tipo == "venda") {
+                    iterarTabelaVenda(data[0].dados)
+                }
             }
             else {
                 var modalErro = new bootstrap.Modal(document.getElementById('modalErro'));
