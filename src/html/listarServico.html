@@ -315,21 +315,13 @@
         // Obter o valor do ID da célula correspondente
         const id = row.cells[0].textContent;
 
-        var url = "http://localhost:3000/gerenciarVendaRestauracao/editarVendaRestauracao/"
-        const urlTrue = url.concat(id)
+        // Obter o valor se é venda ou restauração da célula correspondente
+        const ehVenda = row.cells[7].textContent;
 
-        fetch(urlTrue)
-        .then(response => response.json())
-        .then(data => irTelaServico(data))
-        .catch(error => console.error(error));
-    
-        function irTelaServico(dados){
-
-            if(dados.ehVenda.data[0] === 0){
-                window.location.href = "alterarRestauracao.html?id=" + id;
-            }else{
-                window.location.href = "alterarVenda.html?id=" + id;
-            }
+        if(ehVenda == "Restauração"){
+            window.location.href = "alterarRestauracao.html?id=" + id;
+        } else if(ehVenda == "Venda") {
+            window.location.href = "alterarVenda.html?id=" + id;
         }
     }
 

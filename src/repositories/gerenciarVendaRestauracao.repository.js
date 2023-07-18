@@ -310,10 +310,11 @@ async function visualizarVendasRestauracoesRegiao(inputUser) {
 // Visualizar uma Venda/Restauração no Banco de Dados, pelo seu id
 async function visualizarVendaRestauracao(inputId) {
 
-	var sqlGetUmServico = "SELECT V.*, C.nomeCliente, E.nomeEmpresa\
+	var sqlGetUmServico = "SELECT V.*, C.nomeCliente, C.cpfCliente, E.nomeEmpresa, Cl.nomeConsole, Cl.nomeFabricante, Cl.dataLancamento, Cl.ehOriginal\
 	FROM venda_restauracao AS V\
 	JOIN cliente AS C ON V.FK_idCliente = C.idCliente\
 	JOIN empresa AS E ON V.FK_idEmpresa = E.idEmpresa\
+	JOIN console AS Cl ON V.FK_idConsole = Cl.idConsole\
 	WHERE V.idVenda_Restauracao = ?\
 	ORDER BY V.idVenda_Restauracao;"
 
@@ -344,11 +345,12 @@ async function visualizarVendaRestauracao(inputId) {
 // Visualizar uma Venda/Restauração de Uma Região no Banco de Dados, pelo seu id
 async function visualizarVendaRestauracaoRegiao(inputId, inputUser) {
 
-	var sqlGetUmServicoRegiao = "SELECT V.*, C.nomeCliente, E.nomeEmpresa\
+	var sqlGetUmServicoRegiao = "SELECT V.*, C.nomeCliente, C.cpfCliente, E.nomeEmpresa, Cl.nomeConsole, Cl.nomeFabricante, Cl.dataLancamento, Cl.ehOriginal\
 	FROM venda_restauracao AS V\
 	JOIN cliente AS C ON V.FK_idCliente = C.idCliente\
 	JOIN empresa AS E ON V.FK_idEmpresa = E.idEmpresa\
 	JOIN empregado AS Em ON V.FK_idEmpresa = Em.FK_idEmpresa\
+	JOIN console AS Cl ON V.FK_idConsole = Cl.idConsole\
 	WHERE V.idVenda_Restauracao = ? AND Em.nomeLoginEmpregado = ?\
 	ORDER BY V.idVenda_Restauracao;"
 

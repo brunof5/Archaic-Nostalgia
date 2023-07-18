@@ -59,7 +59,7 @@
                     </div>
                     <div class="col-md-1">
                         <div class="text-center d-flex align-items-center" style="height: 100%">
-                            <h1 style="white-space: nowrap">Cadastrar Venda</h1>
+                            <h1 style="white-space: nowrap">Alterar Venda</h1>
                         </div>
                     </div>
                     
@@ -80,8 +80,8 @@
                             </div>
                         <div class="row g-3">
                             <div class="col"> 
-                                <label for="inputID" class="form-label">ID do console:</label>
-                                <input type="number" class="form-control" name="inputID" id="inputID" required>
+                                <label for="inputId" class="form-label">ID do console:</label>
+                                <input type="number" class="form-control" name="inputId" id="inputId" required>
                             </div>
                             <div class="col"> 
                                 <label for="inputQuantity" class="form-label">Quantidade:</label>
@@ -163,7 +163,7 @@
 </body>
 <script>
    // Extrair o valor do parâmetro 'id' da URL
-   const urlParams = new URLSearchParams(window.location.search);
+    const urlParams = new URLSearchParams(window.location.search);
     const id = urlParams.get('id');
 
     var url = "http://localhost:3000/gerenciarVendaRestauracao/visualizarVendaRestauracao/"
@@ -197,7 +197,7 @@
 
         document.getElementById('inputCPF').value = data[0].CPFCliente;
         document.getElementById('inputDelivery').checked = data[0].situEntrega;
-        document.getElementById('inputID').value = data[0].idConsole;
+        document.getElementById('inputId').value = data[0].FK_idConsole;
         document.getElementById("inputQuantity").value = data[0].quantAtual;
         var dataVenda = data[0].dataVenda.split("T")
         document.getElementById('inputSellDate').value = dataVenda[0]; 
@@ -238,7 +238,7 @@
         const formData = {
             inputCPF: document.getElementById('inputCPF').value,
             inputDelivery: document.getElementById('inputDelivery').checked, 
-            inputID: document.getElementById('inputID').value,
+            inputId: document.getElementById('inputId').value,
             inputQuantity: document.getElementById('inputQuantity').value,
             inputSellDate: document.getElementById('inputSellDate').value, 
             inputHour: document.getElementById('inputHour').value, 
