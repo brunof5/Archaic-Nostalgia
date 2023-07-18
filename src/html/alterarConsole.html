@@ -212,7 +212,7 @@
         document.getElementById("inputPrice").value = data[0].preco;
         var dataHora = data[0].dataLancamento.split("T")
         document.getElementById("inputLaunchDate").value = dataHora[0];
-        document.getElementById("inputOriginality").checked = data[0].ehOriginal;
+        document.getElementById("inputOriginality").checked = data[0].ehOriginal.data[0];
         document.getElementById("inputQuantity").value = data[0].quantAtual;
         if (data[0].nomeEmpresa == "Starlight Ventures") {
             document.getElementById("inputCompanyRJ").checked = true;

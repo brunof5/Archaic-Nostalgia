@@ -241,7 +241,7 @@
             tr.appendChild(tipoServicoCell);
             
             const entregaCell = document.createElement("td");
-            entregaCell.textContent = item.estaEntregue.data[0] === 0 ? "Entregue" : "Não entregue";
+            entregaCell.textContent = item.estaEntregue.data[0] === 0 ? "Não entregue" : "Entregue";
             tr.appendChild(entregaCell);
 
             const quantidadeCell = document.createElement("td");

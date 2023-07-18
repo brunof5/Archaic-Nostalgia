@@ -82,8 +82,8 @@
                                 <input type="date" class="form-control" name="inputLaunchDate" id="inputLaunchDate" required>
                             </div>
                             <div class="col">
-                                <label for="inputIDConsole" class="form-label">ID do console:</label>
-                                <input type="text" class="form-control" name="inputIDConsole" id="inputIDConsole" value="0" disabled>
+                                <label for="inputIdConsole" class="form-label">ID do console:</label>
+                                <input type="text" class="form-control" name="inputIdConsole" id="inputIdConsole">
                             </div>
                         </div>
                         <div class="row g-3">
@@ -104,12 +104,12 @@
                         </div>
                         <div class="row g-3">
                             <div class="col">
-                                <label for="inputSellDate" class="form-label">Data da venda:</label>
-                                <input type="date" class="form-control" name="inputSellDate" id="inputSellDate" required>
+                                <label for="inputServiceDate" class="form-label">Data da venda:</label>
+                                <input type="date" class="form-control" name="inputServiceDate" id="inputServiceDate" required>
                             </div>
                             <div class="col">
-                                <label for="inputHour" class="form-label">Hora da venda:</label>
-                                <input type="time" class="form-control" name="inputHour" id="inputHour" required>
+                                <label for="inputServiceHour" class="form-label">Hora da venda:</label>
+                                <input type="time" class="form-control" name="inputServiceHour" id="inputServiceHour" required>
                             </div>
                         </div>
 
@@ -129,8 +129,8 @@
                                 <input type="number" class="form-control" name="inputPrice" id="inputPrice" value="0" disabled>
                             </div>
                             <div class="col"> 
-                                <label for="inputTotalPrice" class="form-label">Valor total:</label>
-                                <input type="number" class="form-control" name="inputTotalPrice" id="inputTotalPrice" required>
+                                <label for="inputTotalValue" class="form-label">Valor total:</label>
+                                <input type="number" class="form-control" name="inputTotalValue" id="inputTotalValue" required>
                             </div>  
                         </div>
                         <div class="row g-3">
@@ -235,17 +235,18 @@
 
         document.getElementById('inputModel').value = data[0].nomeConsole;
         document.getElementById('inputProducer').value = data[0].nomeFabricante;
+        document.getElementById('inputIdConsole').value = data[0].FK_idConsole;
         var dataHora = data[0].dataLancamento.split("T")
         document.getElementById("inputLaunchDate").value = dataHora[0];
-        document.getElementById("inputOriginality").checked = data[0].ehOriginal;  
-        document.getElementById('inputDelivery').checked = data[0].estaEntregue;
+        document.getElementById("inputOriginality").checked = data[0].ehOriginal.data[0]; 
+        document.getElementById('inputDelivery').checked = data[0].estaEntregue.data[0];
         var dataVenda = data[0].dataServico.split("T")
-        document.getElementById('inputSellDate').value = dataVenda[0];
+        document.getElementById('inputServiceDate').value = dataVenda[0];
         var horaVenda = data[0].horaServico.split("T")
-        document.getElementById('inputHour').value = horaVenda[0];
-        document.getElementById('inputCPF').value = data[0].CPFCliente;
+        document.getElementById('inputServiceHour').value = horaVenda[0];
+        document.getElementById('inputCPF').value = data[0].cpfCliente;
         document.getElementById("inputQuantity").value = data[0].qtdeConsoles;
-        document.getElementById('inputTotalPrice').value = data[0].valorTotal;
+        document.getElementById('inputTotalValue').value = data[0].valorTotal;
         document.getElementById('inputRestaurationDescription').value = data[0].descricaoRestauracao;
         if (data[0].nomeEmpresa == "Starlight Ventures") {
             document.getElementById("inputCompanyRJ").checked = true;
@@ -271,28 +272,28 @@
         event.preventDefault(); // Impede o envio padrão do formulário
 
         const radioButtons = document.querySelectorAll('input[name="inputCompany"]')
-        var inputCompany
+        var inputCompanyState
         for (const radioButton of radioButtons) {
             if (radioButton.checked) {
-                inputCompany = radioButton.value
+                inputCompanyState = radioButton.value
             }
         }
 
         const formData = {
+            inputCPF: document.getElementById('inputCPF').value,
+            inputCompanyState: inputCompanyState,
+            inputIdConsole: document.getElementById('inputIdConsole').value,
+            inputServiceDate: document.getElementById('inputServiceDate').value,
+            inputServiceHour: document.getElementById('inputServiceHour').value,
+            inputTotalValue: document.getElementById('inputTotalValue').value,
+            inputQuantity: document.getElementById('inputQuantity').value,
             inputModel: document.getElementById('inputModel').value,
             inputProducer: document.getElementById('inputProducer').value,
             inputLaunchDate: document.getElementById('inputLaunchDate').value,
-            inputIDConsole: document.getElementById('inputIDConsole').value,
+            inputPrice: document.getElementById('inputPrice').value,
             inputOriginality: document.getElementById('inputOriginality').checked, 
             inputDelivery: document.getElementById('inputDelivery').checked,
-            inputSellDate: document.getElementById('inputSellDate').value,
-            inputHour: document.getElementById('inputHour').value,
-            inputCPF: document.getElementById('inputCPF').value,
-            inputQuantity: document.getElementById('inputQuantity').value,
-            inputPrice: document.getElementById('inputPrice').value,
-            inputTotalPrice: document.getElementById('inputTotalPrice').value,
-            inputCompany: inputCompany,
-            inputRestaurationDescription: document.getElementById('inputRestaurationDescription').value
+            inputRestorationDescription: document.getElementById('inputRestaurationDescription').value
         };
 
         var urlAlterar = "http://localhost:3000/gerenciarVendaRestauracao/editarVendaRestauracao/"

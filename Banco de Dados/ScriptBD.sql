@@ -227,25 +227,21 @@ INSERT INTO Console (idConsole, nomeConsole, nomeFabricante, dataLancamento, ehO
 VALUES
 (1, 'Atari 2600', 'Atari, Inc.', '1977-09-11', FALSE, 199.00, 'O clássico console de videogame que marcou o início da indústria dos jogos eletrônicos.'),
 (2, 'Nintendo 64', 'Nintendo Co., Ltd.', '1996-06-23', FALSE, 299.00, 'Um console revolucionário com jogos 3D e o icônico controle com joystick analógico.'),
-(3, 'Mega Drive', 'Sega Enterprises Ltd.', '1988-10-29', TRUE, 149.00, 'Um console de 16 bits que competiu com o Super Nintendo e trouxe diversos jogos populares.'),
+(3, 'Mega Drive', 'Sega Enterprises Ltd.', '1988-10-29', TRUE, 0, 'Um console de 16 bits que competiu com o Super Nintendo e trouxe diversos jogos populares.'),
 (4, "Sega Genesis", "Sega Corporation", "1988-10-29", TRUE, 189.99, "Um dos consoles mais populares dos anos 90, conhecido por seus jogos icônicos."),
-(5, "Neo Geo", "SNK Corporation", "1990-04-26", TRUE, 649.99, "Um console de alta qualidade com gráficos impressionantes e jogos arcade exclusivos."),
+(5, "Neo Geo", "SNK Corporation", "1990-04-26", TRUE, 0, "Um console de alta qualidade com gráficos impressionantes e jogos arcade exclusivos."),
 (6, "TurboGrafx-16", "NEC Corporation", "1987-10-30", TRUE, 199.99, "Um console pioneiro que introduziu recursos avançados para a época."),
 (7, "Sega Saturn", "Sega Enterprises Ltd.", "1994-11-22", TRUE, 399.99, "Um console de 32 bits que trouxe jogos 3D e recursos inovadores."),
-(8, "Commodore 64", "Commodore International", "1982-08-01", TRUE, 595.00, "Um computador pessoal que também era usado para jogos."),
-(9, 'PlayStation 2', 'Sony Interactive Entertainment', '2000-03-04', TRUE, 299.00, 'Um console icônico que foi muito popular e teve uma grande biblioteca de jogos.');
+(8, "Commodore 64", "Commodore International", "1982-08-01", TRUE, 0, "Um computador pessoal que também era usado para jogos."),
+(9, 'PlayStation 2', 'Sony Interactive Entertainment', '2000-03-04', TRUE, 0, 'Um console icônico que foi muito popular e teve uma grande biblioteca de jogos.');
 
 INSERT INTO Estoque (quantAtual, FK_idConsole, FK_idEmpresa)
 VALUES
 (5, 1, 1),
 (12, 2, 1),
-(3, 3, 2),
 (2, 4, 2),
-(5, 5, 3),
 (3, 6, 3),
-(2, 7, 1),
-(4, 8, 2),
-(21, 9, 3);
+(2, 7, 1);
 
 INSERT INTO Venda_Restauracao (idVenda_Restauracao, dataServico, horaServico, valorTotal, ehVenda, estaEntregue, qtdeConsoles, descricaoRestauracao, avaliacao, FK_idEmpresa, FK_idCliente, FK_idConsole)
 VALUES

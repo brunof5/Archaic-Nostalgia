@@ -80,8 +80,8 @@
                             </div>
                         <div class="row g-3">
                             <div class="col"> 
-                                <label for="inputId" class="form-label">ID do console:</label>
-                                <input type="number" class="form-control" name="inputId" id="inputId" required>
+                                <label for="inputIdConsole" class="form-label">ID do console:</label>
+                                <input type="number" class="form-control" name="inputIdConsole" id="inputIdConsole" required>
                             </div>
                             <div class="col"> 
                                 <label for="inputQuantity" class="form-label">Quantidade:</label>
@@ -90,12 +90,12 @@
                         </div>
                         <div class="row g-3">
                             <div class="col">
-                                <label for="inputLaunchDate" class="form-label">Data da venda:</label>
-                                <input type="date" class="form-control" name="inputLaunchDate" id="inputLaunchDate" required>
+                                <label for="inputServiceDate" class="form-label">Data da venda:</label>
+                                <input type="date" class="form-control" name="inputServiceDate" id="inputServiceDate" required>
                             </div>
                             <div class="col">
-                                <label for="inputHour" class="form-label">Hora da venda:</label>
-                                <input type="time" class="form-control" name="inputHour" id="inputHour" required>
+                                <label for="inputServiceHour" class="form-label">Hora da venda:</label>
+                                <input type="time" class="form-control" name="inputServiceHour" id="inputServiceHour" required>
                             </div>
                         </div>
                         <div class="row g-3">
@@ -109,8 +109,8 @@
                                 <label for="inputCompanyRJ">RJ</label>
                             </div>
                             <div class="col">
-                                <label for="inputPrice" class="form-label">Valor total:</label>
-                                <input type="number" class="form-control" name="inputPrice" id="inputPrice" required>
+                                <label for="inputTotalValue" class="form-label">Valor total:</label>
+                                <input type="number" class="form-control" name="inputTotalValue" id="inputTotalValue" required>
                             </div>                        
                         </div>
                         <hr class="mt-3">
@@ -195,15 +195,14 @@
 
     function exibirDadosNaTabela(data) {
 
-        document.getElementById('inputCPF').value = data[0].CPFCliente;
-        document.getElementById('inputDelivery').checked = data[0].estaEntregue;
-        document.getElementById('inputId').value = data[0].FK_idConsole;
+        document.getElementById('inputCPF').value = data[0].cpfCliente;
+        document.getElementById('inputDelivery').checked = data[0].estaEntregue.data[0];
+        document.getElementById('inputIdConsole').value = data[0].FK_idConsole;
         document.getElementById("inputQuantity").value = data[0].qtdeConsoles;
         var dataVenda = data[0].dataServico.split("T")
-        document.getElementById('inputSellDate').value = dataVenda[0]; 
-        var horaVenda = data[0].horaServico.split("T")
-        document.getElementById('inputHour').value = horaVenda[0];
-        document.getElementById('inputPrice').value = data[0].valorTotal;
+        document.getElementById('inputServiceDate').value = dataVenda[0];
+        document.getElementById('inputServiceHour').value = data[0].horaServico;
+        document.getElementById('inputTotalValue').value = data[0].valorTotal;
         if (data[0].nomeEmpresa == "Starlight Ventures") {
             document.getElementById("inputCompanyRJ").checked = true;
         }
@@ -228,22 +227,24 @@
         event.preventDefault(); // Impede o envio padrão do formulário
 
         const radioButtons = document.querySelectorAll('input[name="inputCompany"]')
-        var inputCompany
+        var inputCompanyState
         for (const radioButton of radioButtons) {
             if (radioButton.checked) {
-                inputCompany = radioButton.value
+                inputCompanyState = radioButton.value
             }
         }
 
         const formData = {
+             
             inputCPF: document.getElementById('inputCPF').value,
-            inputDelivery: document.getElementById('inputDelivery').checked, 
-            inputId: document.getElementById('inputId').value,
+            inputCompanyState: inputCompanyState,
+            inputIdConsole: document.getElementById('inputIdConsole').value,
+            inputServiceDate: document.getElementById('inputServiceDate').value,
+            inputServiceHour: document.getElementById('inputServiceHour').value,
+            inputTotalValue: document.getElementById('inputTotalValue').value,
+            inputDelivery: document.getElementById('inputDelivery').checked,
             inputQuantity: document.getElementById('inputQuantity').value,
-            inputSellDate: document.getElementById('inputSellDate').value, 
-            inputHour: document.getElementById('inputHour').value, 
-            inputCompany: inputCompany,
-            inputPrice: document.getElementById('inputPrice').value
+            inputEhVenda: true
         };
 
         var urlAlterar = "http://localhost:3000/gerenciarVendaRestauracao/editarVendaRestauracao/"
