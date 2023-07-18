@@ -72,7 +72,7 @@ async function deletarVendaRestauracao(inputId, sessao) {
     }
 }
 
-async function editarVendaRestauracao(inputId, inputCPF, inputCompanyState, inputServiceDate, inputServiceHour, inputTotalValue, inputModel, inputProducer, inputLaunchDate, inputOriginality, inputPrice, inputConsoleDescription, inputRestorationDescription, inputDelivery, inputQuantity, inputIdVendaRestauracao, sessao) {
+async function editarVendaRestauracao(dados, sessao) {
 
     if (sessao.cargo == "funcionario") {
         var consultaFuncionario = await gerenciarVendaRestauracaoRepository.verificarEmpresaEmpregado(sessao.nome)
@@ -89,7 +89,7 @@ async function editarVendaRestauracao(inputId, inputCPF, inputCompanyState, inpu
                 var json = [data]
                 return JSON.stringify(json)
             }
-            return (await gerenciarVendaRestauracaoRepository.editarVendaRestauracao(inputId, inputCPF, inputCompanyState, inputServiceDate, inputServiceHour, inputTotalValue, inputModel, inputProducer, inputLaunchDate, inputOriginality, inputPrice, inputConsoleDescription, inputRestorationDescription, inputDelivery, inputQuantity, inputIdVendaRestauracao));
+            return (await gerenciarVendaRestauracaoRepository.editarVendaRestauracao(dados));
         }
         else {
             var data = { sucesso: false, mensagem: "Você não pode editar uma Venda/Restauração em uma empresa que não seja de sua região!" }
@@ -105,7 +105,7 @@ async function editarVendaRestauracao(inputId, inputCPF, inputCompanyState, inpu
             var json = [data]
             return JSON.stringify(json)
         }
-        return (await gerenciarVendaRestauracaoRepository.editarVendaRestauracao(inputId, inputCPF, inputCompanyState, inputServiceDate, inputServiceHour, inputTotalValue, inputModel, inputProducer, inputLaunchDate, inputOriginality, inputPrice, inputConsoleDescription, inputRestorationDescription, inputDelivery, inputQuantity, inputIdVendaRestauracao));
+        return (await gerenciarVendaRestauracaoRepository.editarVendaRestauracao(dados));
     }
 
     else {

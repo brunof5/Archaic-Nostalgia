@@ -80,8 +80,8 @@
                             </div>
                         <div class="row g-3">
                             <div class="col"> 
-                                <label for="inputId" class="form-label">ID do console:</label>
-                                <input type="number" class="form-control" name="inputId" id="inputId" required>
+                                <label for="inputIdConsole" class="form-label">ID do console:</label>
+                                <input type="number" class="form-control" name="inputIdConsole" id="inputIdConsole" required>
                             </div>
                             <div class="col"> 
                                 <label for="inputQuantity" class="form-label">Quantidade:</label>
@@ -181,13 +181,14 @@
         const formData = {
             inputCPF: document.getElementById('inputCPF').value,
             inputCompanyState: inputCompanyState,
-            inputId: document.getElementById('inputId').value,
+            inputIdConsole: document.getElementById('inputIdConsole').value,
             inputServiceDate: document.getElementById('inputServiceDate').value,
             inputServiceHour: document.getElementById('inputServiceHour').value,
             inputTotalValue: document.getElementById('inputTotalValue').value,
             inputDelivery: document.getElementById('inputDelivery').checked,
             inputQuantity: document.getElementById('inputQuantity').value,
-            inputEhVenda: true
+            inputEhVenda: true,
+            inputRestorationDescription: null
         };
 
         // Cria a URL de destino para a requisição

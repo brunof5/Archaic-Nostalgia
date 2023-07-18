@@ -35,12 +35,12 @@ async function cadastrarVendaRestauracao(req, res) {
         }
 
         // Verifica o ID do Console
-        else if (dados.inputId == undefined || dados.inputId == null || dados.inputId == '') {
+        else if (dados.inputIdConsole == undefined || dados.inputIdConsole == null || dados.inputIdConsole == '') {
             var data = { sucesso: false, mensagem: "O campo ID do Console não pode ser vazio!" }
             var json = [data]
             res.send(JSON.stringify(json))
         }
-        else if (!Number.isInteger(parseInt(dados.inputId))) {
+        else if (!Number.isInteger(parseInt(dados.inputIdConsole))) {
             var data = { sucesso: false, mensagem: "O campo ID do Console não é um valor inteiro!" }
             var json = [data]
             res.send(JSON.stringify(json))
@@ -84,7 +84,7 @@ async function cadastrarVendaRestauracao(req, res) {
             res.send(JSON.stringify(json))
         }
 
-        else if(dados.inputId == '0') {
+        else if(dados.inputIdConsole == '0') {
 
             // Verifica Modelo
             if (dados.inputModel == undefined || dados.inputModel == null || dados.inputModel == '') {
@@ -209,12 +209,12 @@ async function editarVendaRestauracao(req, res) {
         }
 
         // Verifica o ID do Console
-        else if (dados.inputId == undefined || dados.inputId == null || dados.inputId == '') {
+        else if (dados.inputIdConsole == undefined || dados.inputIdConsole == null || dados.inputIdConsole == '') {
             var data = { sucesso: false, mensagem: "O campo ID do Console não pode ser vazio!" }
             var json = [data]
             res.send(JSON.stringify(json))
         }
-        else if (!Number.isInteger(parseInt(dados.inputId))) {
+        else if (!Number.isInteger(parseInt(dados.inputIdConsole))) {
             var data = { sucesso: false, mensagem: "O campo ID do Console não é um valor inteiro!" }
             var json = [data]
             res.send(JSON.stringify(json))
@@ -258,7 +258,7 @@ async function editarVendaRestauracao(req, res) {
             res.send(JSON.stringify(json))
         }
 
-        else if(dados.inputId == '0') {
+        else if(dados.inputIdConsole == '0') {
 
             // Verifica Modelo
             if (dados.inputModel == undefined || dados.inputModel == null || dados.inputModel == '') {
