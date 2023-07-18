@@ -237,17 +237,15 @@
         document.getElementById('inputProducer').value = data[0].nomeFabricante;
         var dataHora = data[0].dataLancamento.split("T")
         document.getElementById("inputLaunchDate").value = dataHora[0];
-        document.getElementById('inputIDConsole').value = data[0].idConsole;
         document.getElementById("inputOriginality").checked = data[0].ehOriginal;  
-        document.getElementById('inputDelivery').checked = data[0].situEntrega;
-        var dataVenda = data[0].dataVenda.split("T")
+        document.getElementById('inputDelivery').checked = data[0].estaEntregue;
+        var dataVenda = data[0].dataServico.split("T")
         document.getElementById('inputSellDate').value = dataVenda[0];
-        var horaVenda = data[0].horaVenda.split("T")
+        var horaVenda = data[0].horaServico.split("T")
         document.getElementById('inputHour').value = horaVenda[0];
         document.getElementById('inputCPF').value = data[0].CPFCliente;
-        document.getElementById("inputQuantity").value = data[0].quantAtual;
-        document.getElementById("inputPrice").value = data[0].preco;
-        document.getElementById('inputTotalPrice').value = data[0].precoTotal;
+        document.getElementById("inputQuantity").value = data[0].qtdeConsoles;
+        document.getElementById('inputTotalPrice').value = data[0].valorTotal;
         document.getElementById('inputRestaurationDescription').value = data[0].descricaoRestauracao;
         if (data[0].nomeEmpresa == "Starlight Ventures") {
             document.getElementById("inputCompanyRJ").checked = true;
@@ -317,7 +315,6 @@
             console.log(data)
             
             if(data[0].sucesso) {
-
                 var modalSucesso = new bootstrap.Modal(document.getElementById('modalSucesso'));
                 modalSucesso.show();
             }else{
@@ -325,7 +322,7 @@
                 var modalErro = new bootstrap.Modal(document.getElementById('modalErro'));
                 modalErro.show();
                 document.getElementById('modalErrorMessage').textContent = data[0].mensagem;
-                }
+            }
 
         })
         .catch(error => {
