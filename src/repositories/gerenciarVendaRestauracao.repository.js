@@ -194,9 +194,10 @@ async function cadastrarVendaRestauracao(dados) {
 // Deleta Venda/Restauração no Banco de Dados, pelo id
 async function deletarVendaRestauracao(inputId) {
 
-	const sqlVerificarVenda = "SELECT estaEntregue, ehVenda, qtdeConsoles, FK_idConsole, FK_idEmpresa FROM venda_restauracao WHERE idVenda_Restauracao = ?;";
+	const sqlVerificarVenda = "SELECT CAST(estaEntregue AS DECIMAL) AS estaEntregue, CAST(ehVenda AS DECIMAL) AS ehVenda, qtdeConsoles, FK_idConsole, FK_idEmpresa FROM venda_restauracao WHERE idVenda_Restauracao = ?;";
 	const sqlAtualizarEstoque = "UPDATE estoque SET quantAtual = quantAtual + ? WHERE FK_idConsole = ? AND FK_idEmpresa = ?;";
 	const sqlDeletarVendaRestauracao = "DELETE FROM venda_restauracao WHERE idVenda_Restauracao = ?;";
+	const sqlDeletarConsoleRestauracao = "DELETE FROM console WHERE idConsole = ?"
 
 	const paramsId = [inputId];
 
@@ -210,7 +211,7 @@ async function deletarVendaRestauracao(inputId) {
 				reject(err);
 			}
 
-			// Verificar se o serviço é uma venda
+			// Verificar os dados do serviço
 			connection.query(sqlVerificarVendaFormatted, function (err, resultVenda) {
 				if (err) {
 					console.log("Erro ao verificar se a Venda/Restauração é uma venda no banco de dados: ", err);
@@ -219,7 +220,9 @@ async function deletarVendaRestauracao(inputId) {
 
 				const estaEntregue = resultVenda[0].estaEntregue;
 
-				if (estaEntregue) {
+				console.log(resultVenda)
+
+				if (estaEntregue == 1) {
 					var data = { sucesso: false, mensagem: "Não é possível deletar a Venda/Restauração pois já está entregue." };
 					var json = [data];
 					resolve(JSON.stringify(json));
@@ -232,7 +235,7 @@ async function deletarVendaRestauracao(inputId) {
 				const idConsole = resultVenda[0].FK_idConsole;
 				const idEmpresa = resultVenda[0].FK_idEmpresa;
 
-				if (ehVenda) {
+				if (ehVenda == 1) {
 					// Atualizar o estoque
 					connection.query(sqlAtualizarEstoque, [qtdeConsoles, idConsole, idEmpresa], function (err, resultAtualizacaoEstoque) {
 						if (err) {
@@ -250,6 +253,17 @@ async function deletarVendaRestauracao(inputId) {
 					}
 
 					console.log("Venda/Restauração removida com sucesso! Id da Venda/Restauração: " + inputId);
+
+					if(ehVenda == 0) {
+						connection.query(sqlDeletarConsoleRestauracao, idConsole, function (err, resultDeletarConsoleRestauracao) {
+							if (err) {
+								console.log("Erro ao remover o console de restauração no banco de dados: ", err);
+								reject(err);
+							}
+	
+							console.log("Console de restauração removido com sucesso! Id do Console: " + idConsole);
+						})
+					}
 
 					var data = { sucesso: true, mensagem: "Remoção feita com sucesso!" };
 					var json = [data];
