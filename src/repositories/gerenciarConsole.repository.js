@@ -112,6 +112,39 @@ async function deletarConsole(inputId) {
 	})
 }
 
+// Consulta para analisar se um console pode ser deletado (que não pertence a um serviço)
+async function consultaDeletarConsole(inputId) {
+
+	const sqlConsultaId = "SELECT idVenda_Restauracao\
+	FROM venda_restauracao AS VR, console AS C\
+	WHERE C.idConsole=? AND VR.FK_idConsole=C.idConsole;"
+
+	const paramsConsultarId = [inputId]
+
+	const sqlConsultaIdFormatted = mysql.format(sqlConsultaId, paramsConsultarId)
+
+	return new Promise(function (resolve, reject) {
+		pool.getConnection(function (err, connection) {
+			if (err) {
+				console.log("Erro GET CONNECTION: ", err);
+        		reject(err);
+			}
+
+			connection.query(sqlConsultaIdFormatted, function (err, resultId) {
+				if (err) {
+					console.log("Erro ao deletar no banco de dados (pegar ids) ", err)
+					reject(err)
+				}
+				console.log("Id: ", resultId)
+
+				resolve(resultId)
+			})
+
+			connection.release();
+		})
+	})
+}
+
 // Consulta para ver se o funcionario pode deletar um console, pelo id
 async function consultaDeletarConsoleRegiao(inputId, inputUser) {
 
@@ -295,8 +328,8 @@ async function visualizarConsolesRegiao(inputUser) {
 	})
 }
 
-// Visualizar um Console no Banco de Dados, pelo seu id
-async function visualizarConsole(inputId) {
+// Visualizar um Console de Venda no Banco de Dados, pelo seu id
+async function visualizarConsoleVenda(inputId) {
 
 	var sqlGetUmConsole = "SELECT C.*, Est.quantAtual, Emp.nomeEmpresa\
 	FROM console AS C, estoque AS Est, empresa AS Emp\
@@ -326,16 +359,15 @@ async function visualizarConsole(inputId) {
 	})
 }
 
-// Visualizar um Consoles de Uma Região no Banco de Dados, pelo seu id
-async function visualizarConsoleRegiao(inputId, inputUser) {
+// Visualizar um Console de Restauração no Banco de Dados, pelo seu id
+async function visualizarConsoleRestauracao(inputId) {
 
-	var sqlGetUmConsoleRegiao = "SELECT C.*, Est.quantAtual, Emp.nomeEmpresa\
-	FROM console AS C, estoque AS Est, empresa AS Emp, empregado\
-	WHERE C.idConsole=? AND C.idConsole=Est.FK_idConsole AND Est.FK_idEmpresa=Emp.idEmpresa AND Emp.idEmpresa=empregado.FK_idEmpresa AND empregado.nomeLoginEmpregado=?\
-	ORDER BY C.idConsole;"
+	var sqlGetUmConsoleRestauracao = "SELECT C.*, E.nomeEmpresa\
+	FROM console AS C, empresa AS E, venda_restauracao AS VR\
+	WHERE C.idConsole=? AND VR.FK_idEmpresa=E.idEmpresa AND VR.FK_idConsole=C.idConsole AND VR.ehVenda=0;"
 
-	const paramsGetTodosConsolesRegiao = [inputId, inputUser]
-	const sqlGetUmConsoleRegiaoFormatted = mysql.format(sqlGetUmConsoleRegiao, paramsGetTodosConsolesRegiao);
+	const paramsGetUmConsole = [inputId]
+	const sqlGetUmConsoleRestauracaoFormatted = mysql.format(sqlGetUmConsoleRestauracao, paramsGetUmConsole);
 
 	return new Promise(function (resolve, reject) {
 		pool.getConnection(function (err, connection) {
@@ -343,7 +375,69 @@ async function visualizarConsoleRegiao(inputId, inputUser) {
 				console.log("Erro GET CONNECTION: ", err);
         		reject(err);
 			}
-			connection.query(sqlGetUmConsoleRegiaoFormatted, function (err, results) {
+			connection.query(sqlGetUmConsoleRestauracaoFormatted, function (err, results) {
+				if (err) {
+					console.log("Erro ao pegar um console no banco de dados: ", err);
+					reject(err);
+				}
+				else {
+					resolve(results)
+				}
+			})
+
+			connection.release();
+		})
+	})
+}
+
+// Visualizar um Console de Venda de Uma Região no Banco de Dados, pelo seu id
+async function visualizarConsoleVendaRegiao(inputId, inputUser) {
+
+	var sqlGetUmConsoleVendaRegiao = "SELECT C.*, Est.quantAtual, Emp.nomeEmpresa\
+	FROM console AS C, estoque AS Est, empresa AS Emp, empregado\
+	WHERE C.idConsole=? AND C.idConsole=Est.FK_idConsole AND Est.FK_idEmpresa=Emp.idEmpresa AND Emp.idEmpresa=empregado.FK_idEmpresa AND empregado.nomeLoginEmpregado=?;"
+
+	const paramsGetTodosConsolesRegiao = [inputId, inputUser]
+	const sqlGetUmConsoleVendaRegiaoFormatted = mysql.format(sqlGetUmConsoleVendaRegiao, paramsGetTodosConsolesRegiao);
+
+	return new Promise(function (resolve, reject) {
+		pool.getConnection(function (err, connection) {
+			if (err) {
+				console.log("Erro GET CONNECTION: ", err);
+        		reject(err);
+			}
+			connection.query(sqlGetUmConsoleVendaRegiaoFormatted, function (err, results) {
+				if (err) {
+					console.log("Erro ao pegar um console de uma região no banco de dados: ", err);
+					reject(err);
+				}
+				else {
+					resolve(results)
+				}
+			})
+
+			connection.release();
+		})
+	})
+}
+
+// Visualizar um Console de Restauração de Uma Região no Banco de Dados, pelo seu id
+async function visualizarConsoleRestauracaoRegiao(inputId, inputUser) {
+
+	var sqlGetUmConsoleRestauracaoRegiao = "SELECT C.*, E.nomeEmpresa\
+	FROM console AS C, empresa AS E, venda_restauracao AS VR, empregado\
+	WHERE C.idConsole=? AND VR.FK_idEmpresa=E.idEmpresa AND VR.FK_idConsole=C.idConsole AND VR.ehVenda=0 AND E.idEmpresa=empregado.FK_idEmpresa AND empregado.nomeLoginEmpregado=?;"
+
+	const paramsGetTodosConsolesRegiao = [inputId, inputUser]
+	const sqlGetUmConsoleRestauracaoRegiaoFormatted = mysql.format(sqlGetUmConsoleRestauracaoRegiao, paramsGetTodosConsolesRegiao);
+
+	return new Promise(function (resolve, reject) {
+		pool.getConnection(function (err, connection) {
+			if (err) {
+				console.log("Erro GET CONNECTION: ", err);
+        		reject(err);
+			}
+			connection.query(sqlGetUmConsoleRestauracaoRegiaoFormatted, function (err, results) {
 				if (err) {
 					console.log("Erro ao pegar um console de uma região no banco de dados: ", err);
 					reject(err);
@@ -389,4 +483,4 @@ async function verificarEmpresaEmpregado(inputUser) {
 	})
 }
 
-export default { cadastrarConsole, deletarConsole, consultaDeletarConsoleRegiao, editarConsole, visualizarConsoles, visualizarConsolesRegiao, visualizarConsole, visualizarConsoleRegiao, verificarEmpresaEmpregado };
+export default { cadastrarConsole, deletarConsole, consultaDeletarConsole, consultaDeletarConsoleRegiao, editarConsole, visualizarConsoles, visualizarConsolesRegiao, visualizarConsoleVenda, visualizarConsoleRestauracao, visualizarConsoleVendaRegiao, visualizarConsoleRestauracaoRegiao, verificarEmpresaEmpregado };

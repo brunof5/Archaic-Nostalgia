@@ -196,8 +196,7 @@
             throw new Error('Erro na solicitação');
         })
         .then(data => {
-            console.log(data)
-            exibirDadosNaTabela(data)
+            exibirDadosNaTabela(data[0].dados)
         })
         .catch(error => {
             console.error(error);
@@ -283,8 +282,6 @@
             throw new Error('Erro na solicitação');
         })
         .then(data => {
-            console.log(data)
-            
             if(data[0].sucesso) {
 
                 var modalSucesso = new bootstrap.Modal(document.getElementById('modalSucesso'));

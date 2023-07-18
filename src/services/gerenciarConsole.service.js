@@ -33,7 +33,7 @@ async function cadastrarConsole(inputModel, inputProducer, inputLaunchDate, inpu
 async function deletarConsole(inputId, sessao) {
 
     if (sessao.cargo == "funcionario") {
-        var consultaConsoleRegiao = await gerenciarConsoleRepository.visualizarConsoleRegiao(inputId, sessao.nome)
+        var consultaConsoleRegiao = await gerenciarConsoleRepository.visualizarConsoleVendaRegiao(inputId, sessao.nome)
         if (consultaConsoleRegiao == 0) {
             const data = { sucesso: false, mensagem: "O console não existe!" };
             const json = [data];
@@ -42,8 +42,14 @@ async function deletarConsole(inputId, sessao) {
         else {
 
             var consultaRemocaoConsole = await gerenciarConsoleRepository.consultaDeletarConsoleRegiao(inputId, sessao.nome)
+            var consultaRemocaoConsoleSemServico = await gerenciarConsoleRepository.consultaDeletarConsole(inputId)
             if (consultaRemocaoConsole == 0) {
                 var data = { sucesso: false, mensagem: "Você não pode deletar um console em uma empresa que não seja de sua região!" }
+            	var json = [data]
+            	return JSON.stringify(json)
+            }
+            else if (consultaRemocaoConsoleSemServico.length > 0) {
+                var data = { sucesso: false, mensagem: "Você não pode deletar um console que faz parte de um serviço!" }
             	var json = [data]
             	return JSON.stringify(json)
             }
@@ -54,11 +60,17 @@ async function deletarConsole(inputId, sessao) {
     }
 
     else if (sessao.cargo == "admin") {
-        var consultaConsole = await gerenciarConsoleRepository.visualizarConsole(inputId)
+        var consultaConsole = await gerenciarConsoleRepository.visualizarConsoleVenda(inputId)
+        var consultaRemocaoConsoleSemServico = await gerenciarConsoleRepository.consultaDeletarConsole(inputId)
         if (consultaConsole == 0) {
             const data = { sucesso: false, mensagem: "O console não existe!" };
             const json = [data];
             return (JSON.stringify(json))
+        }
+        else if(consultaRemocaoConsoleSemServico.length > 0) {
+            var data = { sucesso: false, mensagem: "Você não pode deletar um console que faz parte de um serviço!" }
+            var json = [data]
+            return JSON.stringify(json)
         }
         else {
             return (await gerenciarConsoleRepository.deletarConsole(inputId));
@@ -83,7 +95,7 @@ async function editarConsole(inputId, inputModel, inputProducer, inputLaunchDate
 
         if(consultaFuncionario === json) {
 
-            var consultaConsole = await gerenciarConsoleRepository.visualizarConsole(inputId)
+            var consultaConsole = await gerenciarConsoleRepository.visualizarConsoleVenda(inputId)
             if (consultaConsole == 0) {
                 var data = { sucesso: false, mensagem: "O console não existe!" }
                 var json = [data]
@@ -99,7 +111,7 @@ async function editarConsole(inputId, inputModel, inputProducer, inputLaunchDate
     }
 
     else if (sessao.cargo == "admin") {
-        var consultaConsole = await gerenciarConsoleRepository.visualizarConsole(inputId)
+        var consultaConsole = await gerenciarConsoleRepository.visualizarConsoleVenda(inputId)
         if (consultaConsole == 0) {
             var data = { sucesso: false, mensagem: "O console não existe!" }
             var json = [data]
@@ -153,28 +165,46 @@ async function visualizarConsoles(sessao) {
 async function visualizarConsole(inputId, sessao) {
 
     if (sessao.cargo == "funcionario") {
-        var consultaConsoleRegiao = await gerenciarConsoleRepository.visualizarConsoleRegiao(inputId, sessao.nome)
-        if (consultaConsoleRegiao == 0) {
+        var consultaConsoleVenda = await gerenciarConsoleRepository.visualizarConsoleVendaRegiao(inputId, sessao.nome)
+        var consultaConsoleRestauracao = await gerenciarConsoleRepository.visualizarConsoleRestauracaoRegiao(inputId, sessao.nome)
+        if (consultaConsoleVenda.length == 0 && consultaConsoleRestauracao.length == 0) {
             const data = { sucesso: false, mensagem: "O console não existe!" };
             const json = [data];
             return (JSON.stringify(json))
         }
-        else {
-            console.log("Get de um console feito com sucesso! id do Console: " + inputId)
-            return consultaConsoleRegiao
+        else if(consultaConsoleVenda.length == 0 && consultaConsoleRestauracao.length > 0) {
+            console.log("Get de um console de restauração feito com sucesso! id do Console: " + inputId)
+            const data = { sucesso: true, tipo: "restauracao", dados: consultaConsoleRestauracao};
+            const json = [data];
+            return (JSON.stringify(json))
+        }
+        else if(consultaConsoleVenda.length > 0 && consultaConsoleRestauracao.length == 0) {
+            console.log("Get de um console de venda feito com sucesso! id do Console: " + inputId)
+            const data = { sucesso: true, tipo: "venda", dados: consultaConsoleVenda };
+            const json = [data];
+            return (JSON.stringify(json))
         }
     }
 
     else if (sessao.cargo == "admin") {
-        var consultaConsole = await gerenciarConsoleRepository.visualizarConsole(inputId)
-        if (consultaConsole == 0) {
+        var consultaConsoleVenda = await gerenciarConsoleRepository.visualizarConsoleVenda(inputId)
+        var consultaConsoleRestauracao = await gerenciarConsoleRepository.visualizarConsoleRestauracao(inputId)
+        if (consultaConsoleVenda.length == 0 && consultaConsoleRestauracao.length == 0) {
             const data = { sucesso: false, mensagem: "O console não existe!" };
             const json = [data];
             return (JSON.stringify(json))
         }
-        else {
-            console.log("Get de um console feito com sucesso! id do Console: " + inputId)
-            return consultaConsole
+        else if(consultaConsoleVenda.length == 0 && consultaConsoleRestauracao.length > 0) {
+            console.log("Get de um console de restauração feito com sucesso! id do Console: " + inputId)
+            const data = { sucesso: true, tipo: "restauracao", dados: consultaConsoleRestauracao};
+            const json = [data];
+            return (JSON.stringify(json))
+        }
+        else if(consultaConsoleVenda.length > 0 && consultaConsoleRestauracao.length == 0) {
+            console.log("Get de um console de venda feito com sucesso! id do Console: " + inputId)
+            const data = { sucesso: true, tipo: "venda", dados: consultaConsoleVenda };
+            const json = [data];
+            return (JSON.stringify(json))
         }
     }
 

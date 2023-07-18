@@ -350,8 +350,6 @@
                 throw new Error('Erro na solicitação');
             })
             .then(data => {
-                console.log(data);
-
                 if(data[0].sucesso) {
                     var modalSucesso = new bootstrap.Modal(document.getElementById('modalSucesso'));
                     modalSucesso.show();
@@ -385,9 +383,16 @@
             throw new Error('Erro na solicitação');
         })
         .then(data => {
-            console.log(data)
-            if(data[0].sucesso || data[0].idConsole > 0) {
-                exibirDadosNaTabela(data) 
+            if(data[0].sucesso && data[0].dados[0].idConsole > 0) {
+                // Limpar o conteúdo existente dentro do <tbody>
+                document.getElementById("tbodyVendas").innerHTML = "";
+                document.getElementById("tbodyRestauracoes").innerHTML = "";
+                if(data[0].tipo == "restauracao") {
+                    iterarTabelaRestauracao(data[0].dados)
+                }
+                else if(data[0].tipo == "venda") {
+                    iterarTabelaVenda(data[0].dados)
+                }
             }
             else {
                 var modalErro = new bootstrap.Modal(document.getElementById('modalErro'));
