@@ -156,9 +156,15 @@
     
     // Função para exibir os dados na tabela
     function exibirDadosNaTabela(dados) {
+
         // Limpar o conteúdo existente dentro do <tbody>
         tbody.innerHTML = "";
 
+        iterarTabela(dados[0])
+        iterarTabela(dados[1])
+    }
+
+    function iterarTabela(dados) {
         // Loop "forEach" para iterar sobre os dados e gerar as linhas da tabela
         dados.forEach(function (item) {
             // Criar uma nova linha da tabela (<tr>)

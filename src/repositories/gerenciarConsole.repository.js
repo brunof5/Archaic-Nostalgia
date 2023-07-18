@@ -204,6 +204,11 @@ async function editarConsole(inputId, inputModel, inputProducer, inputLaunchDate
 // Visualizar Consoles no Banco de Dados
 async function visualizarConsoles() {
 
+	var sqlGetTodosConsolesRestauracao = "SELECT C.*, E.nomeEmpresa\
+	FROM console AS C, empresa AS E, venda_restauracao AS VR\
+	WHERE VR.FK_idEmpresa=E.idEmpresa AND VR.FK_idConsole=C.idConsole AND VR.ehVenda=0\
+	Order BY C.idConsole;"
+
 	var sqlGetTodosConsoles = "SELECT C.*, Est.quantAtual, Emp.nomeEmpresa\
 	FROM console AS C, estoque AS Est, empresa AS Emp\
 	WHERE C.idConsole=Est.FK_idConsole AND Est.FK_idEmpresa=Emp.idEmpresa\
@@ -221,7 +226,20 @@ async function visualizarConsoles() {
 					reject(err);
 				}
 				else {
-					resolve(results)
+					connection.query(sqlGetTodosConsolesRestauracao, function (err, resultsRestauracao) {
+						if (err) {
+							console.log("Erro ao pegar todos os consoles de restauração no banco de dados: ", err);
+							reject(err);
+						}
+						else {
+
+							let finalResults = [results, resultsRestauracao]
+
+							console.log(finalResults)
+
+							resolve(finalResults)
+						}
+					})
 				}
 			})
 
