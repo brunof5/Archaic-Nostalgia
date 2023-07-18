@@ -97,7 +97,18 @@
 
                         </tr>
                     </thead>
-                    <tbody></tbody>
+                    <tbody id="tbodyVendas"></tbody>
+                    <thead>
+                        <tr>
+                            <th scope="col">ID</th>
+                            <th scope="col">Modelo</th>
+                            <th scope="col">Fabricante</th>
+                            <th scope="col">Data de Lançamento</th>
+                            <th scope="col">Originalidade</th>
+                            <th scope="col">Empresa</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbodyRestauracoes"></tbody>
                 </table>
             </div>
         </main>
@@ -158,13 +169,14 @@
     function exibirDadosNaTabela(dados) {
 
         // Limpar o conteúdo existente dentro do <tbody>
-        tbody.innerHTML = "";
+        document.getElementById("tbodyVendas").innerHTML = "";
+        document.getElementById("tbodyRestauracoes").innerHTML = "";
 
-        iterarTabela(dados[0])
-        iterarTabela(dados[1])
+        iterarTabelaVenda(dados[0])
+        iterarTabelaRestauracao(dados[1])
     }
 
-    function iterarTabela(dados) {
+    function iterarTabelaVenda(dados) {
         // Loop "forEach" para iterar sobre os dados e gerar as linhas da tabela
         dados.forEach(function (item) {
             // Criar uma nova linha da tabela (<tr>)
@@ -227,7 +239,46 @@
             tr.appendChild(excluirCell);
 
             // Adicionar a nova linha (<tr>) ao <tbody>
-            tbody.appendChild(tr);
+            document.getElementById("tbodyVendas").appendChild(tr);
+        });
+    }
+
+    function iterarTabelaRestauracao(dados) {
+
+        // Loop "forEach" para iterar sobre os dados e gerar as linhas da tabela
+        dados.forEach(function (item) {
+
+            // Criar uma nova linha da tabela (<tr>)
+            const tr = document.createElement("tr");
+
+            // Adicionar as células da tabela (<td>) com os valores correspondentes
+            const idCell = document.createElement("td");
+            idCell.textContent = item.idConsole;
+            tr.appendChild(idCell);
+
+            const modeloCell = document.createElement("td");
+            modeloCell.textContent = item.nomeConsole;
+            tr.appendChild(modeloCell);
+
+            const fabricanteCell = document.createElement("td");
+            fabricanteCell.textContent = item.nomeFabricante;
+            tr.appendChild(fabricanteCell);
+
+            const dataLancamentoCell = document.createElement("td");
+            var dataHora = item.dataLancamento.split("T")
+            dataLancamentoCell.textContent = dataHora[0];
+            tr.appendChild(dataLancamentoCell);
+
+            const originalidadeCell = document.createElement("td");
+            originalidadeCell.textContent = item.ehOriginal.data[0] === 0 ? "Não Original" : "Original";
+            tr.appendChild(originalidadeCell);
+
+            const empresaCell = document.createElement("td");
+            empresaCell.textContent = item.nomeEmpresa;
+            tr.appendChild(empresaCell);
+
+            // Adicionar a nova linha (<tr>) ao <tbody>
+            document.getElementById("tbodyRestauracoes").appendChild(tr);
         });
     }
 

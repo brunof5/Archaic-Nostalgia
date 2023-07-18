@@ -235,8 +235,6 @@ async function visualizarConsoles() {
 
 							let finalResults = [results, resultsRestauracao]
 
-							console.log(finalResults)
-
 							resolve(finalResults)
 						}
 					})
@@ -251,6 +249,11 @@ async function visualizarConsoles() {
 // Visualizar Consoles de Uma Região no Banco de Dados
 async function visualizarConsolesRegiao(inputUser) {
 
+	var sqlGetTodosConsolesRestauracaoRegiao = "SELECT C.*, E.nomeEmpresa\
+	FROM console AS C, empresa AS E, venda_restauracao AS VR, empregado\
+	WHERE VR.FK_idEmpresa=E.idEmpresa AND VR.FK_idConsole=C.idConsole AND VR.ehVenda=0 AND E.idEmpresa=empregado.FK_idEmpresa AND empregado.nomeLoginEmpregado=?\
+	Order BY C.idConsole;"
+
 	var sqlGetTodosConsolesRegiao = "SELECT C.*, Est.quantAtual, Emp.nomeEmpresa\
 	FROM console AS C, estoque AS Est, empresa AS Emp, empregado\
 	WHERE C.idConsole=Est.FK_idConsole AND Est.FK_idEmpresa=Emp.idEmpresa AND Emp.idEmpresa=empregado.FK_idEmpresa AND empregado.nomeLoginEmpregado=?\
@@ -258,6 +261,7 @@ async function visualizarConsolesRegiao(inputUser) {
 
 	const paramsGetTodosConsolesRegiao = [inputUser]
 	const sqlGetTodosConsolesRegiaoFormatted = mysql.format(sqlGetTodosConsolesRegiao, paramsGetTodosConsolesRegiao);
+	const sqlGetTodosConsolesRestauracaoRegiaoFormatted = mysql.format(sqlGetTodosConsolesRestauracaoRegiao, paramsGetTodosConsolesRegiao)
 
 	return new Promise(function (resolve, reject) {
 		pool.getConnection(function (err, connection) {
@@ -271,7 +275,18 @@ async function visualizarConsolesRegiao(inputUser) {
 					reject(err);
 				}
 				else {
-					resolve(results)
+					connection.query(sqlGetTodosConsolesRestauracaoRegiaoFormatted, function (err, resultsRestauracao) {
+						if (err) {
+							console.log("Erro ao pegar todos os consoles de restauração no banco de dados: ", err);
+							reject(err);
+						}
+						else {
+
+							let finalResults = [results, resultsRestauracao]
+
+							resolve(finalResults)
+						}
+					})
 				}
 			})
 
