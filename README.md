@@ -28,11 +28,11 @@ Integrantes: [Bruno Crespo](https://github.com/brunof5), [Gabriel Rogério](http
   * Visualizar
   * Deletar
   * Editar
-* Adicionar no carrinho
-* Comprar console
-* Pedir restauração de um console não pertencente à empresa
-* Avaliação do serviço
-  * Restauração
+* <s>Adicionar no carrinho</s>
+* <s>Comprar console</s>
+* <s>Pedir restauração de um console não pertencente à empresa</s>
+* <s>Avaliação do serviço</s>
+  * <s>Restauração</s>
 
 ## Público Alvo
 
@@ -40,10 +40,12 @@ Pessoas que tem afinidade com consoles mais antigos.
 
 ## Regras de Uso
 
-* A pasta "Requisitos" apresenta o documento de requisitos do projeto, ademais o diagrama UML dos casos de uso.
+* A pasta "Banco de Dados" apresenta o script e diagrama SQL implementados no projeto.
 * A pasta "Diagramas" apresenta os diagramas de Classe, Pacote e Sequência.
-* A pasta "Protótipo de Interface" apresenta todos os PNGs de todas as interfaces do projeto feitas no FIGMA.
 * A pasta "Padrões Adotados" apresenta as regras de verificação/análise de requisitos.
+* A pasta "Protótipo de Interface" apresenta todos os PNGs de todas as interfaces do projeto feitas no FIGMA.
+* A pasta "Requisitos" apresenta o documento de requisitos do projeto, ademais o diagrama UML dos casos de uso.
+* A pasta "Teste" apresenta os casos de teste de validação do projeto.
 * A pasta "src" apresenta os códigos do projeto.
 
 ### Regras de Commit
@@ -61,14 +63,14 @@ O PO ao ver que uma issue foi fechada e com o status para teste, irá abri-la no
 
 ### Regras de Branch
 
-O uso de braches é liberado, mas cuidadao ao realizar o merge com o main do projeto.
+O uso de braches é liberado, mas cuidado ao realizar o merge com o main do projeto.
 
 ### Boas Práticas de Programação
 
 O grupo deve pelo menos seguir as 6 boas práticas de programação abaixo:
 
 1. **Identar o código**: é um dos itens mais básicos e importantes para um programador, pois facilita a legibilidade e deixa o código mais bonito.
-    1.  A identação deve ser feita por tabs.
+    1.  A identação deve ser feita por tabs de 4 espaços.
 2.  **Nomear variáveis de maneira intuitiva**: escrever nomes que não possuem sentido acaba por dificultar a legibilidade do código, além de prejudicar o trabalho em grupo, pelo fato de que as variáveis não são intuitivas.
     1.  Ao declarar a tag *name* nos *inputs* no front-end, tais declarações devem ter sentido e serem intuitivas para o back-end compreender mais facilmente como realizar os endpoints.
 3.  **Comentar código**: um comentário detalhando o objetivo de uma função, seus parâmetros de entrada e saída podem ajudar a manutenção futura do código.
@@ -78,4 +80,4 @@ O grupo deve pelo menos seguir as 6 boas práticas de programação abaixo:
 5.  **Escreva sempre chaves nos comandos de controle (if/else, while, for etc)**: tal prática é útil quando queremos dividir com precisão os caminhos do programa.
     1.  O back-end deve respeitar essa boa prática.
 6.  **Declare as variáveis sempre no início das funções**: útil para entendimento do que acontecerá na função logo de imediato.
-    1.  No back-end, declarar uma variável do comando sql e escrever seu código de imediato, já adicionando parâmetros à ela se necessário, ou seja, não se deve montar o comando quando realizar a query/consulta.
+    1.  No back-end, declarar uma variável do comando sql e escrever seu código de imediato, já adicionando parâmetros à ela se necessário, ou seja, não se deve montar o comando quando realizar a query/consulta. Exceto em casos em que uma consulta depende de outra previamente.
