@@ -363,9 +363,9 @@ async function editarVendaRestauracao(dados, inputId) {
 									reject(err);
 								}
 
-								const quantAtual = resultQuantAtual.length > 0 ? resultQuantAtual[0].quantAtual : 0;
+								const quantAtual = resultQuantAtual.length > 0 ? resultQuantAtual[0].quantAtual : -1;
 
-								if ((quantAtual + qtdeConsolesAntigo) < dados.inputQuantity) {
+								if ((quantAtual == -1) || ((quantAtual + qtdeConsolesAntigo) < dados.inputQuantity)) {
 									var data = { sucesso: false, mensagem: "A empresa não possui quantidade de consoles suficiente para a venda!" };
 									var json = [data];
 									resolve(JSON.stringify(json));
