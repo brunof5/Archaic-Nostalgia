@@ -187,7 +187,6 @@
             throw new Error('Erro na solicitação');
         })
         .then(data => {
-            console.log(data)
             exibirDadosNaTabela(data)
         })
         .catch(error => {
@@ -357,8 +356,6 @@
                 throw new Error('Erro na solicitação');
             })
             .then(data => {
-                console.log(data);
-
                 if(data[0].sucesso) {
                     var modalSucesso = new bootstrap.Modal(document.getElementById('modalSucesso'));
                     modalSucesso.show();
@@ -392,7 +389,6 @@
             throw new Error('Erro na solicitação');
         })
         .then(data => {
-            console.log(data)
             if(data[0].sucesso || data[0].idVenda_Restauracao > 0) {
                 exibirDadosNaTabela(data) 
             }

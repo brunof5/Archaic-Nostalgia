@@ -15,7 +15,6 @@ async function cadastrarVendaRestauracao(dados) {
 	const sqlSelecionarIdEmpresa = "SELECT idEmpresa FROM empresa WHERE estado = ?;";
 	const sqlSelecionarQuantAtual = "SELECT quantAtual FROM estoque WHERE FK_idConsole = ? AND FK_idEmpresa = ?;";
 	const sqlAtualizarEstoque = "UPDATE estoque SET quantAtual = quantAtual - ? WHERE FK_idConsole = ? AND FK_idEmpresa = ?;";
-	const sqlDeletarEstoque = "DELETE FROM estoque WHERE FK_idConsole = ? AND FK_idEmpresa = ?;";
 	const sqlCadastroTabelaConsole = "INSERT INTO console VALUES (NULL, ?, ?, ?, ?, ?, ?);"
 	const sqlInserirVendaRestauracao = "INSERT INTO venda_restauracao VALUES (NULL, ?, ?, ?, ?, ?, ?, ?, NULL, ?, ?, ?);";
 
@@ -35,7 +34,7 @@ async function cadastrarVendaRestauracao(dados) {
 					reject(err);
 				}
 
-				if (resultCliente.length === 0) {
+				if (resultCliente.length == 0) {
 					var data = { sucesso: false, mensagem: "Cliente não encontrado." };
 					var json = [data];
 					resolve(JSON.stringify(json));
@@ -51,7 +50,7 @@ async function cadastrarVendaRestauracao(dados) {
 						reject(err);
 					}
 
-					if (resultEmpresa.length === 0) {
+					if (resultEmpresa.length == 0) {
 						var data = { sucesso: false, mensagem: "Empresa não encontrada." };
 						var json = [data];
 						resolve(JSON.stringify(json));
@@ -69,7 +68,7 @@ async function cadastrarVendaRestauracao(dados) {
 								reject(err);
 							}
 
-							if (resultQuantAtual.length === 0) {
+							if (resultQuantAtual.length == 0) {
 								var data = { sucesso: false, mensagem: "Estoque não encontrado." };
 								var json = [data];
 								resolve(JSON.stringify(json));
@@ -79,7 +78,7 @@ async function cadastrarVendaRestauracao(dados) {
 							let quantAtual = resultQuantAtual[0].quantAtual;
 
 							// Verificar se há quantidade suficiente no estoque
-							if (quantAtual < dados.inputQtdeConsoles) {
+							if (quantAtual < dados.inputQuantity) {
 								var data = { sucesso: false, mensagem: "Não há quantidade suficiente no estoque." };
 								var json = [data];
 								resolve(JSON.stringify(json));
@@ -94,16 +93,6 @@ async function cadastrarVendaRestauracao(dados) {
 									reject(err);
 								}
 							});
-
-							// Deletar o estoque se a quantidade atual for zero
-							if ((quantAtual - dados.inputQtdeConsoles) === 0) {
-								connection.query(sqlDeletarEstoque, [dados.inputIdConsole, idEmpresa], function (err, resultDeletarEstoque) {
-									if (err) {
-										console.log("Erro ao deletar o estoque no banco de dados: ", err);
-										reject(err);
-									}
-								});
-							}
 
 							// Inserir Venda
 							connection.query(sqlInserirVendaRestauracao,
@@ -310,7 +299,6 @@ async function editarVendaRestauracao(dados, inputId) {
 	const sqlSelecionarQuantAtual = "SELECT quantAtual FROM estoque WHERE FK_idConsole = ? AND FK_idEmpresa = ?;";
 	const sqlArrumarEstoque = "UPDATE estoque SET quantAtual = quantAtual + ? WHERE FK_idConsole = ? AND FK_idEmpresa = ?;";
 	const sqlAtualizarEstoque = "UPDATE estoque SET quantAtual = quantAtual - ? WHERE FK_idConsole = ? AND FK_idEmpresa = ?;";
-	const sqlDeletarEstoque = "DELETE FROM estoque WHERE FK_idConsole = ? AND FK_idEmpresa = ?;";
 	const sqlEditarTabelaConsole = "UPDATE console SET nomeConsole = ?, nomeFabricante = ?, dataLancamento = ?, ehOriginal = ?, preco = ?, descricaoConsole = ? WHERE idConsole = ?;"
 	const sqlEditarVendaRestauracao = "UPDATE venda_restauracao SET dataServico = ?, horaServico = ?, valorTotal = ?, ehVenda = ?, estaEntregue = ?, qtdeConsoles = ?, descricaoRestauracao = ?, avaliacao = avaliacao, FK_idEmpresa = ?, FK_idCliente = ?, FK_idConsole = ? WHERE idVenda_Restauracao = ?;";
 
@@ -341,7 +329,7 @@ async function editarVendaRestauracao(dados, inputId) {
 						reject(err);
 					}
 
-					if (resultCliente.length === 0) {
+					if (resultCliente.length == 0) {
 						var data = { sucesso: false, mensagem: "Cliente não encontrado." };
 						var json = [data];
 						resolve(JSON.stringify(json));
@@ -358,7 +346,7 @@ async function editarVendaRestauracao(dados, inputId) {
 							reject(err);
 						}
 
-						if (resultEmpresa.length === 0) {
+						if (resultEmpresa.length == 0) {
 							var data = { sucesso: false, mensagem: "Empresa não encontrada." };
 							var json = [data];
 							resolve(JSON.stringify(json));
@@ -377,7 +365,7 @@ async function editarVendaRestauracao(dados, inputId) {
 
 								const quantAtual = resultQuantAtual.length > 0 ? resultQuantAtual[0].quantAtual : 0;
 
-								if (quantAtual < dados.inputQuantity) {
+								if ((quantAtual + qtdeConsolesAntigo) < dados.inputQuantity) {
 									var data = { sucesso: false, mensagem: "A empresa não possui quantidade de consoles suficiente para a venda!" };
 									var json = [data];
 									resolve(JSON.stringify(json));
@@ -397,16 +385,6 @@ async function editarVendaRestauracao(dados, inputId) {
 										if (err) {
 											console.log("Erro ao atualizar o estoque no banco de dados: ", err);
 											reject(err);
-										}
-
-										if (quantAtual - dados.inputQuantity == 0) {
-											// Deletar estoque se quantidade atual for zero
-											connection.query(sqlDeletarEstoque, [dados.inputIdConsole, idEmpresa], function (err, resultDeletarEstoque) {
-												if (err) {
-													console.log("Erro ao deletar o estoque no banco de dados: ", err);
-													reject(err);
-												}
-											});
 										}
 
 										try {

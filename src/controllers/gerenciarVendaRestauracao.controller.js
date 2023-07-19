@@ -8,8 +8,6 @@ async function cadastrarVendaRestauracao(req, res) {
 
         const dados = req.body
 
-        console.log(dados)
-
         // Verifica CPF do Cliente
         if (dados.inputCPF == undefined || dados.inputCPF == null || dados.inputCPF == '') {
             var data = { sucesso: false, mensagem: "O campo CPF não pode ser vazio!" }
@@ -137,14 +135,12 @@ async function cadastrarVendaRestauracao(req, res) {
             }
 
             else {
-                console.log("testeRestauracao")
                 res.send(await gerenciarVendaRestauracaoServices.cadastrarVendaRestauracao(dados, sessao));
             }
     
         }
 
         else {
-            console.log("testeVenda")
             res.send(await gerenciarVendaRestauracaoServices.cadastrarVendaRestauracao(dados, sessao));
         }
     }
@@ -182,8 +178,6 @@ async function editarVendaRestauracao(req, res) {
 
         const dados = req.body
         const { inputId } = req.params;
-
-        console.log(dados)
 
         // Verifica CPF do Cliente
         if (dados.inputCPF == undefined || dados.inputCPF == null || dados.inputCPF == '') {
@@ -324,14 +318,12 @@ async function editarVendaRestauracao(req, res) {
             }
         
             else {
-                console.log("testeRestauracao")
                 res.send(await gerenciarVendaRestauracaoServices.editarVendaRestauracao(dados, inputId, sessao));
             }
     
         }
 
         else {
-            console.log("testeVenda")
             res.send(await gerenciarVendaRestauracaoServices.editarVendaRestauracao(dados, inputId, sessao));
         }
     }
