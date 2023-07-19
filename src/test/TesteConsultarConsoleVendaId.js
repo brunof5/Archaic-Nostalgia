@@ -4,7 +4,7 @@ import { Builder, By, Key, until } from 'selenium-webdriver';
 // Função async para poder usar comandos await
 async function consultarConsoleVendaId() {
   // Crie um novo driver para o navegador (Chrome, nesse caso)
-  let driver = await new Builder().forBrowser('chrome').build();
+  let driver = await new Builder().forBrowser('firefox').build();
 
   try {
 

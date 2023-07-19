@@ -4,7 +4,7 @@ import { Builder, By, Key, until } from 'selenium-webdriver';
 // Função async para poder usar comandos await
 async function cadastrarConsole() {
   // Crie um novo driver para o navegador (Chrome, nesse caso)
-  let driver = await new Builder().forBrowser('chrome').build();
+  let driver = await new Builder().forBrowser('firefox').build();
 
   try {
 
@@ -27,7 +27,7 @@ async function cadastrarConsole() {
 	await driver.findElement(By.id("inputProducer")).sendKeys("Nintendo")
     await driver.sleep(1000);
     let dataElement = await driver.findElement(By.css('input[type="date"]'))
-    await dataElement.sendKeys('21-11-2004')
+    await dataElement.sendKeys('2004-11-21')
     await driver.sleep(1000);
 	await driver.findElement(By.css(".btn-outline-danger")).click()
     await driver.sleep(1000);
@@ -40,7 +40,10 @@ async function cadastrarConsole() {
 		if (!(await element.isSelected())) await element.click()
 	}
     await driver.sleep(1000);
-    await driver.findElement(By.css(".text-end > .btn")).click()
+    let botaoSubmit = await driver.findElement(By.css(".text-end > .btn"))
+    await driver.executeScript("arguments[0].scrollIntoView(true)", botaoSubmit)
+    await driver.sleep(500);
+    await botaoSubmit.click()
     await driver.sleep(3000);
 
     // Feche o navegador
