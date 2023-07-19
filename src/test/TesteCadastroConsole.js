@@ -18,7 +18,7 @@ async function cadastrarConsole() {
     await driver.sleep(1000);
 	await driver.findElement(By.css(".button-container > .btn")).click()
     await driver.sleep(2000);
-	await driver.findElement(By.linkText("Gerenciar consoles")).click()
+	await driver.findElement(By.linkText("Gerenciar Consoles")).click()
     await driver.sleep(2000);
 	await driver.findElement(By.linkText("+Novo Registro")).click()
     await driver.sleep(1000);

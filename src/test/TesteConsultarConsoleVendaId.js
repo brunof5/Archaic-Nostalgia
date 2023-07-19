@@ -18,7 +18,7 @@ async function consultarConsoleVendaId() {
     await driver.sleep(1000);
     await driver.findElement(By.css(".button-container > .btn")).click()
     await driver.sleep(2000);
-    await driver.findElement(By.linkText("Gerenciar consoles")).click()
+    await driver.findElement(By.linkText("Gerenciar Consoles")).click()
     await driver.sleep(1000);
     await driver.findElement(By.id("idConsole")).sendKeys("-5")
     await driver.sleep(1000);
